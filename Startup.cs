@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebStore.Data;
+using WebStore.Data.Identity;
 
 namespace WebStore
 {
@@ -20,6 +24,15 @@ namespace WebStore
         {
             services.AddMvc();
             services.AddServerSideBlazor();
+
+            services.AddDbContext<AppDbContext>(i => i.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddIdentity<AppIdentityUser, AppIdentityRole>(option =>
+            {
+                option.Password.RequireNonAlphanumeric = false;
+            })
+              .AddEntityFrameworkStores<AppDbContext>()
+              .AddDefaultTokenProviders()
+              .AddSignInManager();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
