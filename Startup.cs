@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -33,6 +34,12 @@ namespace WebStore
               .AddEntityFrameworkStores<AppDbContext>()
               .AddDefaultTokenProviders()
               .AddSignInManager();
+
+            services.AddFluentValidation(i =>
+            {
+                i.DisableDataAnnotationsValidation = true;
+                i.RegisterValidatorsFromAssemblyContaining<Startup>();
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
