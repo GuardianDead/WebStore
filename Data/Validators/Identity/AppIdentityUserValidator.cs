@@ -16,8 +16,6 @@ namespace WebStore.Validators.Identity
                 .NotNull().NotEmpty().WithMessage("Фамилия пользователя не может быть пустым");
             RuleFor(i => i.Lastname)
                 .NotNull().WithMessage("Отчество пользователя не может быть пустым");
-            RuleFor(i => i.Address)
-                .NotNull().WithMessage("Адрес пользователя не может быть пустым");
             RuleFor(i => i.Orders)
                 .NotNull().WithMessage("Заказы не могут быть пустыми")
                 .ForEach(i => i.SetValidator(orderValidator));
@@ -27,6 +25,9 @@ namespace WebStore.Validators.Identity
             RuleFor(i => i.Cart)
                 .NotNull().WithMessage("Корзина товаров не может быть пустым")
                 .ForEach(i => i.SetValidator(productArticleValidator));
+            RuleFor(i => i.Password.Length)
+                .NotNull().NotEmpty().WithMessage("Пароль не может быть пустым")
+                .GreaterThanOrEqualTo(6).WithMessage("Пароль должен быть больше 6 символов");
         }
     }
 }
