@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using WebStore.Data.Entities;
 
 namespace WebStore.Data.Identity
@@ -23,9 +24,6 @@ namespace WebStore.Data.Identity
         [DisplayName("Отчество")]
         public string Lastname { get; set; }
         [Required]
-        [DisplayName("Адрес")]
-        public string Address { get; set; }
-        [Required]
         [DisplayName("Заказы")]
         public List<Order> Orders { get; set; }
         [Required]
@@ -34,12 +32,15 @@ namespace WebStore.Data.Identity
         [Required]
         [DisplayName("Корзина")]
         public virtual List<ProductArticle> Cart { get; set; }
+        [Required]
+        [NotMapped]
+        public string Password { get; set; }
 
         public AppIdentityUser()
         {
         }
-        public AppIdentityUser(string firstname, string surname, string lastname, string address, List<Order> orders,
-            List<ProductArticle> favorites, List<ProductArticle> cart, string email, string phoneNumber)
+        public AppIdentityUser(string firstname, string surname, string lastname, List<Order> orders,
+            List<ProductArticle> favorites, List<ProductArticle> cart, string email, string phoneNumber, string password)
         {
             Id = Guid.NewGuid();
             this.UserName = email.Substring(0, email.IndexOf('@'));
@@ -48,10 +49,10 @@ namespace WebStore.Data.Identity
             Firstname = firstname;
             Surname = surname;
             Lastname = lastname;
-            Address = address;
             Orders = orders;
             Favorites = favorites;
             Cart = cart;
+            Password = password;
         }
     }
 }

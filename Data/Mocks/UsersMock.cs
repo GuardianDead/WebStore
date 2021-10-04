@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using WebStore.Data.Entities;
 using WebStore.Data.Identity;
+using WebStore.Domain.Consts;
 
 namespace WebStore.Data.Mocks
 {
@@ -19,12 +20,11 @@ namespace WebStore.Data.Mocks
                 return;
             }
 
-            var user = new AppIdentityUser("Александр", "Андианов", "Евгеньевич",
-                "Россия, Владимирская область, Муром, Мечникова, 55, 34", db.Orders.Take(3).ToList(),
+            var user = new AppIdentityUser("Александр", "Андианов", "Евгеньевич", db.Orders.Take(3).ToList(),
                 new List<ProductArticle>(), db.ProductArticles.Take(3).ToList(), "kakawkawww13@mail.ru",
-                "79157675803");
+                "79157675803", "21081990wwwWWW");
 
-            var result = userManager.CreateAsync(user, "21081990wwwWWW").GetAwaiter().GetResult();
+            var result = userManager.CreateAsync(user, user.Password).GetAwaiter().GetResult();
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -34,7 +34,7 @@ namespace WebStore.Data.Mocks
                 throw new Exception();
             }
 
-            result = userManager.AddToRoleAsync(user, "Admin").GetAwaiter().GetResult();
+            result = userManager.AddToRoleAsync(user, RoleConst.Admin).GetAwaiter().GetResult();
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -59,7 +59,7 @@ namespace WebStore.Data.Mocks
 
             var claims = new Claim[]
             {
-                new Claim(ClaimTypes.Role,"Admin"),
+                new Claim(ClaimTypes.Role,RoleConst.Admin),
                 new Claim(ClaimTypes.GivenName,"GuardianDead"),
                 new Claim(ClaimTypes.Email,"kakawkawww13@mail.ru"),
                 new Claim(ClaimTypes.MobilePhone,"79157675803"),
@@ -84,12 +84,11 @@ namespace WebStore.Data.Mocks
                 return;
             }
 
-            var user = new AppIdentityUser("Александр", "Андианов", "Евгеньевич",
-                "Россия, Владимирская область, Муром, Мечникова, 55, 34", await db.Orders.Take(3).ToListAsync(),
+            var user = new AppIdentityUser("Александр", "Андианов", "Евгеньевич", await db.Orders.Take(3).ToListAsync(),
                 new List<ProductArticle>(), await db.ProductArticles.Take(3).ToListAsync(), "kakawkawww13@mail.ru",
-                "79157675803");
+                "79157675803", "21081990wwwWWW");
 
-            var result = await userManager.CreateAsync(user, "21081990wwwWWW");
+            var result = await userManager.CreateAsync(user, user.Password);
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
@@ -99,7 +98,7 @@ namespace WebStore.Data.Mocks
                 throw new Exception();
             }
 
-            result = await userManager.AddToRoleAsync(user, "Admin");
+            result = await userManager.AddToRoleAsync(user, RoleConst.Admin);
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)

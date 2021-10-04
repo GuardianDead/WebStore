@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
+using WebStore.Data.Entities;
 using WebStore.Data.Identity;
 using WebStore.Data.Mocks;
+using WebStore.Data.Repositories.DeliveryRepository;
 
 namespace WebStore.Data
 {

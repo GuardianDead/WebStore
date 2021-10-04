@@ -20,7 +20,6 @@ namespace WebStore
             Configuration = configuration;
         }
 
-
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
