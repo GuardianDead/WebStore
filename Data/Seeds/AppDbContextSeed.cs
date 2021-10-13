@@ -1,13 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using WebStore.Data.Mocks;
 using WebStore.Data.Mocks.CategoryMock;
 using WebStore.Data.Mocks.DeliveryMock;
 using WebStore.Data.Mocks.ProductArticleMock;
-using WebStore.Data.Mocks.ProductMock;
 using WebStore.Data.Mocks.ProductModelMock;
 using WebStore.Data.Mocks.RoleMock;
 using WebStore.Data.Mocks.SubcategoryMock;
@@ -26,7 +23,7 @@ namespace WebStore.Data
         private readonly IProductArticleMock productArticleMock;
         private readonly IProductMock productMock;
 
-        public AppDbContextSeed(IDeliveryMock deliveryMock, ICategoryMock categoryMock, IRoleMock roleMock, 
+        public AppDbContextSeed(IDeliveryMock deliveryMock, ICategoryMock categoryMock, IRoleMock roleMock,
             ISubcategoryMock subcategoryMock, IUserMock userMock, IProductModelMock productModelMock,
             IProductArticleMock productArticleMock, IProductMock productMock)
         {
@@ -44,8 +41,8 @@ namespace WebStore.Data
         {
             var mocks = new IMockAsync[]
             {
-                deliveryMock, categoryMock, roleMock, 
-                subcategoryMock, userMock, productModelMock, 
+                deliveryMock, categoryMock, roleMock,
+                subcategoryMock, userMock, productModelMock,
                 productArticleMock, productMock
             };
 

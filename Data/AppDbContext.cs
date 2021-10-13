@@ -1,8 +1,6 @@
 ﻿using Innofactor.EfCoreJsonValueConverter;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection.Emit;
-using System.Xml;
 using WebStore.Data.Entities;
 using WebStore.Data.Identity;
 
@@ -31,9 +29,11 @@ namespace WebStore.Data
                 i.Property(o => o.Order).HasJsonValueConversion();
                 i.Property(o => o.Product).HasJsonValueConversion();
             });
+
             builder.Entity<Delivery>().Property(p => p.DeliveryCost).HasColumnType("decimal(18,4)");
             builder.Entity<Order>().Property(p => p.SummaryCost).HasColumnType("decimal(18,4)");
             builder.Entity<ProductModel>().Property(p => p.Price).HasColumnType("decimal(18,4)");
+
             base.OnModelCreating(builder);
         }
 

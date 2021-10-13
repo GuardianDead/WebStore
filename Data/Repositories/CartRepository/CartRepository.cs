@@ -112,19 +112,7 @@ namespace WebStore.Data.Repositories.CartRepository
 
         public async ValueTask<bool> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            using (var transaction = await db.Database.BeginTransactionAsync(cancellationToken))
-            {
-                if (await db.SaveChangesAsync(cancellationToken) >= 0)
-                {
-                    await transaction.CommitAsync(cancellationToken);
-                    return await new ValueTask<bool>(true);
-                }
-                else
-                {
-                    await transaction.RollbackAsync(cancellationToken);
-                    return await new ValueTask<bool>(false);
-                }
-            }
+            return await db.SaveChangesAsync(cancellationToken) > 0;
         }
 
         public async ValueTask<bool> DisposeAsync()
