@@ -1,16 +1,14 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using WebStore.Data;
+using System.Threading.Tasks;
 
 namespace WebStore
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static Task Main(string[] args)
         {
-            var build = CreateHostBuilder(args).Build();
-            AppDbContextSeed.Seed(build.Services);
-            build.Run();
+            return CreateHostBuilder(args).Build().RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

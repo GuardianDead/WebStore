@@ -12,7 +12,7 @@ namespace WebStore.Data.Entities
         public Guid Id { get; private init; }
         [Required]
         [DisplayName("Артикул")]
-        public virtual ProductArticle Article { get; set; }
+        public ProductArticle Article { get; set; }
 
         public Product()
         {

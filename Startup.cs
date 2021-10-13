@@ -1,51 +1,43 @@
-using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WebStore.Data;
-using WebStore.Data.Identity;
+using WebStore.Domain.Configurations;
 
 namespace WebStore
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        
-        public Startup(IConfiguration configuration)
+        public IWebHostEnvironment Env { get; }
+
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
+            Env = env;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
             services.AddServerSideBlazor();
+            services.AddAdvancedDependencyInjection();
 
-            services.AddDbContext<AppDbContext>(i => i.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddIdentity<AppIdentityUser, AppIdentityRole>(option =>
+            services.AddAppDbContext(Configuration);
+            services.AddAppValidation();
+            if (Env.IsDevelopment())
             {
-                option.Password.RequireNonAlphanumeric = false;
-            })
-              .AddEntityFrameworkStores<AppDbContext>()
-              .AddDefaultTokenProviders()
-              .AddSignInManager();
-
-            services.AddFluentValidation(i =>
-            {
-                i.DisableDataAnnotationsValidation = true;
-                i.RegisterValidatorsFromAssemblyContaining<Startup>();
-            });
+                services.AddMockDependencies();
+            }
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app)
         {
-            if (env.IsDevelopment())
+            if (Env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.AddAppMock();
             }
             else
             {

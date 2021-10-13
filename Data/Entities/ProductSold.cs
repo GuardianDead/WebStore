@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Innofactor.EfCoreJsonValueConverter;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,23 +9,29 @@ namespace WebStore.Data.Entities
     {
         [Key]
         [Required]
-        [DisplayName("Номер")]
-        public Guid Id { get; set; }
+        [DisplayName("Номер проданного товара")]
+        public Guid Id { get; private init; }
         [Required]
-        [DisplayName("Жизнь товара в бд (дни)")]
-        public int LifeTime { get; }
+        [DisplayName("Жизнь проданного товара в бд в днях")]
+        public int LifeTime { get; set; }
         [Required]
+        [JsonField]
         [DisplayName("Заказ")]
-        public virtual Order Order { get; set; }
+        public Order Order { get; set; }
+        [Required]
+        [JsonField]
+        [DisplayName("Продукт")]
+        public Product Product { get; set; }
 
         public ProductSold()
         {
         }
-        public ProductSold(Guid id, Order order, int lifeTime)
+        public ProductSold(Product product, Order order, int lifeTime)
         {
-            Id = id;
+            Id = product.Id;
             Order = order;
             LifeTime = lifeTime;
+            Product = product;
         }
     }
 }

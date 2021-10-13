@@ -6,28 +6,34 @@ namespace WebStore.Validators
 {
     public class OrderValidator : AbstractValidator<Order>
     {
-        public OrderValidator(IValidator<Delivery> deliveryValidator, IValidator<ProductArticle> productArticleValidator)
+        public OrderValidator(IValidator<Delivery> deliveryValidator, IValidator<Address> addressValidator,
+            IValidator<Product> productValidator)
         {
             RuleFor(i => i.Address)
-                .NotNull().NotEmpty().WithMessage("Адрес заказа не может быть пустым");
+                .NotNull().NotEmpty().WithMessage("Адрес заказа не может быть пустым")
+                .SetValidator(addressValidator);
             RuleFor(i => i.Delivery)
-                .NotNull().WithMessage("Доставка заказа не может быть пустым")
+                .NotNull().WithMessage("Доставка  не может быть пустым")
                 .SetValidator(deliveryValidator);
-            RuleFor(i => i.OrderDate)
+            RuleFor(i => i.DateTimeCreation)
                 .NotNull().NotEmpty().WithMessage("Дата заказа не может быть пустым")
-                .LessThan(DateTime.Now).WithMessage("Дата заказа не может быть в прошедшем времени");
+                .LessThanOrEqualTo(DateTime.Now).WithMessage("Дата заказа не может быть в прошедшем времени");
             RuleFor(i => i.OrderPaymentMethodType)
                 .NotNull().NotEmpty().WithMessage("Тип оплаты заказа не может быть пустым")
                 .IsInEnum().WithMessage("Тип оплаты заказа обязан быть типа 'OrderPaymentMethodType'");
             RuleFor(i => i.OrderStatusType)
                 .NotNull().NotEmpty().WithMessage("Статус заказа не может быть пустым")
                 .IsInEnum().WithMessage("Статус заказа обязан быть типа 'OrderStatusType'");
-            RuleFor(i => i.ProductArticles)
+            RuleFor(i => i.Products)
                 .NotNull().WithMessage("Список артикулов товаров не может быть пустым")
-                .ForEach(i => i.SetValidator(productArticleValidator));
+                .ForEach(i => i.SetValidator(productValidator));
             RuleFor(i => i.SummaryCost)
-                .NotNull().WithMessage("Общая стоимость заказа не может быть пустым")
+                .NotNull().WithMessage("Общая стоимость не может быть пустым")
                 .GreaterThanOrEqualTo(0).WithMessage("Общая стоимость заказа должна быть больше 0");
+            RuleFor(i => i.PhoneNumber)
+                .NotNull().WithMessage("Номер телефона не может быть неопределен")
+                .ChildRules(i => i.RuleFor(i => i.Length)
+                    .ExclusiveBetween(7, 15).WithMessage("Номер телефона должен быть в диапазоне от 7 до 15"));
         }
     }
 }

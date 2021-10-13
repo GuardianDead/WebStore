@@ -19,7 +19,7 @@ namespace WebStore.Migrations
                 .HasAnnotation("ProductVersion", "5.0.10")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,8 +32,8 @@ namespace WebStore.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -42,7 +42,7 @@ namespace WebStore.Migrations
                     b.ToTable("AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,8 +55,8 @@ namespace WebStore.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -65,7 +65,7 @@ namespace WebStore.Migrations
                     b.ToTable("AspNetUserClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -76,8 +76,8 @@ namespace WebStore.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -86,13 +86,13 @@ namespace WebStore.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -101,10 +101,10 @@ namespace WebStore.Migrations
                     b.ToTable("AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -120,6 +120,91 @@ namespace WebStore.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("WebStore.Data.Entities.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HouseNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Addresses");
+                });
+
+            modelBuilder.Entity("WebStore.Data.Entities.Cart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Carts");
+                });
+
+            modelBuilder.Entity("WebStore.Data.Entities.CartProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CartId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ProductArticleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("ProductArticleId");
+
+                    b.ToTable("CartProducts");
+                });
+
+            modelBuilder.Entity("WebStore.Data.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
             modelBuilder.Entity("WebStore.Data.Entities.Delivery", b =>
                 {
                     b.Property<int>("Id")
@@ -131,7 +216,7 @@ namespace WebStore.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("DeliveryCost")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.Property<int>("DeliveryMethod")
                         .HasColumnType("int");
@@ -145,6 +230,43 @@ namespace WebStore.Migrations
                     b.ToTable("Deliveries");
                 });
 
+            modelBuilder.Entity("WebStore.Data.Entities.FavoritesList", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FavoritesLists");
+                });
+
+            modelBuilder.Entity("WebStore.Data.Entities.FavoritesListProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FavoritesListId")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("ProductArticleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FavoritesListId");
+
+                    b.HasIndex("ProductArticleId");
+
+                    b.ToTable("FavoritesListProducts");
+                });
+
             modelBuilder.Entity("WebStore.Data.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -152,18 +274,17 @@ namespace WebStore.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int");
 
-                    b.Property<Guid?>("AppIdentityUserId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<DateTime>("DateTimeCreation")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("DeliveryId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
+                    b.Property<int?>("OrderHistoryId")
+                        .HasColumnType("int");
 
                     b.Property<int>("OrderPaymentMethodType")
                         .HasColumnType("int");
@@ -171,16 +292,33 @@ namespace WebStore.Migrations
                     b.Property<int>("OrderStatusType")
                         .HasColumnType("int");
 
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("SummaryCost")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppIdentityUserId");
+                    b.HasIndex("AddressId");
 
                     b.HasIndex("DeliveryId");
 
+                    b.HasIndex("OrderHistoryId");
+
                     b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("WebStore.Data.Entities.OrderHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderHistories");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.Product", b =>
@@ -192,9 +330,14 @@ namespace WebStore.Migrations
                     b.Property<Guid?>("ArticleId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ArticleId");
+
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Products");
                 });
@@ -203,12 +346,6 @@ namespace WebStore.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("AppIdentityUserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("AppIdentityUserId1")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Color")
@@ -221,33 +358,14 @@ namespace WebStore.Migrations
                     b.Property<Guid?>("ModelId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Size")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppIdentityUserId");
-
-                    b.HasIndex("AppIdentityUserId1");
-
                     b.HasIndex("ModelId");
 
-                    b.HasIndex("OrderId");
-
                     b.ToTable("ProductArticles");
-                });
-
-            modelBuilder.Entity("WebStore.Data.Entities.ProductCategory", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Name");
-
-                    b.ToTable("ProductCategories");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.ProductModel", b =>
@@ -259,6 +377,9 @@ namespace WebStore.Migrations
                     b.Property<string>("Brand")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateTimeCreation")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Features")
                         .IsRequired()
@@ -287,10 +408,10 @@ namespace WebStore.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,4)");
 
-                    b.Property<string>("SubcategoryName")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("SubcategoryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("СountryManufacturer")
                         .IsRequired()
@@ -298,7 +419,7 @@ namespace WebStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubcategoryName");
+                    b.HasIndex("SubcategoryId");
 
                     b.ToTable("ProductModels");
                 });
@@ -309,42 +430,56 @@ namespace WebStore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("OrderId")
+                    b.Property<int>("LifeTime")
                         .HasColumnType("int");
+
+                    b.Property<string>("Order")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Product")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("ProductSolds");
+                    b.ToTable("ProductsSold");
                 });
 
-            modelBuilder.Entity("WebStore.Data.Entities.ProductSubcategory", b =>
+            modelBuilder.Entity("WebStore.Data.Entities.Subcategory", b =>
                 {
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CategoryName")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Name");
-
-                    b.HasIndex("CategoryName");
-
-                    b.ToTable("ProductSubcategories");
-                });
-
-            modelBuilder.Entity("WebStore.Data.Identity.AppIdentityRole", b =>
-                {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Subcategories");
+                });
+
+            modelBuilder.Entity("WebStore.Data.Identity.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -362,20 +497,28 @@ namespace WebStore.Migrations
                     b.ToTable("AspNetRoles");
                 });
 
-            modelBuilder.Entity("WebStore.Data.Identity.AppIdentityUser", b =>
+            modelBuilder.Entity("WebStore.Data.Identity.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CartId")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DateTimeCreation")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -390,6 +533,9 @@ namespace WebStore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ListFavouritesId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -403,6 +549,9 @@ namespace WebStore.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<int?>("OrderHistoryId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -429,6 +578,10 @@ namespace WebStore.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CartId");
+
+                    b.HasIndex("ListFavouritesId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -437,69 +590,103 @@ namespace WebStore.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("OrderHistoryId");
+
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("WebStore.Data.Identity.AppIdentityRole", null)
+                    b.HasOne("WebStore.Data.Identity.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("WebStore.Data.Identity.AppIdentityUser", null)
+                    b.HasOne("WebStore.Data.Identity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("WebStore.Data.Identity.AppIdentityUser", null)
+                    b.HasOne("WebStore.Data.Identity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("WebStore.Data.Identity.AppIdentityRole", null)
+                    b.HasOne("WebStore.Data.Identity.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WebStore.Data.Identity.AppIdentityUser", null)
+                    b.HasOne("WebStore.Data.Identity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("WebStore.Data.Identity.AppIdentityUser", null)
+                    b.HasOne("WebStore.Data.Identity.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebStore.Data.Entities.CartProduct", b =>
+                {
+                    b.HasOne("WebStore.Data.Entities.Cart", null)
+                        .WithMany("Products")
+                        .HasForeignKey("CartId");
+
+                    b.HasOne("WebStore.Data.Entities.ProductArticle", "ProductArticle")
+                        .WithMany()
+                        .HasForeignKey("ProductArticleId");
+
+                    b.Navigation("ProductArticle");
+                });
+
+            modelBuilder.Entity("WebStore.Data.Entities.FavoritesListProduct", b =>
+                {
+                    b.HasOne("WebStore.Data.Entities.FavoritesList", null)
+                        .WithMany("Products")
+                        .HasForeignKey("FavoritesListId");
+
+                    b.HasOne("WebStore.Data.Entities.ProductArticle", "ProductArticle")
+                        .WithMany()
+                        .HasForeignKey("ProductArticleId");
+
+                    b.Navigation("ProductArticle");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.Order", b =>
                 {
-                    b.HasOne("WebStore.Data.Identity.AppIdentityUser", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("AppIdentityUserId");
+                    b.HasOne("WebStore.Data.Entities.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
 
                     b.HasOne("WebStore.Data.Entities.Delivery", "Delivery")
                         .WithMany()
                         .HasForeignKey("DeliveryId");
+
+                    b.HasOne("WebStore.Data.Entities.OrderHistory", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("OrderHistoryId");
+
+                    b.Navigation("Address");
 
                     b.Navigation("Delivery");
                 });
@@ -510,68 +697,78 @@ namespace WebStore.Migrations
                         .WithMany()
                         .HasForeignKey("ArticleId");
 
+                    b.HasOne("WebStore.Data.Entities.Order", null)
+                        .WithMany("Products")
+                        .HasForeignKey("OrderId");
+
                     b.Navigation("Article");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.ProductArticle", b =>
                 {
-                    b.HasOne("WebStore.Data.Identity.AppIdentityUser", null)
-                        .WithMany("Cart")
-                        .HasForeignKey("AppIdentityUserId");
-
-                    b.HasOne("WebStore.Data.Identity.AppIdentityUser", null)
-                        .WithMany("Favorites")
-                        .HasForeignKey("AppIdentityUserId1");
-
                     b.HasOne("WebStore.Data.Entities.ProductModel", "Model")
                         .WithMany()
                         .HasForeignKey("ModelId");
-
-                    b.HasOne("WebStore.Data.Entities.Order", null)
-                        .WithMany("ProductArticles")
-                        .HasForeignKey("OrderId");
 
                     b.Navigation("Model");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.ProductModel", b =>
                 {
-                    b.HasOne("WebStore.Data.Entities.ProductSubcategory", "Subcategory")
+                    b.HasOne("WebStore.Data.Entities.Subcategory", "Subcategory")
                         .WithMany()
-                        .HasForeignKey("SubcategoryName");
+                        .HasForeignKey("SubcategoryId");
 
                     b.Navigation("Subcategory");
                 });
 
-            modelBuilder.Entity("WebStore.Data.Entities.ProductSold", b =>
+            modelBuilder.Entity("WebStore.Data.Entities.Subcategory", b =>
                 {
-                    b.HasOne("WebStore.Data.Entities.Order", "Order")
+                    b.HasOne("WebStore.Data.Entities.Category", "Category")
                         .WithMany()
-                        .HasForeignKey("OrderId");
-
-                    b.Navigation("Order");
-                });
-
-            modelBuilder.Entity("WebStore.Data.Entities.ProductSubcategory", b =>
-                {
-                    b.HasOne("WebStore.Data.Entities.ProductCategory", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryName");
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("WebStore.Data.Entities.Order", b =>
+            modelBuilder.Entity("WebStore.Data.Identity.User", b =>
                 {
-                    b.Navigation("ProductArticles");
-                });
+                    b.HasOne("WebStore.Data.Entities.Cart", "Cart")
+                        .WithMany()
+                        .HasForeignKey("CartId");
 
-            modelBuilder.Entity("WebStore.Data.Identity.AppIdentityUser", b =>
-                {
+                    b.HasOne("WebStore.Data.Entities.FavoritesList", "ListFavourites")
+                        .WithMany()
+                        .HasForeignKey("ListFavouritesId");
+
+                    b.HasOne("WebStore.Data.Entities.OrderHistory", "OrderHistory")
+                        .WithMany()
+                        .HasForeignKey("OrderHistoryId");
+
                     b.Navigation("Cart");
 
-                    b.Navigation("Favorites");
+                    b.Navigation("ListFavourites");
 
+                    b.Navigation("OrderHistory");
+                });
+
+            modelBuilder.Entity("WebStore.Data.Entities.Cart", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("WebStore.Data.Entities.FavoritesList", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("WebStore.Data.Entities.Order", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("WebStore.Data.Entities.OrderHistory", b =>
+                {
                     b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618

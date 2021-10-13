@@ -11,25 +11,29 @@ namespace WebStore.Data.Entities
         [Key]
         [Required]
         [DisplayName("Номер")]
-        public int Id { get; set; }
+        public int Id { get; private init; }
         [Required]
         [DisplayName("Товары")]
-        public virtual List<ProductArticle> ProductArticles { get; set; }
+        public IEnumerable<Product> Products { get; set; }
+        [Required]
+        [DisplayName("Адрес")]
+        public Address Address { get; set; }
         [Required]
         [DisplayName("Доставка")]
-        public virtual Delivery Delivery { get; set; }
+        public Delivery Delivery { get; set; }
+        [DisplayName("Номер телефона")]
+        [DataType(DataType.PhoneNumber)]
+        public string PhoneNumber { get; set; }
         [Required]
         [DisplayName("Способ оплаты")]
         public OrderPaymentMethodType OrderPaymentMethodType { get; set; }
         [Required]
-        [DisplayName("Время")]
-        public DateTime OrderDate { get; set; }
+        [DisplayName("Время создания")]
+        [DataType(DataType.DateTime)]
+        public DateTime DateTimeCreation { get; set; }
         [Required]
         [DisplayName("Статус")]
         public OrderStatusType OrderStatusType { get; set; }
-        [Required]
-        [DisplayName("Адрес")]
-        public string Address { get; set; }
         [Required]
         [DisplayName("Сумма")]
         public decimal SummaryCost { get; set; }
@@ -37,16 +41,19 @@ namespace WebStore.Data.Entities
         public Order()
         {
         }
-        public Order(List<ProductArticle> productArticles, Delivery delivery, OrderPaymentMethodType paymentMethodType,
-            DateTime orderDate, OrderStatusType statusType, string address, decimal summaryCost)
+        public Order(IEnumerable<Product> products, Delivery delivery,
+            OrderPaymentMethodType paymentMethodType, DateTime dateTimeCreation,
+            OrderStatusType statusType, Address address, decimal summaryCost,
+            long phoneNumber)
         {
-            ProductArticles = productArticles;
+            Products = products;
             Delivery = delivery;
             OrderPaymentMethodType = paymentMethodType;
-            OrderDate = orderDate;
+            DateTimeCreation = dateTimeCreation;
             OrderStatusType = statusType;
             Address = address;
             SummaryCost = summaryCost;
+            PhoneNumber = phoneNumber.ToString();
         }
     }
 }

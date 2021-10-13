@@ -1,60 +1,56 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
-using WebStore.Data.Entities;
-using WebStore.Data.Identity;
 using WebStore.Data.Mocks;
-using WebStore.Data.Repositories.DeliveryRepository;
+using WebStore.Data.Mocks.CategoryMock;
+using WebStore.Data.Mocks.DeliveryMock;
+using WebStore.Data.Mocks.ProductArticleMock;
+using WebStore.Data.Mocks.ProductMock;
+using WebStore.Data.Mocks.ProductModelMock;
+using WebStore.Data.Mocks.RoleMock;
+using WebStore.Data.Mocks.SubcategoryMock;
+using WebStore.Data.Mocks.UserMock;
 
 namespace WebStore.Data
 {
-    public class AppDbContextSeed
+    public class AppDbContextSeed : ISeedAsync
     {
-        public static void Seed(IServiceProvider serviceProvider)
+        private readonly IDeliveryMock deliveryMock;
+        private readonly ICategoryMock categoryMock;
+        private readonly IRoleMock roleMock;
+        private readonly ISubcategoryMock subcategoryMock;
+        private readonly IUserMock userMock;
+        private readonly IProductModelMock productModelMock;
+        private readonly IProductArticleMock productArticleMock;
+        private readonly IProductMock productMock;
+
+        public AppDbContextSeed(IDeliveryMock deliveryMock, ICategoryMock categoryMock, IRoleMock roleMock, 
+            ISubcategoryMock subcategoryMock, IUserMock userMock, IProductModelMock productModelMock,
+            IProductArticleMock productArticleMock, IProductMock productMock)
         {
-            using (var scope = serviceProvider.CreateScope())
-            {
-                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppIdentityUser>>();
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<AppIdentityRole>>();
-
-                ProductCategoriesMock.Init(db);
-                ProductSubcategoriesMock.Init(db);
-
-                DeliveriesMock.Init(db);
-
-                ProductModelsMock.Init(db);
-                ProductArticlesMock.Init(db);
-                ProductsMock.Init(db);
-
-                OrdersMock.Init(db);
-                RolesMock.Init(roleManager);
-                UsersMock.Init(db, userManager);
-            }            
+            this.deliveryMock = deliveryMock;
+            this.categoryMock = categoryMock;
+            this.roleMock = roleMock;
+            this.subcategoryMock = subcategoryMock;
+            this.userMock = userMock;
+            this.productModelMock = productModelMock;
+            this.productArticleMock = productArticleMock;
+            this.productMock = productMock;
         }
-        public static async Task SeedAsync(IServiceProvider serviceProvider)
+
+        public async ValueTask<bool> SeedAsync(CancellationToken cancellationToken = default)
         {
-            using (var scope = serviceProvider.CreateScope())
+            var mocks = new IMockAsync[]
             {
-                var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppIdentityUser>>();
-                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<AppIdentityRole>>();
+                deliveryMock, categoryMock, roleMock, 
+                subcategoryMock, userMock, productModelMock, 
+                productArticleMock, productMock
+            };
 
-                await ProductCategoriesMock.InitAsync(db);
-                await ProductSubcategoriesMock.InitAsync(db);
-
-                await DeliveriesMock.InitAsync(db);
-
-                await ProductModelsMock.InitAsync(db);
-                await ProductArticlesMock.InitAsync(db);
-                await ProductsMock.InitAsync(db);
-
-                await OrdersMock.InitAsync(db);
-                await RolesMock.InitAsync(roleManager);
-                await UsersMock.InitAsync(db, userManager);
-            }
+            var results = mocks.Select(async mock => await mock.InitAsync(cancellationToken));
+            return await new ValueTask<bool>(results.All(result => result.Result == true));
         }
     }
 }

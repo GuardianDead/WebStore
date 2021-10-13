@@ -12,7 +12,7 @@ namespace WebStore.Data.Entities
         public Guid Id { get; private init; }
         [Required]
         [DisplayName("Модель")]
-        public virtual ProductModel Model { get; set; }
+        public ProductModel Model { get; set; }
         [Required]
         [DisplayName("Размер")]
         public int Size { get; set; }
@@ -26,7 +26,7 @@ namespace WebStore.Data.Entities
         public ProductArticle()
         {
         }
-        public ProductArticle(ProductModel productModel, int size, string color,int count)
+        public ProductArticle(ProductModel productModel, int size, string color, int count)
         {
             Id = Guid.NewGuid();
             Model = productModel;

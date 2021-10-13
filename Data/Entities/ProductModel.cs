@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using WebStore.Data.Identity;
 
 namespace WebStore.Data.Entities
 {
@@ -12,7 +13,10 @@ namespace WebStore.Data.Entities
         [Key]
         [Required]
         [DisplayName("Номер")]
-        public Guid Id { get; set; }
+        public Guid Id { get; private init; }
+        [Required]
+        [DisplayName("Подкатегория")]
+        public Subcategory Subcategory { get; set; }
         [Required]
         [DisplayName("Название")]
         public string Name { get; set; }
@@ -20,20 +24,17 @@ namespace WebStore.Data.Entities
         [DisplayName("Цена")]
         public decimal Price { get; set; }
         [Required]
-        [DisplayName("Гарантия (дни)")]
+        [DisplayName("Гарантия в днях")]
         public int Guarantee { get; set; }
         [Required]
         [DisplayName("Страна производитель")]
         public string СountryManufacturer { get; set; }
         [Required]
-        [DisplayName("Муж")]
+        [DisplayName("Мужское")]
         public bool IsMasculine { get; set; }
         [Required]
         [DisplayName("Бренд")]
         public string Brand { get; set; }
-        [Required]
-        [DisplayName("Подкатегория")]
-        public virtual ProductSubcategory Subcategory { get; set; }
         [Required]
         [DisplayName("Главная фотография")]
         public byte[] MainPhoto { get; set; }
@@ -44,18 +45,23 @@ namespace WebStore.Data.Entities
         [Required]
         [JsonField]
         [DisplayName("Материалы")]
-        public List<string> Materials { get; set; }
+        public IEnumerable<string> Materials { get; set; }
         [Required]
         [JsonField]
         [DisplayName("Фотографии")]
-        public List<byte[]> Photos { get; set; }
+        public IEnumerable<byte[]> Photos { get; set; }
+        [Required]
+        [DisplayName("Время создания")]
+        [DataType(DataType.DateTime)]
+        public DateTime DateTimeCreation { get; set; }
 
         public ProductModel()
         {
         }
         public ProductModel(string name, decimal price, int guarantee, string countryManufacturer,
-            bool isMasculine, string brand, ProductSubcategory productSubcategory, byte[] mainPhoto,
-            Dictionary<string,string> features, List<string> materials, List<byte[]> photos)
+            bool isMasculine, string brand, Subcategory productSubcategory, byte[] mainPhoto,
+            Dictionary<string, string> features, IEnumerable<string> materials, IEnumerable<byte[]> photos,
+            DateTime dateTimeCreation)
         {
             Id = Guid.NewGuid();
             Name = name;
@@ -69,6 +75,7 @@ namespace WebStore.Data.Entities
             Features = features;
             Materials = materials;
             Photos = photos;
+            DateTimeCreation = dateTimeCreation;
         }
     }
 }

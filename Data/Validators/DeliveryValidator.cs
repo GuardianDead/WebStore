@@ -13,9 +13,9 @@ namespace WebStore.Validations.Entities
                 .NotNull().NotEmpty().WithMessage("Метод доставки не может быть пустым")
                 .IsInEnum().WithMessage("Способ доставки обязан быть типа 'DeliveryMethodType'");
             RuleFor(i => i.DeliveryCost)
-                .GreaterThanOrEqualTo(0).WithMessage("Цена доставки должна быть больше 0");
+                .GreaterThanOrEqualTo(0).WithMessage("Цена доставки должна быть больше или равно 0");
             RuleFor(i => i.ApproximateDeliveryTime)
-                .GreaterThanOrEqualTo(0).WithMessage("Приблизительное время доставки должна быть больше 0");
+                .GreaterThanOrEqualTo(0).WithMessage("Приблизительное время доставки должна быть больше или равно 0");
         }
     }
 }
