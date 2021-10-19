@@ -2,7 +2,7 @@
 using Scrutor;
 using WebStore.Data;
 
-namespace WebStore.Domain.Configurations
+namespace WebStore.Configurations
 {
     public static class MockDependenciesConfiguration
     {

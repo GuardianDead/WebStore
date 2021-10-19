@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using FluentValidation.AspNetCore;
+﻿using FluentValidation.AspNetCore;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace WebStore.Domain.Configurations
+namespace WebStore.Configurations
 {
     public static class ValidationConfiguration
     {

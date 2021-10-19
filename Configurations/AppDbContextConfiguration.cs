@@ -8,7 +8,7 @@ using WebStore.Data.Identity;
 using WebStore.Services.RoleService;
 using WebStore.Services.UserService;
 
-namespace WebStore.Domain.Configurations
+namespace WebStore.Configurations
 {
     public static class AppDbContextConfiguration
     {

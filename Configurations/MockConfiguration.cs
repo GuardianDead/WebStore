@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using WebStore.Data;
 
-namespace WebStore.Domain.Configurations
+namespace WebStore.Configurations
 {
     public static class MockConfiguration
     {
