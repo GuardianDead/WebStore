@@ -1,17 +1,37 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <Header />
-    </div>
+<div class="warrper">
 
-    <div class="main">
-        <div class="content px-4">
-            @Body
-        </div>
-    </div>
-    
-    <div class="footer">
-        <Footer />
-    </div>
+    <div class="dark-overlay" onclick="closeNav()"></div> <!-- show -->
+    <nav id="mySidenav" class="sidenav">
+        <!-- scroling -->
+        <a class="closebtn" onclick="closeNav()" aria-label="Закрыть боковое меню категорий">&times;</a>
+        <ul class="sidenav__navbar-mobile">
+            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с категорией Обувь"><h3>Обувь</h3></a><a class="link__arrow" href="#" onclick="openSubcaregoriesNav()" aria-label="Перейти в раздел подкатегорий категории Обувь"><img src="./icons/sidebar/White-right-arrow-category.svg" alt="Иконка белой стрелки вправо" title="Перейти в раздел подкатегорий категории Обувь"></a></li>
+            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с категорией Низ"><h3>Низ</h3></a><a class="link__arrow" href="#" onclick="openSubcaregoriesNav()" aria-label="Перейти в раздел подкатегорий категории Обувь"><img src="./icons/sidebar/White-right-arrow-category.svg" alt="Иконка белой стрелки вправо" title="Перейти в раздел подкатегорий категории Низ"></a></li>
+            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с категорией Верх"><h3>Верх</h3></a><a class="link__arrow" href="#" onclick="openSubcaregoriesNav()" aria-label="Перейти в раздел подкатегорий категории Обувь"><img src="./icons/sidebar/White-right-arrow-category.svg" alt="Иконка белой стрелки вправо" title="Перейти в раздел подкатегорий категории Верх"></a></li>
+            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с категорией Головные уборы"><h3>Головные уборы</h3></a><a class="link__arrow" href="#" onclick="openSubcaregoriesNav()" aria-label="Перейти в раздел подкатегорий категории Обувь"><img src="./icons/sidebar/White-right-arrow-category.svg" alt="Иконка белой стрелки вправо" title="Перейти в раздел подкатегорий категории Головные уборы"></a></li>
+        </ul>
+    </nav>
+    <nav id="mySidenav-subcaregories" class="sidenav">
+        <!-- show -->
+        <a class="returnbtn" onclick="closeSubcaregoriesNav()" aria-label="Закрыть боковое меню подкатегорий"><img src="./icons/sidebar/White-right-arrow.svg" alt="Иконка белой стрелки вправо" title="Вернутся назад"></a> <!-- scroling -->
+        <ul class="sidenav__navbar-mobile">
+            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с подкатегорией Кроссовки"><h3>Кроссовки</h3></a></li>
+            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с подкатегорией Макасины"><h3>Макасины</h3></a></li>
+            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с подкатегорией Туфли"><h3>Туфли</h3></a></li>
+            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с подкатегорией Тапки"><h3>Тапки</h3></a></li>
+            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с подкатегорией Каблуки"><h3>Каблуки</h3></a></li>
+            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с подкатегорией Ботинки"><h3>Ботинки</h3></a></li>
+        </ul>
+    </nav>
+
+    <Header />
+
+    <main class="content">
+        @Body
+    </main>
+
+    <Footer />
+
 </div>

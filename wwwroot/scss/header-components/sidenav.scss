@@ -1,0 +1,117 @@
+.sidenav{
+   display: none;
+}
+@media (max-width: 700px){
+   .sidenav {
+      position: fixed;
+      top: 0;
+      right: 0;
+      display: block;
+      z-index: 12;
+      padding-top: 70px;
+      height: 100%;
+      width: 0;
+      background-color: black;
+      overflow-x: hidden;
+      transition: 0.5s; 
+
+      &__navbar-mobile {
+         margin: 0;
+         margin-top: 0em;
+         margin-right: 1.7em;
+      }
+   }
+   .sidenav.scroling{
+      .closebtn{
+         top: 15px;
+         padding: 6px 6px 0px 0px;
+      }
+   }
+   .navbar-mobile {
+      &__link {
+         display: flex;
+         justify-content: right;
+         align-items: center;
+
+         a{
+            display: block;
+            padding: 20px 60px 8px 8px;
+            font-size: 25px;
+            text-align: right;
+            text-decoration: none;
+            color: white;
+            transition: 0.3s;
+         }
+      }
+   }
+   .sidenav .closebtn {
+      position: absolute;
+      top: 23px;
+      right: 23px;
+      margin: 0;
+      padding: 11px 6px 0px 0px;
+      font-size: 36px;
+      color: white;
+   }
+   .sidenav {
+		&__navbar-mobile {
+         margin: 0;
+         margin-top: 0em;
+         margin-right: 1.7em;
+      }
+   }
+   .returnbtn{
+      position: absolute;
+      top: 45px;
+      right: 30px;
+      margin: 0;
+      color: white;
+
+      img{
+         width: 1.6em;
+         height: 1.6em;
+      }
+   }
+   .returnbtn.scroling{
+      top: 30px;
+   }
+   .navbar-mobile{
+      &__link {
+         display: flex;
+         justify-content: right;
+         align-items: center;
+         padding-top: 1.3em;
+
+         a{
+            padding: 0;
+            padding-right: 0.3em;
+            
+            h3{
+               position: relative;
+               bottom: 0.15em;
+               margin: 0;
+               white-space: nowrap;
+            }
+         }
+      }
+   }
+   .link{
+      &__arrow{
+         display: inline;
+         padding: 0;
+         
+         img{
+            width: 1.3em;
+            height: 1.3em;
+         }
+      }
+   }
+}
+@media screen and (max-height: 450px) {
+   .sidenav {
+      padding-top: 15px;
+   }
+   .sidenav a {
+      font-size: 18px;
+   }
+}

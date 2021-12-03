@@ -1,0 +1,273 @@
+﻿@import "footer-components/spoiler.scss";
+
+.footer {
+    max-height: 25em;
+    background-color: rgb( 17, 17, 17);
+
+    &__container {
+        display: grid;
+        grid-template-rows: 1fr 0.2fr;
+        gap: 1.5em;
+        padding: 1.5em 2em 0.5em;
+    }
+
+    &__block-links {
+        display: grid;
+        grid-template-columns: 0.4fr 0.4fr 0.6fr 0.8fr 1fr;
+        gap: 1em;
+        padding-bottom: 2em;
+        border-bottom: 1px solid rgb(44, 44, 44);
+    }
+
+    &__block-confidentials {
+        display: grid;
+        grid-template-columns: 0.1fr 1fr;
+        align-items: center;
+        justify-items: center;
+    }
+}
+
+.block-links {
+    &__help {
+        display: grid;
+        grid-template-rows: min-content 1fr;
+    }
+
+    &__about {
+        display: grid;
+        grid-template-rows: min-content 1fr;
+    }
+
+    &__confidentials {
+        display: grid;
+        grid-template-rows: min-content 1fr;
+    }
+
+    &__contact {
+        display: grid;
+        grid-template-rows: min-content 1fr;
+    }
+
+    &__media {
+    }
+}
+
+.help {
+    &__title {
+        margin-bottom: 0.4em;
+        color: white;
+    }
+
+    &__links-list {
+        align-items: flex-start;
+        justify-items: flex-start;
+        padding: 0;
+        margin: 0;
+
+        li {
+            margin-top: 0.4em;
+        }
+    }
+}
+
+.about {
+    &__title {
+        margin-bottom: 0.4em;
+        color: white;
+    }
+
+    &__links-list {
+        align-items: flex-start;
+        justify-items: flex-start;
+        padding: 0;
+        margin: 0;
+
+        li {
+            margin-top: 0.4em;
+        }
+    }
+}
+
+.contact {
+    &__title {
+        margin-bottom: 0.4em;
+        color: white;
+    }
+
+    &__info-list {
+        align-items: flex-start;
+        justify-items: flex-start;
+        padding: 0;
+        margin: 0;
+
+        li {
+            margin-top: 0.4em;
+        }
+    }
+}
+
+.media {
+    &__links-list {
+        margin: 0;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.7em;
+        justify-self: flex-end;
+        align-items: flex-end;
+    }
+}
+
+.confidentials {
+    &__title {
+        margin-bottom: 0.4em;
+        color: white;
+    }
+
+    &__links-list {
+        align-items: flex-start;
+        justify-items: flex-start;
+        padding: 0;
+        margin: 0;
+
+        li {
+            margin-top: 0.4em;
+        }
+    }
+}
+
+.info-list {
+    &__info {
+        color: gray;
+        line-height: 1.5em;
+    }
+}
+
+.links-list {
+    &__link {
+        color: gray;
+        line-height: 1.5em;
+
+        &:hover {
+            color: white;
+        }
+
+        svg {
+            height: 2.5em;
+            width: 2.5em;
+        }
+
+        svg:hover {
+            fill: white;
+        }
+    }
+}
+
+.block-confidentials {
+    &__geo {
+        display: flex;
+        justify-self: flex-start;
+        align-items: center;
+        gap: 0.2em;
+        font-size: 0.9em;
+        color: white;
+
+        img {
+            width: 1.5em;
+            height: 1.5em;
+        }
+
+        &:hover {
+            color: white;
+        }
+    }
+
+    &__initials {
+        text-align: center;
+        font-size: 0.9em;
+        color: gray;
+    }
+}
+
+.block {
+    &__spoiler {
+        display: none;
+        margin-bottom: 1em;
+    }
+}
+
+@media (max-width: 700px) {
+    .links-list {
+        &__link {
+            color: gray;
+            line-height: 1.5em;
+
+            &:hover {
+                color: gray;
+            }
+
+            &:active {
+                color: white;
+            }
+
+            svg {
+                height: 2.5em;
+                width: 2.5em;
+
+                &:hover {
+                    fill: gray;
+                }
+
+                &:active {
+                    fill: white;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 920px) {
+    .block__spoiler {
+        display: block;
+    }
+
+    .footer {
+        max-height: 40em;
+
+        &__container {
+            padding: 2em;
+        }
+
+        &__block-links {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: min-content min-content min-content min-content;
+            gap: 0em;
+            padding-bottom: 1em;
+            border-bottom: 1px solid rgb(44, 44, 44);
+        }
+    }
+
+    .about {
+        &__block {
+            display: none;
+        }
+    }
+
+    .help {
+        &__block {
+            display: none;
+        }
+    }
+
+    .contact {
+        &__block {
+            display: none;
+        }
+    }
+
+    .confidentials {
+        &__block {
+            display: none;
+        }
+    }
+}

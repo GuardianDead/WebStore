@@ -1,0 +1,36 @@
+﻿@page "/notfound"
+
+<section class="notfound">
+    <div class="notfound__container">
+        <div class="notfound__block">
+            <h1 class="notfound__http-error">404</h1>
+            <h2 class="notfound__text">Упс... данной страницы не существует</h2>
+            <div class="notfound__block-info block-info">
+                <div class="block-info__reason reason">
+                    <span class="reason__title">Возможные причины:</span>
+                    <ul class="reason__reasons-list reasons-list">
+                        <li class="reasons-list__reason">Такой страницы не существует</li>
+                        <li class="reasons-list__reason">Ошибка при указании адреса страницы</li>
+                        <li class="reasons-list__reason">Страница удалена или перемещена</li>
+                    </ul>
+                </div>
+                <div class="block-info__solution solution">
+                    <span class="solution__title">Предлагаемые решения:</span>
+                    <ul class="solution__solutions-list">
+                        <li class="solutions-list__solution">Проверьте введенный адрес</li>
+                        <li class="solutions-list__solution">Обратитесь в службу поддержки</li>
+                        <li class="solutions-list__solution">Вернуться на главную страницу</li>
+                        <li class="solutions-list__solution">Воспользоваться поиском товаров</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="notfound__block-return block-return">
+                <a class="block-return__return-on-main" href="./index.html" aria-label="Кнопка для возврата на главную страницу">Вернуться на главную</a>
+                <form class="block-return__search search" name="notfound-form">
+                    <input class="search__input" name="notfound-search-input" type="search" placeholder="Поиск товара" aria-label="Поисковик товара по имени">
+                    <button class="search__lupa" name="notfound-search-button" aria-label="Поиск товара по имени"><img src="./icons/notfound/Lupa.svg" alt="Поисковая лупа" title="Поиск"></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

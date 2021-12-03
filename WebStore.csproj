@@ -6,6 +6,48 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Pages\Shared\Layout\Footer.razor.spoiler.scss" />
+    <None Remove="Pages\Shared\Layout\Header.razor.dark-overlay.scss" />
+    <None Remove="Pages\Shared\Layout\Header.razor.sidenav.scss" />
+    <None Remove="Pages\Shared\Layout\Header.razor.subcategories.scss" />
+    <None Remove="Pages\Shared\Technical-works.razor.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Pages\Account\Authorization\Login.razor.scss" />
+    <Content Include="Pages\Account\Authorization\Register-confirm.razor.scss" />
+    <Content Include="Pages\Account\Authorization\Register-successfully.razor.scss" />
+    <Content Include="Pages\Account\Authorization\Register.razor.scss" />
+    <Content Include="Pages\Account\Cart.razor.scss" />
+    <Content Include="Pages\Account\Favorites.razor.scss" />
+    <Content Include="Pages\Account\Orders.razor.scss" />
+    <Content Include="Pages\Rules\Privacy.razor.scss" />
+    <Content Include="Pages\Rules\Use-conditions.razor.scss" />
+    <Content Include="Pages\Index.razor.Carusel.scss" />
+    <Content Include="Pages\Index.razor.Section2.scss" />
+    <Content Include="Pages\Index.razor.Section3.scss" />
+    <Content Include="Pages\Index.razor.Section4.scss" />
+    <Content Include="Pages\Index.razor.Section5.scss" />
+    <Content Include="Pages\Index.razor.Section6.scss" />
+    <Content Include="Pages\Index.razor.Section7.scss" />
+    <Content Include="Pages\Shared\Technical-works.razor.scss">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+    <None Include="wwwroot\scss\footer.scss" />
+    <None Include="wwwroot\scss\header.scss" />
+    <None Include="wwwroot\scss\imports\defultstyle.scss" />
+    <None Include="wwwroot\scss\imports\loader.scss" />
+    <None Include="wwwroot\scss\imports\scroll-to-top.scss" />
+    <None Include="wwwroot\scss\imports\scrollbar.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BuildWebCompiler" Version="1.12.405" />
     <PackageReference Include="FluentValidation" Version="10.3.3" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.3" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.3" />
@@ -29,6 +71,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Scrutor" Version="3.3.0" />
     <PackageReference Include="Scrutor.AspNetCore" Version="3.3.0" />
+    <PackageReference Include="WMBlazorSlickCarousel" Version="1.0.1" />
   </ItemGroup>
 
   <ItemGroup>

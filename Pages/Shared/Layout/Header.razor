@@ -1,1 +1,47 @@
-﻿
+﻿<header class="header">
+    <div class="container header__container">
+        <a class="logo" href="./index.html" aria-label="Лого"><img src="./icons/header/Logo.svg" alt="Лого" title="Лого"></a>
+        <nav class="navbar">
+            <ul class="navbar__categories">
+                <li class="category__link" onmouseenter="showSubcategories()"><a href="#" aria-label="Перейти в раздел товаров с категорией Обувь"><h3>Обувь</h3></a></li>
+                <li class="category__link" onmouseenter="showSubcategories()"><a href="#" aria-label="Перейти в раздел товаров с категорией Низ"><h3>Низ</h3></a></li>
+                <li class="category__link" onmouseenter="showSubcategories()"><a href="#" aria-label="Перейти в раздел товаров с категорией Вверх"><h3>Верх</h3></a></li>
+                <li class="category__link" onmouseenter="showSubcategories()"><a href="#" aria-label="Перейти в раздел товаров с категорией Головные уборы"><h3>Головные уборы</h3></a></li>
+            </ul>
+        </nav>
+        <div class="panel">
+            <form class="panel__search" method="post" name="header-form">
+                <button id="searchLupa" class="panel__search__lupa" name="header-search-input" aria-label="Поиск товара по имени"><img src="./icons/header/Lupa.svg" alt="Поисковая лупа" title="Поиск"></button>
+                <input id="searchInput" class="panel__search__input" name="header-search-button" placeholder="Поиск товара" type="search" aria-label="Поисковик товара по имени">
+            </form>
+            <a class="panel__favorites" href="#" aria-label="Перейти в каталог избранных товаров" title="Добавить в избранное">
+                <img src="./icons/header/Heart.svg" alt="Иконка избранного" title="Добавить в избранное">
+                <span class="panel__favorites__count">13</span>
+            </a>
+            <a class="panel__cart" href="#" aria-label="Перейти в каталог товаров в корзине" title="Добавить в корзину">
+                <img src="./icons/header/Cart.svg" alt="Иконка корзины" title="Добавить в корзину">
+                <span class="panel__cart__count">3</span>
+            </a>
+            @*<div class="panel__user-block">
+                    <div class="panel__user" aria-label="Войти в личный кабинет"><img src="./icons/header/User.svg" alt="Иконка пользователя" title="Войти в личный кабинет"></div>
+                    <ul class="panel__user-links">
+                        <li class="user-menu__link"><a href="#" aria-label="Перейти в заказы пользователя">Заказы<img src="./icons/header/Orders (cube).svg" alt="Иконка заказов пользователя" title="Заказы"></a></li>
+                        <li class="user-menu__link"><a href="#" aria-label="Перейти в настройки личного кабинета пользователя">Настройки<img src="./icons/header/Settings.svg" alt="Иконка настроек" title="Настройки"></a></li>
+                        <li class="user-menu__link"><a href="#" aria-label="Выйти из аккаунта">Выйти<img src="./icons/header/Exit.svg" alt="Иконка выхода пользователя из системы" title="Выход"></a></li>
+                    </ul>
+                </div>*@
+            <a class="panel__login" href="./login.html" aria-label="Авторизоваться"><img src="./icons/header/Login.svg" alt="Иконка авторизации" title="Войти"></a>
+        </div>
+        <a class="burger-menu" onclick="openNav()"><span></span></a>
+    </div>
+    <div class="subcategories" onmouseleave="hideSubcategories()">
+        <ul class="subcategories__list">
+            <li class="subcategory"><a href="#" aria-label="Перейти в каталог товаров с подкатегорией Кроссовки"><h3>Кроссовки</h3></a></li>
+            <li class="subcategory"><a href="#" aria-label="Перейти в каталог товаров с подкатегорией Макасины"><h3>Макасины</h3></a></li>
+            <li class="subcategory"><a href="#" aria-label="Перейти в каталог товаров с подкатегорией Тапки"><h3>Тапки</h3></a></li>
+            <li class="subcategory"><a href="#" aria-label="Перейти в каталог товаров с подкатегорией Туфли"><h3>Туфли</h3></a></li>
+            <li class="subcategory"><a href="#" aria-label="Перейти в каталог товаров с подкатегорией Каблуки"><h3>Каблуки</h3></a></li>
+            <li class="subcategory"><a href="#" aria-label="Перейти в каталог товаров с подкатегорией Ботинки"><h3>Ботинки</h3></a></li>
+        </ul>
+    </div>
+</header>

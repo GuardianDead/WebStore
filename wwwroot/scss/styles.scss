@@ -1,0 +1,35 @@
+﻿@import "imports/defultstyle.scss";
+
+@import "imports/loader.scss";
+@import "imports/scrollbar.scss";
+@import "imports/scroll-to-top.scss";
+
+@import "header.scss";
+@import "footer.scss";
+
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.warrper {
+    min-height: 140vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.container {
+    max-width: 100em;
+    margin: 0 auto;
+}
+
+.content {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    gap: 2em;
+    margin-top: 8.5em;
+    min-height: 100vh;
+}

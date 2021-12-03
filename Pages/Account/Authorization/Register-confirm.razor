@@ -1,0 +1,28 @@
+﻿@page "/account/authorization/register-confirm"
+
+<section class="register-confirm">
+    <div class="register-confirm__container">
+        <div class="register-confirm__block">
+            <img class="register-confirm__image" src="./icons/register-confirm/Mail.svg" alt="Иконка почты">
+            <div class="register-confirm__block-text block-text">
+                <h1 class="block-text__title">Подтверждение аккаунта через почту</h1>
+                <p class="block-text__text">Мы выслали вам код подтверждения на почту kakawkawww13@mail.ru, введите его ниже для подтверждения аккаунта</p>
+            </div>
+            <form class="register-confirm__form register-confirm-form" method="post" name="register-confirm-form">
+                <input class="register-confirm-form__input" name="confirm-code-input" type="text" placeholder="Код подтверждения" autofocus aria-label="Строка для ввода кода потверждения"> <!-- invalid -->
+                <span class="register-confirm-form__input-error">Неверный код</span> <!-- show -->
+                <button class="register-confirm-form__button-submut" name="confirm-code-button-submit" type="submit">Подтвердить</button>
+                <button class="register-confirm-form__button-reset" name="confirm-code-button-reset" type="reset">Повторно отправить код</button>
+                <!-- <button class="register-confirm-form__button-reset disabled" name="confirm-code-button-reset" type="reset">Повторно код можно будет отправить через 15 секунд</button> -->
+            </form>
+            <div class="register-confirm__block-disclaimer block-disclaimer">
+                <span class="block-disclaimer__title">Если вы не получили письмо, попробуйте сделать следующее:</span>
+                <ul class="block-disclaimer__solutions-list solutions-list">
+                    <li class="solutions-list__solution">Убедитесь что указали правильный почтовый адрес</li>
+                    <li class="solutions-list__solution">Проверьте разделы "Спам" и "Корзина"</li>
+                    <li class="solutions-list__solution">Подождите несколько минут, возможно сервис работает медленно</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>

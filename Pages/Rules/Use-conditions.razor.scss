@@ -1,0 +1,25 @@
+.use-conditions {
+   width: 100%;
+
+    &__container {
+       margin: 0 auto;
+       max-width: 80em;
+    }
+    &__block {
+       padding: 3em 2em;
+       margin-top: 1em;
+       display: flex;
+       flex-direction: column;
+       gap: 1em;
+       justify-content: center;
+       align-items: left;
+    }
+    &__title {
+       font-size: 24px;
+       font-weight: 500;
+    }
+    &__date-publication {
+       font-size: 15px;
+    }
+    &__paragraph-block {}
+ }

@@ -6,29 +6,55 @@
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WebStore</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+
+    <title>Veco</title>
+    <link rel="icon" type="image/x-icon" href="./icons/logo/Dark-logo.ico">
+    <meta name="theme-color" content="black">
+
+    <meta name="Copyright" content="Veco">
+    <meta name="Author" content="Андрианов Александр Евгеньевич">
+    <meta name="Address" content="Москва, Большая Тульская улица, дом 2">
+    <meta name="description" content="Интернет-магазин Veco по перепродаже брендированной одежды">
+    <meta name="Keywords" content="veco,французкое,мода,одежда,интернет-магазин,стиль,бренды,купить">
+    <meta name="language" content="RU">
+    <meta name="Handheldfriend" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="revisit-after" content="30 days">
+    <META name="Robots" content="none"> <!-- all -->
+    <meta name="Document-state" content="Dynamic">
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- для Facebook и ВКонтакте (протокол Open Graph) -->
+    <meta property="og:locate" content="ru_RU">
+    <meta property="og:title" content="Veco" />
+    <meta property="og:description" content="Veco - Science de la mode" />
+    <meta property="og:image" content="./icons/logo/Обрезанное_светлое-removebg-preview (1).png" />
+    <meta property="og:url" content="https://veco.ru" />
+    <meta property="og:site_name" content="Veco" />
+    <!-- для Twitter -->
+    <meta name="twitter:site" content="Veco" />
+    <meta name="twitter:title" content="Veco - Science de la mode" />
+    <meta name="twitter:card" content="Veco - Science de la mode" />
+    <meta name="twitter:description" content="Интернет-магазин Veco по перепродаже брендированной одежды" />
+    <meta name="twitter:site" content="Veco" />
+
     <base href="~/" />
-    <link rel="stylesheet" href="css/bootstrap/bootstrap.min.css" />
-    <link href="css/site.css" rel="stylesheet" />
+    <link href="~/css/styles.min.css" rel="stylesheet" />
     <link href="WebStore.styles.css" rel="stylesheet" />
 </head>
 <body>
     <component type="typeof(App)" render-mode="ServerPrerendered" />
-    <div id="blazor-error-ui">
-        <environment include="Staging,Production">
-            An error has occurred. This application may no longer respond until reloaded.
-        </environment>
-        <environment include="Development">
-            An unhandled exception has occurred. See browser dev tools for details.
-        </environment>
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
-    </div>
 
     <script src="_framework/blazor.server.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

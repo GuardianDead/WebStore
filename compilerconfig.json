@@ -1,0 +1,46 @@
+﻿[
+  {
+    "outputFile": "Pages/Index.razor.css",
+    "inputFile": "Pages/Index.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Rules/Use-conditions.razor.css",
+    "inputFile": "Pages/Rules/Use-conditions.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Rules/Privacy.razor.css",
+    "inputFile": "Pages/Rules/Privacy.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Account/Orders.razor.css",
+    "inputFile": "Pages/Account/Orders.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Account/Favorites.razor.css",
+    "inputFile": "Pages/Account/Favorites.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Account/Cart.razor.css",
+    "inputFile": "Pages/Account/Cart.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Account/Authorization/Register-successfully.razor.css",
+    "inputFile": "Pages/Account/Authorization/Register-successfully.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Account/Authorization/Register-confirm.razor.css",
+    "inputFile": "Pages/Account/Authorization/Register-confirm.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Account/Authorization/Register.razor.css",
+    "inputFile": "Pages/Account/Authorization/Register.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Account/Authorization/Login.razor.css",
+    "inputFile": "Pages/Account/Authorization/Login.razor.scss"
+  },
+  {
+    "outputFile": "wwwroot/css/styles.css",
+    "inputFile": "wwwroot/scss/styles.scss"
+  }
+]

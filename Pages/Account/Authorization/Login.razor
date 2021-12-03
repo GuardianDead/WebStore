@@ -1,0 +1,38 @@
+﻿@page "/account/authorization/login"
+
+<section class="login">
+    <div class="login__container">
+        <div class="login__block">
+            <form class="login__form form" name="login-form" method="post" autocomplete="on">
+                <img class="form__logo" src="./icons/logo/SVG/Logo.svg" alt="Лого" name="login-form">
+                <span class="form__title">Вход в личный кабинет Veco</span>
+                <!-- <span class="form__error">• Такой пользователь уже зарегестрирован</span> -->
+                <!-- <input class="form__return-url-input" type="text" aria-label="Скрытый инпут для передачи адреса на котором ранее был пользователь" hidden /> -->
+                <div class="form__email-block email-block">
+                    <input id="email-input" class="email-block__input" type="email" name="login-email-input" autofocus aria-label="Строка для ввода электронный почты пользователя"> <!-- invalid -->
+                    <label id="email-label" class="email-block__label" for="email-block__input">Электронная почта</label>
+                    <!-- <span class="email-block__error">• Почта не содержит знака</span> -->
+                </div>
+                <div class="form__password-block password-block">
+                    <input id="password-input" class="password-block__input" pattern="[0-9]{6,}" name="login-password-input" type="password" aria-label="Строка для ввода пароля пользователя"> <!-- invalid -->
+                    <span id="password-control" class="password-block__control"></span>
+                    <label id="password-label" class="password-block__label" for="password-input">Пароль</label>
+                    <!-- <span class="password-block__error">• Пароль должен быть больше 6</span>
+                    <span class="password-block__error">• Пароль должен включать в себя спец. символы</span> -->
+                </div>
+                <label class="form__check-box check-box"><input class="check-box__input" name="login-remember-me-checkbox" type="checkbox" aria-label="Чек-бокс запомнить пользователя или нет"><span class="check-box__fake-input"></span>Запомнить меня</label>
+                <span class="form__disclaimer">Выполняя вход вы соглашаетесь с <a href="#" aria-label="Перейти на страницу политики конфиденциальности" title="Перейти на страницу политики конфиденциальности">Политикой конфиденциальности</a> и <a href="#" aria-label="Перейти на страницу условий использования" title="Перейти на страницу условий использования">Условиями использования</a> Veco</span>
+                <button class="form__button-submut" name="login-submit-button" type="submit" aria-label="Кнопка подтверждения данных">Войти</button>
+                <a class="form__fogot-password" href="#">Забыл пароль</a>
+                <a class="form__register" href="./register.html">Зарегистрироваться</a>
+                <div class="form__external-logins-block external-logins-block">
+                    <span class="external-logins-block__title">Войти с помощью</span>
+                    <button class="external-logins-block__button-provider" name="login-facebook-button" value="facebook" style="background-color: rgb(63,101,166); color: white;" type="submit" title="Войти с помощью Facebook" aria-label="Войти с помощью Facebook"><img src="./icons/login/Facebook.svg" alt="Иконка  с помощью Facebook" title="Войти с помощью Facebook">Facebook</button>
+                    <button class="external-logins-block__button-provider" name="login-vkontacte-button" value="vkontacte" style="background-color: rgb(76,117,163); color: white;" type="submit" title="Войти с помощью Vkontacte" aria-label="Войти с помощью Vkontacte"><img src="./icons/login/Vkontacte.svg" alt="Иконка  с помощью Vkontacte" title="Войти с помощью Vkontacte">Vkontacte</button>
+                    <button class="external-logins-block__button-provider" name="login-google-button" value="google" style="background-color: white; color: black;" type="submit" title="Войти с помощью Google" aria-label="Войти с помощью Google"><img src="./icons/login/Google.svg" alt="Иконка  с помощью Google" title="Войти с помощью Google">Google</button>
+                    <button class="external-logins-block__button-provider" name="login-twitter-button" value="twitter" style="background-color: rgb(85, 172, 238); color: white;" type="submit" title="Войти с помощью Twitter" aria-label="Войти с помощью Twitter"><img src="./icons/login/Twitter.svg" alt="Иконка  с помощью Twitter" title="Войти с помощью Twitter">Twitter</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebStore", "WebStore.csproj", "{E229C10D-D1F4-4B6C-ACE0-46BFB9A05886}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "..\Domain\Domain.csproj", "{B476F1BA-0C37-4495-9F38-6B8CB541D865}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "..\Domain\Domain.csproj", "{B476F1BA-0C37-4495-9F38-6B8CB541D865}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

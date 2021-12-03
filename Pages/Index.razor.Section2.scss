@@ -1,0 +1,34 @@
+.section2 {
+    padding: 2em 0em 0em;
+
+    &__name {
+       font-size: 1.8em;
+    }
+    &__carusel {}
+ }
+ .brands {
+    &__container {
+       padding: 0em 0em;
+    }
+ }
+ .brands-list__carusel {
+    &__brands-list {
+       display: flex;
+       justify-content: right;
+       justify-content: right;
+       gap: 4em;
+    }
+ }
+ .brand{
+    object-fit: contain;
+    padding-left: 4em;
+    height: 15em;
+    width: 15em;
+ }
+ @media (max-width: 1000px) {
+   .brands {
+      &__container {
+         padding: 0em;
+      }
+   }
+ }

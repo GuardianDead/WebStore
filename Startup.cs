@@ -24,6 +24,13 @@ namespace WebStore
             services.AddServerSideBlazor();
             services.AddAdvancedDependencyInjection();
 
+            services.AddAuthentication();
+            services.AddAuthorization();
+
+            services.AddSession();
+
+            services.AddWMBSC();
+
             services.AddAppDbContext(Configuration);
             services.AddAppValidation();
             if (Env.IsDevelopment())
@@ -49,6 +56,13 @@ namespace WebStore
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAdvancedDependencyInjection();
+
+            app.UseSession();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

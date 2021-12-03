@@ -1,3 +1,170 @@
 ﻿@page "/"
+@inherits IndexBase
 
-<h1>Hello, world!</h1>
+<section class="section1">
+    <div class="promo__container">
+        <div class="promo">
+            <div class="promo__background-img"></div>
+        </div>
+    </div>
+</section>
+<section class="section2">
+    <div class="container brands__container">
+        <h2 class="carousel__name">С нами сотрудничают</h2>
+    </div>
+    <marquee class="brands-list__carusel" direction="right" behavior="" scrollamount="15">
+        <img class="brand" src="./icons/index/section2/Air-Jordan-Jumpman.svg" alt="Иконка бренда Air-Jordan-Jumpman" title="Иконка бренда Air-Jordan-Jumpman">
+        <img class="brand" src="./icons/index/section2/Adidas.svg" alt="Иконка бренда Adidas" title="Иконка бренда Adidas">
+        <img class="brand" src="./icons/index/section2/Boss.svg" alt="Иконка бренда Boss" title="Иконка бренда Boss">
+        <img class="brand" src="./icons/index/section2/Calvin-Klein.svg" alt="Иконка бренда Calvin Klein" title="Иконка бренда Calvin Klein">
+        <img class="brand" src="./icons/index/section2/Chanel.svg" alt="Иконка бренда Chanel" title="Иконка бренда Chanel">
+        <img class="brand" src="./icons/index/section2/Dolce-Gabbana.svg" alt="Иконка бренда Dolce Gabbana" title="Иконка бренда Dolce Gabbana">
+        <img class="brand" src="./icons/index/section2/Gucci.svg" alt="Иконка бренда Gucci" title="Иконка бренда Gucci">
+        <img class="brand" src="./icons/index/section2/Lacoste.svg" alt="Иконка бренда Lacoste" title="Иконка бренда Lacoste">
+        <img class="brand" src="./icons/index/section2/Levi's.svg" alt="Иконка бренда Levi's" title="Иконка бренда Levi's">
+        <img class="brand" src="./icons/index/section2/Louis-Vuitton.svg" alt="Иконка бренда Louis Vuitton" title="Иконка бренда Louis Vuitton">
+        <img class="brand" src="./icons/index/section2/Massimo-Dutti.svg" alt="Иконка бренда Massimo Dutti" title="Иконка бренда Massimo Dutti">
+        <img class="brand" src="./icons/index/section2/Mexx.svg" alt="Иконка бренда Mexx" title="Иконка бренда Mexx">
+        <img class="brand" src="./icons/index/section2/Nike.svg" alt="Иконка бренда Nike" title="Иконка бренда Nike">
+        <img class="brand" src="./icons/index/section2/Prada.svg" alt="Иконка бренда Prada" title="Иконка бренда Prada">
+        <img class="brand" src="./icons/index/section2/Puma.svg" alt="Иконка бренда Puma" title="Иконка бренда Puma">
+        <img class="brand" src="./icons/index/section2/Tommy-Hilfiger.svg" alt="Иконка бренда Tommy Hilfiger" title="Иконка бренда Tommy Hilfiger">
+        <img class="brand" src="./icons/index/section2/Versace.svg" alt="Иконка бренда Versace" title="Иконка бренда Versace">
+        <img class="brand" src="./icons/index/section2/Zara.svg" alt="Иконка бренда Zara" title="Иконка бренда Zara">
+    </marquee>
+</section>
+<section class="section3">
+    <div class="container section3__container">
+        <div class="carousel">
+            <h2 class="carousel__name">Новинки</h2>
+            <div @onclick="async () => await theCarousel.Prev()" class="carousel__prev-arrow unselectable"><span class="unselectable">&#60;</span></div>
+            <BlazorSlickCarousel @ref="theCarousel" Configurations="configurations">
+                <BlazorSlickCarouselContent>
+                    @if (firstProducts is not null)
+                    {
+                        @foreach (var product in firstProducts)
+                        {
+                            <div class="carousel__carousel-item">
+                                <div class="carousel-item__image-block">
+                                    <a href="#"><img class="image-block__image" src="data:image/webp;base64,@Convert.ToBase64String(product.Article.Model.MainPhoto)"></a>
+                                    <!-- <a class="image-block__favorites" href="#" aria-label="Добавить товар Ботинки adidas-Terrex-Trailmaker-Mid-R.RDY-K3 в избранное"><img src="./icons/header/Heart.svg" alt="Иконка избранного" title="Добавить в избранное"></a> -->
+                                    <a class="image-block__favorites" href="#" aria-label="Удалить товар Ботинки adidas-Terrex-Trailmaker-Mid-R.RDY-K3 из избранного"><img src="./icons/header/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
+                                    <!-- <a class="image-block__cart" href="#" aria-label="Добавить товар Ботинки adidas-Terrex-Trailmaker-Mid-R.RDY-K3 в корзину"><img src="./icons/header/Cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a> -->
+                                    <a class="image-block__cart" href="#" aria-label="Удалить товар Ботинки adidas-Terrex-Trailmaker-Mid-R.RDY-K3 из корзины"><img src="./icons/header/Slash-cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины"></a>
+                                    <div class="image-block__discount-block hasDiscount">
+                                        <!-- hasDiscount -->
+                                        <span class="discount-block__amount">-10%</span>
+                                        <img class="discount-block__icon" src="./icons/index/Discount.svg" alt="Иконка скидки" title="Скидка товара">
+                                    </div>
+                                </div>
+                                <a class="carousel-item__title" href="#" aria-label="Перейти в личную карточку товара Ботинки adidas-Terrex-Trailmaker-Mid-R.RDY-K3">Ботинки Adidas Terrex Trailmaker</a>
+                                <div class="carousel-item__price-block hasDiscount">
+                                    <!-- hasDiscount -->
+                                    <span class="price-block__price">8 999 ₽</span>
+                                    <span class="price-block__discount">8 100 ₽</span>
+                                </div>
+                            </div>
+                        }
+                    }
+                </BlazorSlickCarouselContent>
+                <BlazorSlickCarouselLoading>
+                    <span>Loading...</span>
+                </BlazorSlickCarouselLoading>
+            </BlazorSlickCarousel>
+            <div @onclick="async () => await theCarousel.Next()" class="carousel__next-arrow unselectable"><span class="unselectable">&#62;</span></div>
+        </div>
+    </div>
+</section>
+<section class="section4">
+    <div class="container section4__container">
+        <div class="carousel">
+            <h2 class="carousel__name">Популярное</h2>
+
+        </div>
+    </div>
+</section>
+<section class="section5">
+    <div class="container section5__container">
+        <div class="carousel">
+            <h2 class="carousel__name">Скидки</h2>
+
+        </div>
+    </div>
+</section>
+<section class="section6">
+    <div class="container section6__container">
+        <div class="carousel">
+            <h2 class="carousel__name">Еще от Nike</h2>
+
+        </div>
+    </div>
+</section>
+<section class="section7">
+    <div class="maps__container">
+        <div style="position:relative;overflow:hidden;"><a href="https://yandex.ru/maps/org/vek_sobytiy/16483772898/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Век событий</a><a href="https://yandex.ru/maps/213/moscow/category/event_planning_agency/184108329/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:14px;">Праздничное агентство в Москве</a><a href="https://yandex.ru/maps/213/moscow/category/conference_and_seminar_organizers/184105516/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:28px;">Организация конференций и семинаров в Москве</a><iframe title="Местоположение магазина" src="https://yandex.ru/map-widget/v1/-/CCUqbMCaXD" loading="lazy" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe></div>
+    </div>
+</section>
+
+
+@code {
+    public BlazorSlickCarousel theCarousel;
+    public WMBSCInitialSettings configurations;
+
+    protected override void OnInitialized()
+    {
+        // <= 825px screen
+        WMBSCSettings breakpoint825Settings = new WMBSCSettings
+        {
+            dotsClass = "carousel__dots",
+            arrows = false,
+            dots = true,
+            waitForAnimate = false,
+            slidesToScroll = 1,
+            touchThreshold = 20,
+            centerMode = true,
+            slidesToShow = 2,
+        };
+        WMBSCResponsiveSettings breakpoint825Responsive = new WMBSCResponsiveSettings
+        {
+            breakpoint = 825,
+            settings = breakpoint825Settings
+        };
+
+        // <= 500px screen
+        WMBSCSettings breakpoint500Settings = new WMBSCSettings
+        {
+            dotsClass = "carousel__dots",
+            arrows = false,
+            dots = true,
+            waitForAnimate = false,
+            slidesToScroll = 1,
+            touchThreshold = 20,
+            slidesToShow = 1
+        };
+        WMBSCResponsiveSettings breakpoint500Responsive = new WMBSCResponsiveSettings
+        {
+            breakpoint = 500,
+            settings = breakpoint500Settings
+        };
+
+        // add responsivity
+        List<WMBSCResponsiveSettings> responsiveSettingsList = new List<WMBSCResponsiveSettings>()
+        {
+            breakpoint825Responsive,
+            breakpoint500Responsive
+        };
+
+        configurations = new WMBSCInitialSettings
+        {
+            dotsClass = "carousel__dots",
+            arrows = false,
+            dots = true,
+            waitForAnimate = false,
+            slidesToShow = 3,
+            slidesToScroll = 1,
+            touchThreshold = 20,
+            centerMode = true,
+            responsive = responsiveSettingsList,
+        };
+    }
+}

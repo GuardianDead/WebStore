@@ -1,0 +1,28 @@
+.section1 {
+}
+.promo {
+    background-color: rgb(3,3,4);
+
+    &__background-img {
+        width: 100vw;
+        height: 100vh;
+        background-color: rgb(3,3,4);
+        background: url("/images/index/section1/Girl.webp") center/cover no-repeat fixed;
+    }
+}
+@media (max-width: 1050px) {
+   .promo {
+      background-color: rgb(3,3,4);
+      &__background-img {
+         background: url("/images/index/section1/GirlPhone.webp") center/contain no-repeat fixed;
+      }
+   }
+}
+@media (max-width: 600px) {
+   .promo {
+      background-color: rgb(3,3,4);
+      &__background-img {
+         background: url("/images/index/section1/GirlPhone1.webp") center/contain no-repeat fixed;
+      }
+   }
+}

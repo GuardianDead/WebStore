@@ -1,0 +1,50 @@
+.spoiler {
+    &__title {
+      position: relative;
+      margin: 0;
+      margin-bottom: 0.4em;
+      padding-left: 25px;
+      cursor: pointer;
+      color: white;
+
+      &::before,&::after{
+         content: '';
+         position: absolute;
+         top: 8px;
+         width: 10px;
+         height: 2px;
+         background-color: white;
+      }
+      &::before{
+         left: 0;
+         transform: rotate(40deg);
+      }
+      &::after{
+         left: 7.5px;
+         transform: rotate(-40deg);
+      }
+   }
+   &__content {
+      display: none;
+   }
+}
+.spoiler__title.active{
+   margin: 0;
+
+   &::before{
+      transform: rotate(-40deg);
+   }
+   &::after{
+      transform: rotate(40deg);
+   }
+}
+@media (max-width: 1000px) {
+   .footer{
+      &__block-links{
+         padding-bottom: 1em;
+      }
+      &__container{
+         gap: 1em;
+      }
+   }
+}

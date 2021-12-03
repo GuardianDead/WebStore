@@ -1,0 +1,31 @@
+.section7 {
+    padding: 2em 0em 0em;
+}
+.maps {
+		&__container {
+         iframe{
+            padding: 0;
+            margin: 0;
+            width: 100vw;
+            height: 60vh;
+         }
+      }
+}
+@media (max-width: 1500px) {
+   .maps {
+		&__container {
+         iframe{
+            height: 50vh;
+         }
+      }
+   }
+}
+@media (max-width: 1000px) {
+   .maps {
+		&__container {
+         iframe{
+            height: 50vh;
+         }
+      }
+   }
+}
