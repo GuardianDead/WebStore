@@ -28,6 +28,7 @@ namespace WebStore
             services.AddAuthorization();
 
             services.AddSession();
+            services.AddProtectedBrowserStorage();
 
             services.AddWMBSC();
 
