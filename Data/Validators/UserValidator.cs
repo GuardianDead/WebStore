@@ -40,7 +40,7 @@ namespace WebStore.Validators.Identity
                     .ExclusiveBetween(7, 15).WithMessage("Номер телефона должен быть в диапазоне от 7 до 15"));
             RuleFor(i => i.Email)
                 .NotNull().NotEmpty().WithMessage("Электронная почта не может быть пуста")
-                .EmailAddress()
+                .EmailAddress().WithMessage("Почта введена неверно")
                 .ChildRules(i => i.RuleFor(i => i.Length)
                     .GreaterThanOrEqualTo(6).WithMessage("Длина электронный почты должна быть минимум 6"));
             RuleFor(i => i.UserName)
