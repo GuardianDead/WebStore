@@ -47,7 +47,6 @@ namespace WebStore.Data.Identity
         [DisplayName("Электронная почта")]
         [DataType(DataType.EmailAddress)]
         public override string Email { get; set; }
-
         public User()
         {
         }

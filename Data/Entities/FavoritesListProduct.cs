@@ -12,17 +12,13 @@ namespace WebStore.Data.Entities
         [Required]
         [DisplayName("Товар")]
         public ProductArticle ProductArticle { get; set; }
-        [Required]
-        [DisplayName("Количество")]
-        public int Count { get; set; }
 
         public FavoritesListProduct()
         {
         }
-        public FavoritesListProduct(ProductArticle productArticle, int count)
+        public FavoritesListProduct(ProductArticle productArticle)
         {
             ProductArticle = productArticle;
-            Count = count;
         }
     }
 }
