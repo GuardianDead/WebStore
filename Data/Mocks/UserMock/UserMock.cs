@@ -46,12 +46,12 @@ namespace WebStore.Data.Mocks.UserMock
                 new User("Александр","Андрианов","Евгеньевич",new OrderHistory(orders.Take(1)),
                 new FavoritesList(Enumerable.Empty<FavoritesListProduct>()),
                 new Cart(Enumerable.Empty<CartProduct>()),
-                "kakawkawww13@mail.ru","21081990wwwWWW",DateTime.Now,79157675803),
+                "kakawkawww13@mail.ru","21081990wwwWWW",DateTime.Now,"79157675803"),
 
                 new User("Роман","Тарасов","Юрьевич",new OrderHistory(orders.Skip(1).Take(2)),
                 new FavoritesList(Enumerable.Empty<FavoritesListProduct>()),
                 new Cart(Enumerable.Empty<CartProduct>()),
-                "kakawkawww17@mail.ru","21081990wwwWWW",DateTime.Now,79157675803),
+                "kakawkawww17@mail.ru","21081990wwwWWW",DateTime.Now,"79157675803"),
             };
 
             users.Select(async user => await userValidator.ValidateAndThrowAsync(user, cancellationToken));

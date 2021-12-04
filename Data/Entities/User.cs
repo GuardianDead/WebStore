@@ -47,16 +47,17 @@ namespace WebStore.Data.Identity
         [DisplayName("Электронная почта")]
         [DataType(DataType.EmailAddress)]
         public override string Email { get; set; }
+
         public User()
         {
         }
         public User(string firstname, string surname, string lastname,
             OrderHistory orderHistory, FavoritesList listFavourites,
             Cart cart, string email, string password,
-            DateTime dateTimeCreation, long phoneNumber)
+            DateTime dateTimeCreation, string phoneNumber)
         {
             this.UserName = email.Substring(0, email.IndexOf('@'));
-            this.PhoneNumber = phoneNumber.ToString();
+            this.PhoneNumber = phoneNumber;
             this.Email = email;
             Firstname = firstname;
             Surname = surname;

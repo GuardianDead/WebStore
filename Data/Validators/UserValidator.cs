@@ -34,7 +34,7 @@ namespace WebStore.Validators.Identity
             RuleFor(i => i.Password)
                 .NotNull().NotEmpty().WithMessage("Пароль не может быть пустым")
                 .ChildRules(i => i.RuleFor(i => i.Length)
-                                    .GreaterThanOrEqualTo(6).WithMessage("Пароль должен быть больше 6 символов"));
+                    .GreaterThanOrEqualTo(6).WithMessage("Пароль должен быть больше 6 символов"));
             RuleFor(i => i.PhoneNumber)
                 .NotNull().WithMessage("Номер телефона не может быть неопределен")
                 .ChildRules(i => i.RuleFor(i => i.Length)
