@@ -58,7 +58,7 @@ namespace WebStore.Data.Mocks.UserMock
                     cart: new Cart(Enumerable.Empty<CartProduct>()),
                     email: "kakawkawww17@mail.ru",
                     dateTimeCreation: DateTime.Now,
-                    dateOfBirth: new DateTime(2002, 11, 12),
+                    dateOfBirth: new DateTime(2002, 11, 11),
                     gender: UserGenderType.Man,
                     phoneNumber: "79157675803"
                 );
