@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using WebStore.Domain;
+using WebStore.Domain.Types;
 
 namespace WebStore.Data.Entities
 {
@@ -26,34 +26,42 @@ namespace WebStore.Data.Entities
         public string PhoneNumber { get; set; }
         [Required]
         [DisplayName("Способ оплаты")]
-        public OrderPaymentMethodType OrderPaymentMethodType { get; set; }
+        public OrderPaymentMethodType OrderPaymentMethod { get; set; }
         [Required]
         [DisplayName("Время создания")]
         [DataType(DataType.DateTime)]
         public DateTime DateTimeCreation { get; set; }
         [Required]
         [DisplayName("Статус")]
-        public OrderStatusType OrderStatusType { get; set; }
+        public OrderStatusType OrderStatus { get; set; }
         [Required]
         [DisplayName("Сумма")]
-        public decimal SummaryCost { get; set; }
+        public decimal TotalCost { get; set; }
+        [Required]
+        [DisplayName("Трек номер")]
+        public string TrackNumber { get; set; }
+        [Required]
+        [DisplayName("Электронная почта")]
+        public string Email { get; set; }
 
         public Order()
         {
         }
         public Order(IEnumerable<Product> products, Delivery delivery,
-            OrderPaymentMethodType paymentMethodType, DateTime dateTimeCreation,
-            OrderStatusType statusType, Address address, decimal summaryCost,
-            long phoneNumber)
+            OrderPaymentMethodType orderPaymentMethodType, DateTime dateTimeCreation,
+            OrderStatusType orderStatusType, Address address, decimal totalCost,
+            string phoneNumber, string trackNumber, string email)
         {
             Products = products;
             Delivery = delivery;
-            OrderPaymentMethodType = paymentMethodType;
+            OrderPaymentMethod = orderPaymentMethodType;
             DateTimeCreation = dateTimeCreation;
-            OrderStatusType = statusType;
+            OrderStatus = orderStatusType;
             Address = address;
-            SummaryCost = summaryCost;
-            PhoneNumber = phoneNumber.ToString();
+            TotalCost = totalCost;
+            TrackNumber = trackNumber;
+            PhoneNumber = phoneNumber;
+            Email = email;
         }
     }
 }

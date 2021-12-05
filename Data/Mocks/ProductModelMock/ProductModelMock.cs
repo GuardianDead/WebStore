@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,222 +7,284 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using WebStore.Data.Entities;
-using WebStore.Data.Repositories;
-using WebStore.Data.Repositories.AppIdentityUserRepository;
-using WebStore.Data.Repositories.ProductModelRepository;
+using WebStore.Domain.Types;
 
 namespace WebStore.Data.Mocks.ProductModelMock
 {
     public class ProductModelMock : IProductModelMock
     {
-        private readonly IProductModelRepository productModelRepository;
-        private readonly ISubcategoryRepository subcategoryRepository;
+        private readonly AppDbContext db;
         private readonly IValidator<ProductModel> productModelValidator;
-        private readonly IUserRepository userRepository;
 
-        public ProductModelMock(IProductModelRepository productModelRepository, ISubcategoryRepository subcategoryRepository,
-            IValidator<ProductModel> productModelValidator, IUserRepository userRepository)
+        public ProductModelMock(AppDbContext db, IValidator<ProductModel> productModelValidator)
         {
-            this.productModelRepository = productModelRepository;
-            this.subcategoryRepository = subcategoryRepository;
+            this.db = db;
             this.productModelValidator = productModelValidator;
-            this.userRepository = userRepository;
         }
 
         public async ValueTask<bool> InitAsync(CancellationToken cancellationToken = default)
         {
-            if (await productModelRepository.AnyAsync(cancellationToken))
-            {
-                return await new ValueTask<bool>(true);
-            }
+            if (await db.ProductModels.AnyAsync(cancellationToken))
+                return true;
 
             var subcategoriesNames = new Subcategory[]
             {
-                await subcategoryRepository.GetAsync(i => i.Name == "Кроссовки",false,cancellationToken),
-                await subcategoryRepository.GetAsync(i => i.Name == "Ботинки",false,cancellationToken),
-                await subcategoryRepository.GetAsync(i => i.Name == "Джинсы",false,cancellationToken),
-                await subcategoryRepository.GetAsync(i => i.Name == "Брюки",false,cancellationToken),
-                await subcategoryRepository.GetAsync(i => i.Name == "Куртки",false,cancellationToken),
-                await subcategoryRepository.GetAsync(i => i.Name == "Пальто",false,cancellationToken),
-                await subcategoryRepository.GetAsync(i => i.Name == "Кепки",false,cancellationToken),
-                await subcategoryRepository.GetAsync(i => i.Name == "Шляпы",false,cancellationToken),
+                await db.Subcategories.SingleAsync(i => i.Name == "Кроссовки",cancellationToken),
+                await db.Subcategories.SingleAsync(i => i.Name == "Ботинки",cancellationToken),
+                await db.Subcategories.SingleAsync(i => i.Name == "Джинсы",cancellationToken),
+                await db.Subcategories.SingleAsync(i => i.Name == "Брюки",cancellationToken),
+                await db.Subcategories.SingleAsync(i => i.Name == "Куртки",cancellationToken),
+                await db.Subcategories.SingleAsync(i => i.Name == "Пальто",cancellationToken),
+                await db.Subcategories.SingleAsync(i => i.Name == "Кепки",cancellationToken),
+                await db.Subcategories.SingleAsync(i => i.Name == "Шляпы",cancellationToken),
             };
 
-            var productModels = subcategoriesNames.Select(subcategory => subcategory switch
+            var productModelsMainPhotos = new List<byte[]>()
+            {
+                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\NIKE Air Zoom Pegasus.jfif",cancellationToken),
+                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K.jpg",cancellationToken),
+                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Джинсы Levi's 514™ Straight (Big & Tall).jfif",cancellationToken),
+                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Брюки KORPO COLLEZIONI.png",cancellationToken),
+                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Зимняя куртка мужская SHARK FORCE 21013.jfif",cancellationToken),
+                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Пальто Tom Farr.jfif",cancellationToken),
+                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Кепка мужская Denkor Восьмиклинка-Хулиганка.jfif",cancellationToken),
+                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Шляпа ARMANI.jfif",cancellationToken),
+            };
+            var productModelsPhotos = new List<List<byte[]>>()
+            {
+                new List<byte[]>()
+                {
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\NIKE Air Zoom Pegasus.jfif", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\NIKE Air Zoom Pegasus1.jfif", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\NIKE Air Zoom Pegasus2.jfif", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\NIKE Air Zoom Pegasus3.jfif", cancellationToken),
+                },
+                new List<byte[]>()
+                {
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K.jpg", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K1.jpg", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K2.jpg", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K3.jpg", cancellationToken),
+                },
+                new List<byte[]>()
+                {
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Джинсы Levi's 514™ Straight (Big & Tall).jfif", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Джинсы Levi's 514™ Straight (Big & Tall)1.jfif", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Джинсы Levi's 514™ Straight (Big & Tall)2.jfif", cancellationToken),
+                },
+                new List<byte[]>()
+                {
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Брюки KORPO COLLEZIONI.png", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Брюки KORPO COLLEZIONI1.png", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Брюки KORPO COLLEZIONI2.png", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Брюки KORPO COLLEZIONI3.png", cancellationToken),
+                },
+                new List<byte[]>()
+                {
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Зимняя куртка мужская SHARK FORCE 21013.jfif", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Зимняя куртка мужская SHARK FORCE 210131.jfif", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Зимняя куртка мужская SHARK FORCE 210132.jfif", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Зимняя куртка мужская SHARK FORCE 210133.jfif", cancellationToken),
+                },
+                new List<byte[]>()
+                {
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Пальто Tom Farr.jfif", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Пальто Tom Farr1.jfif", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Пальто Tom Farr2.jfif", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Пальто Tom Farr3.jfif", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Пальто Tom Farr4.jfif", cancellationToken),
+                },
+                new List<byte[]>()
+                {
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Кепка мужская Denkor Восьмиклинка-Хулиганка.jfif", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Кепка мужская Denkor Восьмиклинка-Хулиганка1.jfif", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Кепка мужская Denkor Восьмиклинка-Хулиганка2.jfif", cancellationToken),
+                },
+                new List<byte[]>()
+                {
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Шляпа ARMANI.jfif", cancellationToken),
+                    await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Шляпа ARMANI1.jfif", cancellationToken),
+                },
+            };
+            IEnumerable<ProductModel> productModels = subcategoriesNames.Select(subcategory => subcategory switch
             {
                 #region Товар1 Кроссовки Nike
-                Subcategory { Name: "Кроссовки" } => new ProductModel("Кроссовки Nike Air Zoom Pegasus", 9990, 365,
-                  "США", true, "Nike", subcategory,
-                  File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\NIKE Air Zoom Pegasus.jfif"),
-                  new Dictionary<string, string>()
-                  {
-                       { "Назначение","бег" },
-                       { "Застежка","шнуровка" },
-                  }
-                  , new List<string>()
-                  {
-                       "Текстиль",
-                  }
-                  , new List<byte[]>()
-                  {
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\NIKE Air Zoom Pegasus.jfif"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\NIKE Air Zoom Pegasus1.jfif"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\NIKE Air Zoom Pegasus2.jfif"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\NIKE Air Zoom Pegasus3.jfif"),
-                  }, DateTime.Now),
+                Subcategory { Name: "Кроссовки" } => new ProductModel(
+                     name: "Кроссовки Nike Air Zoom Pegasus",
+                     price: 9990,
+                     guarantee: 365,
+                     countryManufacturer: "США",
+                     userGenderType: UserGenderType.Man,
+                     brand: "Nike",
+                     productSubcategory: subcategory,
+                     mainPhoto: productModelsMainPhotos[0],
+                     features: new Dictionary<string, string>()
+                     {
+                        { "Назначение","бег" },
+                        { "Застежка","шнуровка" },
+                     },
+                     materials: new List<string>()
+                     {
+                        "Текстиль",
+                     },
+                     photos: productModelsPhotos[0],
+                     dateTimeCreation: new DateTime(2021, 11, 5)),
                 #endregion
                 #region Товар2 Ботинки Adidas
-                Subcategory { Name: "Ботинки" } => new ProductModel("Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K", 7399, 180,
-                    "Вьетнам", false, "Adidas", subcategory,
-                   File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K.jpg"),
-                   new Dictionary<string, string>()
-                   {
-                       { "Материал подкладки","текстиль" },
-                       { "Материал подошвы","резина" },
-                   }
-                   , new List<string>()
-                   {
-                       "Синтетика 60%",
-                       "Текстиль 40%"
-                   }
-                   , new List<byte[]>()
-                   {
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K.jpg"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K1.jpg"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K2.jpg"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K3.jpg"),
-                   }, DateTime.Now),
+                Subcategory { Name: "Ботинки" } => new ProductModel(
+                      name: "Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K",
+                      price: 7399,
+                      guarantee: 180,
+                      countryManufacturer: "Вьетнам",
+                      userGenderType: UserGenderType.Woman,
+                      brand: "Adidas",
+                      productSubcategory: subcategory,
+                      mainPhoto: productModelsMainPhotos[1],
+                      features: new Dictionary<string, string>()
+                      {
+                         { "Материал подкладки","текстиль" },
+                         { "Материал подошвы","резина" },
+                      },
+                      materials: new List<string>()
+                      {
+                         "Синтетика 60%",
+                         "Текстиль 40%"
+                      },
+                      photos: productModelsPhotos[1],
+                      dateTimeCreation: new DateTime(2021, 11, 20)),
                 #endregion
                 #region Товар3 Джинсы Levi's
-                Subcategory { Name: "Джинсы" } => new ProductModel("Джинсы Levi's 514™ Straight (Big & Tall)", 5673, 300,
-                   "США", true, "Levi's", subcategory,
-                   File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Джинсы Levi's 514™ Straight (Big & Tall).jfif"),
-                   new Dictionary<string, string>()
-                   {
-                       { "Модель","прямые" },
-                       { "Посадка","низкая" },
-                       { "Застежка","молния" },
-                       { "Передние карманы","втачные" },
-                       { "Задние карманы","накладные" },
-                   }
-                   , new List<string>()
-                   {
-                       "Хлопок 99%",
-                       "Эластан 1%"
-                   }
-                   , new List<byte[]>()
-                   {
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Джинсы Levi's 514™ Straight (Big & Tall).jfif"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Джинсы Levi's 514™ Straight (Big & Tall)1.jfif"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Джинсы Levi's 514™ Straight (Big & Tall)2.jfif"),
-                   }, DateTime.Now),
+                Subcategory { Name: "Джинсы" } => new ProductModel(
+                      name: "Джинсы Levi's 514™ Straight (Big & Tall)",
+                      price: 5673,
+                      guarantee: 300,
+                      countryManufacturer: "США",
+                      userGenderType: UserGenderType.Woman,
+                      brand: "Levi's",
+                      productSubcategory: subcategory,
+                      mainPhoto: productModelsMainPhotos[2],
+                      features: new Dictionary<string, string>()
+                      {
+                         { "Модель","прямые" },
+                         { "Посадка","низкая" },
+                         { "Застежка","молния" },
+                         { "Передние карманы","втачные" },
+                         { "Задние карманы","накладные" },
+                      },
+                      materials: new List<string>()
+                      {
+                         "Хлопок 99%",
+                         "Эластан 1%"
+                      },
+                      photos: productModelsPhotos[2],
+                      dateTimeCreation: new DateTime(2021, 10, 13)),
                 #endregion
                 #region Товар4 Брюки KORPO
-                Subcategory { Name: "Брюки" } => new ProductModel("Брюки KORPO COLLEZIONI", 6560, 600,
-                   "Италия", false, "KORPO", subcategory,
-                   File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Брюки KORPO COLLEZIONI.png"),
-                   new Dictionary<string, string>()
-                   {
-                       { "Стиль","Casual, Классический" },
-                       { "Расцветка","Однотонная" },
-                       { "Форма","Прямая" },
-                   }
-                   , new List<string>()
-                   {
-                       "Шерсть 60%",
-                       "Полиэстер 38%",
-                       "Эластан 2%",
-                   }
-                   , new List<byte[]>()
-                   {
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Брюки KORPO COLLEZIONI.png"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Брюки KORPO COLLEZIONI1.png"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Брюки KORPO COLLEZIONI2.png"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Брюки KORPO COLLEZIONI3.png"),
-                   }, DateTime.Now),
+                Subcategory { Name: "Брюки" } => new ProductModel(
+                      name: "Брюки KORPO COLLEZIONI",
+                      price: 6560,
+                      guarantee: 600,
+                      countryManufacturer: "Италия",
+                      userGenderType: UserGenderType.Woman,
+                      brand: "KORPO",
+                      productSubcategory: subcategory,
+                      mainPhoto: productModelsMainPhotos[3],
+                      features: new Dictionary<string, string>()
+                      {
+                         { "Стиль","Casual, Классический" },
+                         { "Расцветка","Однотонная" },
+                         { "Форма","Прямая" },
+                      },
+                      materials: new List<string>()
+                      {
+                         "Шерсть 60%",
+                         "Полиэстер 38%",
+                         "Эластан 2%",
+                      },
+                      photos: productModelsPhotos[3],
+                      dateTimeCreation: new DateTime(2021, 11, 3)),
                 #endregion
                 #region Товар5 Куртка SHARK FORCE
-                Subcategory { Name: "Куртки" } => new ProductModel("Зимняя куртка мужская SHARK FORCE", 19080, 365 * 3,
-                   "Пекин", true, "SHARK FORCE", subcategory,
-                   File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Зимняя куртка мужская SHARK FORCE 21013.jfif"),
-                   new Dictionary<string, string>()
-                   {
-                   }
-                   , new List<string>()
-                   {
-                   }
-                   , new List<byte[]>()
-                   {
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Зимняя куртка мужская SHARK FORCE 21013.jfif"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Зимняя куртка мужская SHARK FORCE 210131.jfif"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Зимняя куртка мужская SHARK FORCE 210132.jfif"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Зимняя куртка мужская SHARK FORCE 210133.jfif"),
-                   }, DateTime.Now),
+                Subcategory { Name: "Куртки" } => new ProductModel(
+                      name: "Зимняя куртка мужская SHARK FORCE",
+                      price: 19080,
+                      guarantee: 365 * 3,
+                      countryManufacturer: "Пекин",
+                      userGenderType: UserGenderType.Man,
+                      brand: "SHARK FORCE",
+                      productSubcategory: subcategory,
+                      mainPhoto: productModelsMainPhotos[4],
+                      features: new Dictionary<string, string>(),
+                      materials: new List<string>(),
+                      photos: productModelsPhotos[4],
+                      dateTimeCreation: new DateTime(2021, 11, 8)),
                 #endregion
                 #region Товар6 Пальто Tom Farr
-                Subcategory { Name: "Пальто" } => new ProductModel("Пальто Tom Farr", 10890, 90,
-                   "Россия", false, "Tom Farr", subcategory,
-                   File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Пальто Tom Farr.jfif"),
-                   new Dictionary<string, string>()
-                   {
-                       { "Сезон","весна, осень" },
-                       { "Застежка","отсутствует" },
-                   }
-                   , new List<string>()
-                   {
-                       "Полиэстер 70%"
-                   }
-                   , new List<byte[]>()
-                   {
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Пальто Tom Farr.jfif"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Пальто Tom Farr1.jfif"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Пальто Tom Farr2.jfif"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Пальто Tom Farr3.jfif"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Пальто Tom Farr4.jfif"),
-                   }, DateTime.Now),
+                Subcategory { Name: "Пальто" } => new ProductModel(
+                      name: "Пальто Tom Farr",
+                      price: 10890,
+                      guarantee: 90,
+                      countryManufacturer: "Россия",
+                      userGenderType: UserGenderType.Woman,
+                      brand: "Tom Farr",
+                      productSubcategory: subcategory,
+                      mainPhoto: productModelsMainPhotos[5],
+                      features: new Dictionary<string, string>()
+                      {
+                         { "Сезон","весна, осень" },
+                         { "Застежка","отсутствует" },
+                      },
+                      materials: new List<string>()
+                      {
+                         "Полиэстер 70%"
+                      },
+                      photos: productModelsPhotos[5],
+                      dateTimeCreation: new DateTime(2021, 9, 26)),
                 #endregion
                 #region Товар7 Кепка Denkor
-                Subcategory { Name: "Кепки" } => new ProductModel("Кепка мужская Denkor Восьмиклинка-Хулиганка", 1190, 12,
-                   "Россия", true, "Denkor", subcategory,
-                   File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Кепка мужская Denkor Восьмиклинка-Хулиганка.jfif"),
-                   new Dictionary<string, string>()
-                   {
-                       { "Сезон","лето" },
-                   }
-                   , new List<string>()
-                   {
-                       "Ткань"
-                   }
-                   , new List<byte[]>()
-                   {
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Кепка мужская Denkor Восьмиклинка-Хулиганка.jfif"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Кепка мужская Denkor Восьмиклинка-Хулиганка1.jfif"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Кепка мужская Denkor Восьмиклинка-Хулиганка2.jfif"),
-                   }, DateTime.Now),
+                Subcategory { Name: "Кепки" } => new ProductModel(
+                      name: "Кепка мужская Denkor Восьмиклинка-Хулиганка",
+                      price: 1190,
+                      guarantee: 12,
+                      countryManufacturer: "Россия",
+                      userGenderType: UserGenderType.Man,
+                      brand: "Denkor",
+                      productSubcategory: subcategory,
+                      mainPhoto: productModelsMainPhotos[6],
+                      features: new Dictionary<string, string>()
+                      {
+                         { "Сезон","лето" },
+                      },
+                      materials: new List<string>()
+                      {
+                         "Ткань"
+                      },
+                      photos: productModelsPhotos[6],
+                      dateTimeCreation: new DateTime(2021, 11, 11)),
                 #endregion
                 #region Товар8 Шляпа ARMANI
-                Subcategory { Name: "Шляпы" } => new ProductModel("Шляпа ARMANI", 16730, 300,
-                "Италия", true, "ARMANI", subcategory,
-                   File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Шляпа ARMANI.jfif"),
-                   new Dictionary<string, string>()
-                   {
-                   }
-                   , new List<string>()
-                   {
-                   }
-                   , new List<byte[]>()
-                   {
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Шляпа ARMANI.jfif"),
-                       File.ReadAllBytes(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Шляпа ARMANI1.jfif"),
-                   }, DateTime.Now),
+                Subcategory { Name: "Шляпы" } => new ProductModel(
+                      name: "Шляпа ARMANI",
+                      price: 16730,
+                      guarantee: 300,
+                      countryManufacturer: "Италия",
+                      userGenderType: UserGenderType.Man,
+                      brand: "ARMANI",
+                      productSubcategory: subcategory,
+                      mainPhoto: productModelsMainPhotos[7],
+                      features: new Dictionary<string, string>(),
+                      materials: new List<string>(),
+                      photos: productModelsPhotos[7],
+                      dateTimeCreation: new DateTime(2021, 11, 11)),
                 #endregion
                 _ => throw new NotImplementedException("Данная подкатегория не найдена")
             });
 
-            productModels.Select(async productModel => await productModelValidator.ValidateAndThrowAsync(productModel, cancellationToken));
+            foreach (ProductModel productModel in productModels)
+                await productModelValidator.ValidateAndThrowAsync(productModel, cancellationToken);
 
-            await productModelRepository.AddRangeAsync(productModels, cancellationToken);
-            return await productModelRepository.SaveChangesAsync(cancellationToken);
+            await db.ProductModels.AddRangeAsync(productModels, cancellationToken);
+            return await db.SaveChangesAsync(cancellationToken) != -1;
         }
     }
 }

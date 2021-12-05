@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebStore.Data.Entities;
-using WebStore.Data.Identity;
 
 namespace WebStore.Data
 {
@@ -10,8 +9,8 @@ namespace WebStore.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            //Database.EnsureDeleted();
-            //Database.EnsureCreated();
+            Database.EnsureDeleted();
+            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -31,7 +30,7 @@ namespace WebStore.Data
             });
 
             builder.Entity<Delivery>().Property(p => p.DeliveryCost).HasColumnType("decimal(18,4)");
-            builder.Entity<Order>().Property(p => p.SummaryCost).HasColumnType("decimal(18,4)");
+            builder.Entity<Order>().Property(p => p.TotalCost).HasColumnType("decimal(18,4)");
             builder.Entity<ProductModel>().Property(p => p.Price).HasColumnType("decimal(18,4)");
 
             base.OnModelCreating(builder);

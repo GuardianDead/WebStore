@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using WebStore.Domain;
+using WebStore.Domain.Types;
 
 namespace WebStore.Data.Entities
 {

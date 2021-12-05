@@ -1,49 +1,45 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using WebStore.Data.Entities;
-using WebStore.Data.Repositories.ProductArticleRepository;
-using WebStore.Data.Repositories.ProductModelRepository;
 
 namespace WebStore.Data.Mocks.ProductArticleMock
 {
     public class ProductArticleMock : IProductArticleMock
     {
-        private readonly IProductArticleRepository productArticleRepository;
+        private readonly AppDbContext db;
         private readonly IValidator<ProductArticle> productArticleValidator;
-        private readonly IProductModelRepository productModelRepository;
 
-        public ProductArticleMock(IProductArticleRepository productArticleRepository, IValidator<ProductArticle> productArticleValidator,
-            IProductModelRepository productModelRepository)
+        public ProductArticleMock(AppDbContext db, IValidator<ProductArticle> productArticleValidator)
         {
-            this.productArticleRepository = productArticleRepository;
+            this.db = db;
             this.productArticleValidator = productArticleValidator;
-            this.productModelRepository = productModelRepository;
         }
 
         public async ValueTask<bool> InitAsync(CancellationToken cancellationToken = default)
         {
-            if (await productArticleRepository.AnyAsync(cancellationToken))
-            {
-                return await new ValueTask<bool>(true);
-            }
+            if (await db.ProductArticles.AnyAsync(cancellationToken))
+                return true;
 
             var productModels = new ProductModel[]
             {
-                await productModelRepository.GetAsync(productModel => productModel.Name == "Кроссовки Nike Air Zoom Pegasus", false, cancellationToken),
-                await productModelRepository.GetAsync(productModel => productModel.Name == "Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K", false, cancellationToken),
-                await productModelRepository.GetAsync(productModel => productModel.Name == "Джинсы Levi's 514™ Straight (Big & Tall)", false, cancellationToken),
-                await productModelRepository.GetAsync(productModel => productModel.Name == "Брюки KORPO COLLEZIONI", false, cancellationToken),
-                await productModelRepository.GetAsync(productModel => productModel.Name == "Зимняя куртка мужская SHARK FORCE", false, cancellationToken),
-                await productModelRepository.GetAsync(productModel => productModel.Name == "Пальто Tom Farr", false, cancellationToken),
-                await productModelRepository.GetAsync(productModel => productModel.Name == "Кепка мужская Denkor Восьмиклинка-Хулиганка", false, cancellationToken),
-                await productModelRepository.GetAsync(productModel => productModel.Name == "Шляпа ARMANI", false, cancellationToken)
+                await db.ProductModels.SingleAsync(productModel => productModel.Name == "Кроссовки Nike Air Zoom Pegasus", cancellationToken),
+                await db.ProductModels.SingleAsync(productModel => productModel.Name == "Кроссовки Nike Air Zoom Pegasus", cancellationToken),
+                await db.ProductModels.SingleAsync(productModel => productModel.Name == "Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K", cancellationToken),
+                await db.ProductModels.SingleAsync(productModel => productModel.Name == "Джинсы Levi's 514™ Straight (Big & Tall)", cancellationToken),
+                await db.ProductModels.SingleAsync(productModel => productModel.Name == "Брюки KORPO COLLEZIONI", cancellationToken),
+                await db.ProductModels.SingleAsync(productModel => productModel.Name == "Зимняя куртка мужская SHARK FORCE", cancellationToken),
+                await db.ProductModels.SingleAsync(productModel => productModel.Name == "Пальто Tom Farr", cancellationToken),
+                await db.ProductModels.SingleAsync(productModel => productModel.Name == "Кепка мужская Denkor Восьмиклинка-Хулиганка", cancellationToken),
+                await db.ProductModels.SingleAsync(productModel => productModel.Name == "Шляпа ARMANI", cancellationToken)
             };
 
             var random = new Random();
-            var productArticles = productModels.SelectMany(productModel => productModel switch
+            IEnumerable<ProductArticle> productArticles = productModels.SelectMany(productModel => productModel switch
             {
                 #region Товар1 Кроссовки Nike
                 ProductModel { Name: "Кроссовки Nike Air Zoom Pegasus" } => Enumerable.Range(38, 9)
@@ -80,10 +76,11 @@ namespace WebStore.Data.Mocks.ProductArticleMock
                 _ => throw new NotImplementedException("Данной модели товара не существует")
             });
 
-            productArticles.Select(async productArticle => await productArticleValidator.ValidateAndThrowAsync(productArticle, cancellationToken));
+            foreach (ProductArticle productArticle in productArticles)
+                await productArticleValidator.ValidateAndThrowAsync(productArticle, cancellationToken);
 
-            await productArticleRepository.AddRangeAsync(productArticles, cancellationToken);
-            return await productArticleRepository.SaveChangesAsync(cancellationToken);
+            await db.ProductArticles.AddRangeAsync(productArticles, cancellationToken);
+            return await db.SaveChangesAsync(cancellationToken) != -1;
         }
     }
 }

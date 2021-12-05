@@ -4,9 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Scrutor;
 using WebStore.Data;
-using WebStore.Data.Identity;
-using WebStore.Services.RoleService;
-using WebStore.Services.UserService;
+using WebStore.Data.Entities;
 
 namespace WebStore.Configurations
 {
@@ -14,10 +12,6 @@ namespace WebStore.Configurations
     {
         public static IServiceCollection AddAppDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IRoleService, RoleService>();
-
             services.Scan(
                 options =>
                 {

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using WebStore.Data.Identity;
+using WebStore.Data.Entities;
 
 namespace WebStore.Validators.Identity
 {

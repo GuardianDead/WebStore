@@ -7,8 +7,6 @@ namespace WebStore.Validators
     {
         public ProductValidator(IValidator<ProductArticle> productArticleValidator)
         {
-            RuleFor(i => i.Id)
-                .NotNull().NotEmpty().WithMessage("Id товара не может быть пустым");
             RuleFor(i => i.Article)
                 .NotNull().WithMessage("Артикул товара не может быть пустым")
                 .SetValidator(productArticleValidator);

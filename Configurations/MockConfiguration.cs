@@ -9,15 +9,11 @@ namespace WebStore.Configurations
     {
         public static IApplicationBuilder AddAppMock(this IApplicationBuilder app)
         {
-            using (var scope = app.ApplicationServices.CreateScope())
-            {
-                var dbSeed = scope.ServiceProvider.GetRequiredService<AppDbContextSeed>();
-                if (!dbSeed.SeedAsync().GetAwaiter().GetResult())
-                {
-                    throw new Exception("Ошибка при инициализации базы данных");
-                }
-                return app;
-            }
+            using var scope = app.ApplicationServices.CreateScope();
+            var dbSeed = scope.ServiceProvider.GetRequiredService<AppDbContextSeed>();
+            if (!dbSeed.SeedAsync().GetAwaiter().GetResult())
+                throw new Exception("Ошибка при инициализации базы данных");
+            return app;
         }
     }
 }

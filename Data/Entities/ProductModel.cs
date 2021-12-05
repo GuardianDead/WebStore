@@ -1,10 +1,9 @@
 ﻿using Innofactor.EfCoreJsonValueConverter;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using WebStore.Data.Identity;
+using WebStore.Domain.Types;
 
 namespace WebStore.Data.Entities
 {
@@ -30,8 +29,8 @@ namespace WebStore.Data.Entities
         [DisplayName("Страна производитель")]
         public string СountryManufacturer { get; set; }
         [Required]
-        [DisplayName("Мужское")]
-        public bool IsMasculine { get; set; }
+        [DisplayName("Пол")]
+        public UserGenderType Gender { get; set; }
         [Required]
         [DisplayName("Бренд")]
         public string Brand { get; set; }
@@ -59,7 +58,7 @@ namespace WebStore.Data.Entities
         {
         }
         public ProductModel(string name, decimal price, int guarantee, string countryManufacturer,
-            bool isMasculine, string brand, Subcategory productSubcategory, byte[] mainPhoto,
+            UserGenderType userGenderType, string brand, Subcategory productSubcategory, byte[] mainPhoto,
             Dictionary<string, string> features, IEnumerable<string> materials, IEnumerable<byte[]> photos,
             DateTime dateTimeCreation)
         {
@@ -68,7 +67,7 @@ namespace WebStore.Data.Entities
             Price = price;
             Guarantee = guarantee;
             СountryManufacturer = countryManufacturer;
-            IsMasculine = isMasculine;
+            Gender = userGenderType;
             Brand = brand;
             Subcategory = productSubcategory;
             MainPhoto = mainPhoto;

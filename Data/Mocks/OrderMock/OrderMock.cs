@@ -1,78 +1,89 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using WebStore.Data.Entities;
-using WebStore.Data.Repositories;
-using WebStore.Data.Repositories.OrderRepository;
-using WebStore.Data.Repositories.ProductRepository;
-using WebStore.Domain;
+using WebStore.Domain.Types;
 
 namespace WebStore.Data.Mocks.OrderMock
 {
     public class OrderMock : IOrderMock
     {
-        private readonly IOrderRepository orderRepository;
+        private readonly AppDbContext db;
         private readonly IValidator<Order> orderValidator;
-        private readonly IProductRepository productRepository;
-        private readonly IDeliveryRepository deliveryRepository;
 
-        public OrderMock(IOrderRepository orderRepository, IValidator<Order> orderValidator,
-            IProductRepository productRepository, IDeliveryRepository deliveryRepository)
+        public OrderMock(AppDbContext db, IValidator<Order> orderValidator)
         {
-            this.orderRepository = orderRepository;
+            this.db = db;
             this.orderValidator = orderValidator;
-            this.productRepository = productRepository;
-            this.deliveryRepository = deliveryRepository;
         }
 
         public async ValueTask<bool> InitAsync(CancellationToken cancellationToken = default)
         {
-            if (await orderRepository.AnyAsync(cancellationToken))
-            {
-                return await new ValueTask<bool>(true);
-            }
+            if (await db.Orders.AnyAsync(cancellationToken))
+                return true;
 
-            var products = new IEnumerable<Product>[]
+            var products = await db.Products.ToListAsync(cancellationToken);
+            var selectedProducts = new IEnumerable<Product>[]
             {
-                (await productRepository.GetAllAsync(false, cancellationToken)).Skip(0).Take(3),
-                (await productRepository.GetAllAsync(false, cancellationToken)).Skip(3).Take(3),
-                (await productRepository.GetAllAsync(false, cancellationToken)).Skip(4).Take(3)
+                products.Skip(0).Take(3),
+                products.Skip(3).Take(3),
+                products.Skip(4).Take(3)
             };
             var deliveries = new Delivery[]
             {
-                await deliveryRepository.GetAsync(delivery => delivery.Name == "Почта России", false, cancellationToken),
-                await deliveryRepository.GetAsync(delivery => delivery.Name == "BoxBerry", false, cancellationToken),
+                await db.Deliveries.SingleOrDefaultAsync(delivery => delivery.Name == "Почта России", cancellationToken),
+                await db.Deliveries.SingleOrDefaultAsync(delivery => delivery.Name == "BoxBerry", cancellationToken),
             };
 
             var orders = new Order[]
             {
                 new Order(
-                    products[0], deliveries[0],
-                    OrderPaymentMethodType.Card, DateTime.Now, OrderStatusType.AwaitingProcessing,
-                    new Address("Россия","Муром","Мечникова","55","602267"),
-                    products[0].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[0].DeliveryCost,
-                    79157675803),
+                    products: selectedProducts[0],
+                    delivery: deliveries[0],
+                    orderPaymentMethodType: OrderPaymentMethodType.Card,
+                    dateTimeCreation: DateTime.Now,
+                    orderStatusType: OrderStatusType.AwaitingProcessing,
+                    address: new Address(country: "Россия",city: "Муром",street: "Мечникова",houseNumber: "55",postalCode: "602267"),
+                    totalCost: selectedProducts[0].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[0].DeliveryCost,
+                    phoneNumber: "79157675803",
+                    trackNumber: "ZH4152621324RW",
+                    email: "kakawkawww13@mail.ru"
+                    ),
                 new Order(
-                    products[1], deliveries[1],
-                    OrderPaymentMethodType.Cash, DateTime.Now, OrderStatusType.Arrived,
-                    new Address("Россия","Муром","Мечникова","55","602267"),
-                    products[1].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[1].DeliveryCost,
-                    79157675803),
+                    products: selectedProducts[1],
+                    delivery: deliveries[1],
+                    orderPaymentMethodType: OrderPaymentMethodType.Cash,
+                    dateTimeCreation: DateTime.Now,
+                    orderStatusType: OrderStatusType.Arrived,
+                    address: new Address(country: "Россия",city: "Муром",street: "Мечникова",houseNumber: "55",postalCode: "602267"),
+                    totalCost: selectedProducts[1].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[1].DeliveryCost,
+                    phoneNumber: "79157675803",
+                    trackNumber: "ZH3262363235WF",
+                    email: "kakawkawww12@mail.ru"
+                    ),
                 new Order(
-                    products[2], deliveries[0],
-                    OrderPaymentMethodType.Card, DateTime.Now, OrderStatusType.Canceled,
-                    new Address("Россия","Муром","Мечникова","55","602267"),
-                    products[2].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[0].DeliveryCost,
-                    79157675803),
+                    products: selectedProducts[2],
+                    delivery: deliveries[0],
+                    orderPaymentMethodType: OrderPaymentMethodType.Card,
+                    dateTimeCreation: DateTime.Now,
+                    orderStatusType: OrderStatusType.Canceled,
+                    address: new Address("Россия","Муром","Мечникова","55","602267"),
+                    totalCost: selectedProducts[2].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[0].DeliveryCost,
+                    phoneNumber: "79157675803",
+                    trackNumber: "ZH3262363235WF",
+                    email: "kakawkawww17@mail.ru"
+                    ),
             };
 
-            orders.Select(async order => await orderValidator.ValidateAndThrowAsync(order, cancellationToken));
+            foreach (Order order in orders)
+                await orderValidator.ValidateAndThrowAsync(order, cancellationToken);
 
-            await orderRepository.AddRangeAsync(orders, cancellationToken);
-            return await orderRepository.SaveChangesAsync(cancellationToken);
+            await db.Orders.AddRangeAsync(orders, cancellationToken);
+            return await db.SaveChangesAsync(cancellationToken) != -1;
         }
     }
 }

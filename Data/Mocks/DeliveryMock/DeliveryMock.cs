@@ -1,30 +1,27 @@
 ﻿using FluentValidation;
-using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 using WebStore.Data.Entities;
-using WebStore.Data.Repositories;
-using WebStore.Domain;
+using WebStore.Domain.Types;
 
 namespace WebStore.Data.Mocks.DeliveryMock
 {
     public class DeliveryMock : IDeliveryMock
     {
-        private readonly IDeliveryRepository deliveryRepository;
+        private readonly AppDbContext db;
         private readonly IValidator<Delivery> deliveryValidator;
 
-        public DeliveryMock(IDeliveryRepository deliveryRepository, IValidator<Delivery> deliveryValidator)
+        public DeliveryMock(AppDbContext db, IValidator<Delivery> deliveryValidator)
         {
-            this.deliveryRepository = deliveryRepository;
+            this.db = db;
             this.deliveryValidator = deliveryValidator;
         }
 
         public async ValueTask<bool> InitAsync(CancellationToken cancellationToken = default)
         {
-            if (await deliveryRepository.AnyAsync(cancellationToken))
-            {
-                return await new ValueTask<bool>(true);
-            }
+            if (await db.Deliveries.AnyAsync(cancellationToken))
+                return true;
 
             Delivery[] deliveries =
             {
@@ -37,10 +34,11 @@ namespace WebStore.Data.Mocks.DeliveryMock
                 new Delivery("Курьерская доставка Veco", DeliveryMethodType.Courier, 500, 3),
             };
 
-            deliveries.Select(async delivery => await deliveryValidator.ValidateAndThrowAsync(delivery, cancellationToken));
+            foreach (Delivery delivery in deliveries)
+                await deliveryValidator.ValidateAndThrowAsync(delivery, cancellationToken);
 
-            await deliveryRepository.AddRangeAsync(deliveries, cancellationToken);
-            return await deliveryRepository.SaveChangesAsync(cancellationToken);
+            await db.Deliveries.AddRangeAsync(deliveries, cancellationToken);
+            return await db.SaveChangesAsync(cancellationToken) != -1;
         }
     }
 }

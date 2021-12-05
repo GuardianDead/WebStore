@@ -8,7 +8,7 @@ namespace WebStore.Data.Validators
         public FavoritesListProductValidator(IValidator<ProductArticle> productArticleValidator)
         {
             RuleFor(i => i.ProductArticle)
-                .NotEmpty().NotNull().WithMessage("Продукт не может быть пустым")
+                .NotEmpty().NotNull().WithMessage("Артикул продукта не может быть пустым")
                 .SetValidator(productArticleValidator);
         }
     }

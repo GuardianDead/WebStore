@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace WebStore.Data.Identity
+namespace WebStore.Data.Entities
 {
     public class Role : IdentityRole<int>
     {

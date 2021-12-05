@@ -29,8 +29,8 @@ namespace WebStore.Validators
             RuleFor(i => i.Features)
                 .NotNull().WithMessage("Характеристики модели товара не могут быть пустыми")
                 .ForEach(i =>
-                    i.Must(i => i.Key != null && i.Key != "").WithMessage("Ключ характеристики модели товара не может быть пустым")
-                    .Must(i => i.Value != null && i.Value != "").WithMessage("Значение характеристики модели товара не может быть пустым"));
+                    i.Must(i => !string.IsNullOrEmpty(i.Key)).WithMessage("Ключ характеристики модели товара не может быть пустым")
+                    .Must(i => !string.IsNullOrEmpty(i.Value)).WithMessage("Значение характеристики модели товара не может быть пустым"));
             RuleFor(i => i.MainPhoto)
                 .NotNull().WithMessage("Главное фото модели товара не может быть пустым");
             RuleFor(i => i.Photos)
@@ -41,6 +41,9 @@ namespace WebStore.Validators
             RuleFor(i => i.DateTimeCreation)
                 .NotNull().NotEmpty().WithMessage("Время создания модели товара не может быть пустым")
                 .LessThanOrEqualTo(DateTime.Now).WithMessage("Время создания модели товара не может быть в будущем времени");
+            RuleFor(i => i.Gender)
+                .NotNull().NotEmpty().WithMessage("Пол модели товара не может быть пустым")
+                .IsInEnum().WithMessage("Пол пользователя должен быть типа 'UserGenderType'");
         }
     }
 }
