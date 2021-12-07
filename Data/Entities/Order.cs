@@ -28,7 +28,7 @@ namespace WebStore.Data.Entities
         [Required]
         [DisplayName("Способ оплаты")]
         [EnumDataType(typeof(OrderPaymentMethodType))]
-        public OrderPaymentMethodType OrderPaymentMethod { get; set; }
+        public OrderPaymentMethodType PaymentMethod { get; set; }
         [Required]
         [DisplayName("Время создания")]
         [DataType(DataType.DateTime)]
@@ -36,7 +36,7 @@ namespace WebStore.Data.Entities
         [Required]
         [DisplayName("Статус")]
         [EnumDataType(typeof(OrderStatusType))]
-        public OrderStatusType OrderStatus { get; set; }
+        public OrderStatusType Status { get; set; }
         [Required]
         [DisplayName("Сумма")]
         public decimal TotalCost { get; set; }
@@ -59,9 +59,9 @@ namespace WebStore.Data.Entities
         {
             Products = products;
             Delivery = delivery;
-            OrderPaymentMethod = orderPaymentMethodType;
+            PaymentMethod = orderPaymentMethodType;
             DateTimeCreation = dateTimeCreation;
-            OrderStatus = orderStatusType;
+            Status = orderStatusType;
             Address = address;
             TotalCost = totalCost;
             TrackNumber = trackNumber;

@@ -20,21 +20,21 @@ namespace WebStore.Data.Entities
         [Required]
         [DisplayName("Стоимость")]
         [DataType(DataType.Currency)]
-        public decimal DeliveryCost { get; set; }
+        public decimal Cost { get; set; }
         [Required]
         [DisplayName("Примерное время доставки (в днях)")]
-        public int ApproximateDaysDelivery { get; set; }
+        public int ApproximateDays { get; set; }
 
         public Delivery()
         {
         }
         public Delivery(string name, DeliveryMethodType deliveryMethod,
-            decimal deliveryCost, int approximateDaysDelivery)
+            decimal cost, int approximateDays)
         {
             Name = name;
             DeliveryMethod = deliveryMethod;
-            DeliveryCost = deliveryCost;
-            ApproximateDaysDelivery = approximateDaysDelivery;
+            Cost = cost;
+            ApproximateDays = approximateDays;
         }
     }
 }

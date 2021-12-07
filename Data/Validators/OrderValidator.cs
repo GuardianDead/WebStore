@@ -19,10 +19,10 @@ namespace WebStore.Validators
                 .SetValidator(deliveryValidator);
             RuleFor(i => i.DateTimeCreation)
                 .NotNull().NotEmpty().WithMessage("Дата заказа не может быть пустым");
-            RuleFor(i => i.OrderPaymentMethod)
+            RuleFor(i => i.PaymentMethod)
                 .NotNull().NotEmpty().WithMessage("Тип оплаты заказа не может быть пустым")
                 .IsInEnum().WithMessage("Тип оплаты заказа обязан быть типа 'OrderPaymentMethodType'");
-            RuleFor(i => i.OrderStatus)
+            RuleFor(i => i.Status)
                 .NotNull().NotEmpty().WithMessage("Статус заказа не может быть пустым")
                 .IsInEnum().WithMessage("Статус заказа обязан быть типа 'OrderStatusType'");
             RuleFor(i => i.Products)

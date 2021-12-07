@@ -48,7 +48,7 @@ namespace WebStore.Data.Mocks.OrderMock
                     dateTimeCreation: DateTime.Now,
                     orderStatusType: OrderStatusType.AwaitingProcessing,
                     address: new Address(country: "Россия",city: "Муром",street: "Мечникова",houseNumber: "55",postalCode: "602267"),
-                    totalCost: selectedProducts[0].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[0].DeliveryCost,
+                    totalCost: selectedProducts[0].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[0].Cost,
                     trackNumber: "ZH4152621324RW",
                     email: "kakawkawww13@mail.ru"
                     )
@@ -62,7 +62,7 @@ namespace WebStore.Data.Mocks.OrderMock
                     dateTimeCreation: DateTime.Now,
                     orderStatusType: OrderStatusType.Arrived,
                     address: new Address(country: "Россия",city: "Муром",street: "Мечникова",houseNumber: "55",postalCode: "602267"),
-                    totalCost: selectedProducts[1].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[1].DeliveryCost,
+                    totalCost: selectedProducts[1].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[1].Cost,
                     trackNumber: "ZH3262363235WF",
                     email: "kakawkawww12@mail.ru"
                     )
@@ -76,7 +76,7 @@ namespace WebStore.Data.Mocks.OrderMock
                     dateTimeCreation: DateTime.Now,
                     orderStatusType: OrderStatusType.Canceled,
                     address: new Address("Россия","Муром","Мечникова","55","602267"),
-                    totalCost: selectedProducts[2].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[0].DeliveryCost,
+                    totalCost: selectedProducts[2].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[0].Cost,
                     trackNumber: "ZH3262363235WF",
                     email: "kakawkawww17@mail.ru"
                     )
