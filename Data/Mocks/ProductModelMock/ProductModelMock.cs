@@ -112,7 +112,7 @@ namespace WebStore.Data.Mocks.ProductModelMock
                 Subcategory { Name: "Кроссовки" } => new ProductModel(
                      name: "Кроссовки Nike Air Zoom Pegasus",
                      price: 9990,
-                     guarantee: 365,
+                     daysGuarantee: 365,
                      countryManufacturer: "США",
                      userGenderType: UserGenderType.Man,
                      brand: "Nike",
@@ -134,7 +134,7 @@ namespace WebStore.Data.Mocks.ProductModelMock
                 Subcategory { Name: "Ботинки" } => new ProductModel(
                       name: "Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K",
                       price: 7399,
-                      guarantee: 180,
+                      daysGuarantee: 180,
                       countryManufacturer: "Вьетнам",
                       userGenderType: UserGenderType.Woman,
                       brand: "Adidas",
@@ -157,7 +157,7 @@ namespace WebStore.Data.Mocks.ProductModelMock
                 Subcategory { Name: "Джинсы" } => new ProductModel(
                       name: "Джинсы Levi's 514™ Straight (Big & Tall)",
                       price: 5673,
-                      guarantee: 300,
+                      daysGuarantee: 300,
                       countryManufacturer: "США",
                       userGenderType: UserGenderType.Woman,
                       brand: "Levi's",
@@ -183,7 +183,7 @@ namespace WebStore.Data.Mocks.ProductModelMock
                 Subcategory { Name: "Брюки" } => new ProductModel(
                       name: "Брюки KORPO COLLEZIONI",
                       price: 6560,
-                      guarantee: 600,
+                      daysGuarantee: 600,
                       countryManufacturer: "Италия",
                       userGenderType: UserGenderType.Woman,
                       brand: "KORPO",
@@ -208,7 +208,7 @@ namespace WebStore.Data.Mocks.ProductModelMock
                 Subcategory { Name: "Куртки" } => new ProductModel(
                       name: "Зимняя куртка мужская SHARK FORCE",
                       price: 19080,
-                      guarantee: 365 * 3,
+                      daysGuarantee: 365 * 3,
                       countryManufacturer: "Пекин",
                       userGenderType: UserGenderType.Man,
                       brand: "SHARK FORCE",
@@ -223,7 +223,7 @@ namespace WebStore.Data.Mocks.ProductModelMock
                 Subcategory { Name: "Пальто" } => new ProductModel(
                       name: "Пальто Tom Farr",
                       price: 10890,
-                      guarantee: 90,
+                      daysGuarantee: 90,
                       countryManufacturer: "Россия",
                       userGenderType: UserGenderType.Woman,
                       brand: "Tom Farr",
@@ -245,7 +245,7 @@ namespace WebStore.Data.Mocks.ProductModelMock
                 Subcategory { Name: "Кепки" } => new ProductModel(
                       name: "Кепка мужская Denkor Восьмиклинка-Хулиганка",
                       price: 1190,
-                      guarantee: 12,
+                      daysGuarantee: 12,
                       countryManufacturer: "Россия",
                       userGenderType: UserGenderType.Man,
                       brand: "Denkor",
@@ -266,7 +266,7 @@ namespace WebStore.Data.Mocks.ProductModelMock
                 Subcategory { Name: "Шляпы" } => new ProductModel(
                       name: "Шляпа ARMANI",
                       price: 16730,
-                      guarantee: 300,
+                      daysGuarantee: 300,
                       countryManufacturer: "Италия",
                       userGenderType: UserGenderType.Man,
                       brand: "ARMANI",

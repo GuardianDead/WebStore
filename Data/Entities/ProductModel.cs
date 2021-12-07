@@ -21,15 +21,18 @@ namespace WebStore.Data.Entities
         public string Name { get; set; }
         [Required]
         [DisplayName("Цена")]
+        [DataType(DataType.Currency)]
         public decimal Price { get; set; }
         [Required]
-        [DisplayName("Гарантия в днях")]
-        public int Guarantee { get; set; }
+        [DisplayName("Гарантия (в днях)")]
+        public int DaysGuarantee { get; set; }
         [Required]
         [DisplayName("Страна производитель")]
         public string СountryManufacturer { get; set; }
         [Required]
         [DisplayName("Пол")]
+        [EnumDataType(typeof(UserGenderType))]
+        [DataType(DataType.Text)]
         public UserGenderType Gender { get; set; }
         [Required]
         [DisplayName("Бренд")]
@@ -44,28 +47,26 @@ namespace WebStore.Data.Entities
         [Required]
         [JsonField]
         [DisplayName("Материалы")]
-        public IEnumerable<string> Materials { get; set; }
+        public List<string> Materials { get; set; }
         [Required]
         [JsonField]
         [DisplayName("Фотографии")]
-        public IEnumerable<byte[]> Photos { get; set; }
+        public List<byte[]> Photos { get; set; }
         [Required]
-        [DisplayName("Время создания")]
-        [DataType(DataType.DateTime)]
+        [DisplayName("Время создания (в днях)")]
         public DateTime DateTimeCreation { get; set; }
 
         public ProductModel()
         {
         }
-        public ProductModel(string name, decimal price, int guarantee, string countryManufacturer,
+        public ProductModel(string name, decimal price, int daysGuarantee, string countryManufacturer,
             UserGenderType userGenderType, string brand, Subcategory productSubcategory, byte[] mainPhoto,
-            Dictionary<string, string> features, IEnumerable<string> materials, IEnumerable<byte[]> photos,
-            DateTime dateTimeCreation)
+            Dictionary<string, string> features, List<string> materials, List<byte[]> photos, DateTime dateTimeCreation)
         {
             Id = Guid.NewGuid();
             Name = name;
             Price = price;
-            Guarantee = guarantee;
+            DaysGuarantee = daysGuarantee;
             СountryManufacturer = countryManufacturer;
             Gender = userGenderType;
             Brand = brand;

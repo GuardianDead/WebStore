@@ -12,12 +12,12 @@ namespace WebStore.Data.Entities
         public int Id { get; private init; }
         [Required]
         [DisplayName("Заказы")]
-        public IEnumerable<Order> Orders { get; set; }
+        public List<Order> Orders { get; set; }
 
         public OrderHistory()
         {
         }
-        public OrderHistory(IEnumerable<Order> orders)
+        public OrderHistory(List<Order> orders)
         {
             Orders = orders;
         }

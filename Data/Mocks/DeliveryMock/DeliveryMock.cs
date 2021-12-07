@@ -26,12 +26,12 @@ namespace WebStore.Data.Mocks.DeliveryMock
             Delivery[] deliveries =
             {
                 new Delivery("Почта России",DeliveryMethodType.Post,300,5),
-                new Delivery("BoxBerry", DeliveryMethodType.Post, 400, 3),
-                new Delivery("СДЭК", DeliveryMethodType.Post, 300, 4),
-                new Delivery("Доставка Veco", DeliveryMethodType.Post, 400, 3),
-                new Delivery("Магазин Veco", DeliveryMethodType.Pickup, 0, 0),
-                new Delivery("DPD", DeliveryMethodType.Courier, 400, 3),
-                new Delivery("Курьерская доставка Veco", DeliveryMethodType.Courier, 500, 3),
+                new Delivery("BoxBerry", DeliveryMethodType.Post, 400,3),
+                new Delivery("СДЭК", DeliveryMethodType.Post, 300,5),
+                new Delivery("Доставка Veco", DeliveryMethodType.Post, 400,3),
+                new Delivery("Магазин Veco", DeliveryMethodType.Pickup, 0,0),
+                new Delivery("DPD", DeliveryMethodType.Courier, 400,3),
+                new Delivery("Курьерская доставка Veco", DeliveryMethodType.Courier, 500,3),
             };
 
             foreach (Delivery delivery in deliveries)

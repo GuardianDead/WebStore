@@ -10,24 +10,21 @@ namespace WebStore.Data.Entities
     {
         [Key]
         [Required]
-        [DisplayName("Номер пользователя")]
+        [DisplayName("Индификатор пользователя")]
         public override int Id { get; set; }
-        [Required]
         [DisplayName("Имя")]
         public string Firstname { get; set; }
-        [Required]
         [DisplayName("Фамилия")]
         public string Surname { get; set; }
-        [Required]
         [DisplayName("Отчество")]
         public string Lastname { get; set; }
-        [Required]
         [DisplayName("Дата рождения")]
-        [DataType(DataType.DateTime)]
+        [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
-        [Required]
         [DisplayName("Гендер")]
-        public UserGenderType Gender { get; set; }
+        [EnumDataType(typeof(UserGenderType))]
+        [DataType(DataType.Text)]
+        public UserGenderType? Gender { get; set; }
         [Required]
         [DisplayName("История заказов")]
         public OrderHistory OrderHistory { get; set; }
@@ -40,41 +37,34 @@ namespace WebStore.Data.Entities
         [Required]
         [DisplayName("Время создания")]
         [DataType(DataType.DateTime)]
-        public DateTime DateTimeCreation { get; set; }
+        public DateTime DateTimeCreation { get; private init; }
         [DisplayName("Номер телефона")]
         [DataType(DataType.PhoneNumber)]
+        [Phone]
         public override string PhoneNumber { get; set; }
         [Required]
         [DisplayName("Электронная почта")]
         [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public override string Email { get; set; }
         [Required]
         [DisplayName("Логин")]
         public override string UserName { get; set; }
-        [Required]
         [DisplayName("Адрес")]
         public Address Address { get; set; }
 
         public User()
         {
         }
-        public User(string firstname, string surname, string lastname,
-            OrderHistory orderHistory, FavoritesList listFavourites,
-            Cart cart, string email, DateTime dateTimeCreation, string phoneNumber,
-            UserGenderType gender, DateTime dateOfBirth, string userName, Address address)
+        public User(OrderHistory orderHistory, FavoritesList listFavourites,
+            Cart cart, string email, DateTime dateTimeCreation, string userName)
         {
+            PhoneNumber = string.Empty;
             this.UserName = userName;
-            this.PhoneNumber = phoneNumber;
             this.Email = email;
-            Address = address;
-            Firstname = firstname;
-            Surname = surname;
-            Lastname = lastname;
             OrderHistory = orderHistory;
             ListFavourites = listFavourites;
             Cart = cart;
-            DateOfBirth = dateOfBirth;
-            Gender = gender;
             DateTimeCreation = dateTimeCreation;
         }
     }

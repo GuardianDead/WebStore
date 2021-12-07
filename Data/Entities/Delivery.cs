@@ -15,24 +15,27 @@ namespace WebStore.Data.Entities
         public string Name { get; set; }
         [Required]
         [DisplayName("Способ")]
+        [EnumDataType(typeof(DeliveryMethodType))]
+        [DataType(DataType.Text)]
         public DeliveryMethodType DeliveryMethod { get; set; }
         [Required]
         [DisplayName("Стоимость")]
+        [DataType(DataType.Currency)]
         public decimal DeliveryCost { get; set; }
         [Required]
-        [DisplayName("Примерное время доставки в днях")]
-        public int ApproximateDeliveryTime { get; set; }
+        [DisplayName("Примерное время доставки (в днях)")]
+        public int ApproximateDaysDelivery { get; set; }
 
         public Delivery()
         {
         }
         public Delivery(string name, DeliveryMethodType deliveryMethod,
-            decimal deliveryCost, int approximateDeliveryTime)
+            decimal deliveryCost, int approximateDaysDelivery)
         {
             Name = name;
             DeliveryMethod = deliveryMethod;
             DeliveryCost = deliveryCost;
-            ApproximateDeliveryTime = approximateDeliveryTime;
+            ApproximateDaysDelivery = approximateDaysDelivery;
         }
     }
 }

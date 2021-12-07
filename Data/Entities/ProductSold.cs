@@ -12,8 +12,8 @@ namespace WebStore.Data.Entities
         [DisplayName("Номер проданного товара")]
         public Guid Id { get; private init; }
         [Required]
-        [DisplayName("Жизнь проданного товара в бд в днях")]
-        public int LifeTime { get; set; }
+        [DisplayName("Срок жизни товара в базе данных (в днях)")]
+        public int DaysLifeTime { get; set; }
         [Required]
         [JsonField]
         [DisplayName("Заказ")]
@@ -26,11 +26,11 @@ namespace WebStore.Data.Entities
         public ProductSold()
         {
         }
-        public ProductSold(Product product, Order order, int lifeTime)
+        public ProductSold(Product product, Order order, int daysLifeTime)
         {
             Id = product.Id;
             Order = order;
-            LifeTime = lifeTime;
+            DaysLifeTime = daysLifeTime;
             Product = product;
         }
     }

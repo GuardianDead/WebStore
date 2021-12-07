@@ -8,7 +8,7 @@ namespace WebStore.Data.Entities
         [Key]
         [Required]
         [DisplayName("Номер")]
-        public int Id { get; set; }
+        public int Id { get; private init; }
         [Required]
         [DisplayName("Товар")]
         public ProductArticle ProductArticle { get; set; }

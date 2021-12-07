@@ -33,34 +33,29 @@ namespace WebStore.Data.Mocks.UserMock
             var orders = db.Orders.Where(order => order.Address.PostalCode == "602267");
 
             var admin = new User(
-                    address: new Address("Россия", "Муром", "Мечникова", "55", "602267"),
                     userName: "kakawkawww13",
-                    firstname: "Александр",
-                    surname: "Андрианов",
-                    lastname: "Евгеньевич",
-                    orderHistory: new OrderHistory(orders.Take(1)),
-                    listFavourites: new FavoritesList(Enumerable.Empty<FavoritesListProduct>()),
-                    cart: new Cart(Enumerable.Empty<CartProduct>()),
+                    orderHistory: new OrderHistory(orders.Take(1).ToList()),
+                    listFavourites: new FavoritesList(Enumerable.Empty<FavoritesListProduct>().ToList()),
+                    cart: new Cart(Enumerable.Empty<CartProduct>().ToList()),
                     email: "kakawkawww13@mail.ru",
-                    dateTimeCreation: DateTime.Now,
-                    gender: UserGenderType.Man,
-                    dateOfBirth: new DateTime(2002, 11, 24),
-                    phoneNumber: "79157675803"
-                );
+                    dateTimeCreation: DateTime.Now
+                )
+            {
+                DateOfBirth = new DateTime(2002, 11, 24),
+                PhoneNumber = "79157675803",
+                Gender = UserGenderType.Man,
+                Firstname = "Александр",
+                Surname = "Андрианов",
+                Lastname = "Евгеньевич",
+                Address = new Address("Россия", "Муром", "Ленина", "55а", "602267"),
+            };
             var user = new User(
-                    address: new Address("Россия", "Муром", "Ленина", "55а", "602267"),
                     userName: "kakawkawww17",
-                    firstname: "Роман",
-                    surname: "Тарасов",
-                    lastname: "Юрьевич",
-                    orderHistory: new OrderHistory(orders.Skip(1).Take(2)),
-                    listFavourites: new FavoritesList(Enumerable.Empty<FavoritesListProduct>()),
-                    cart: new Cart(Enumerable.Empty<CartProduct>()),
+                    orderHistory: new OrderHistory(orders.Skip(1).Take(2).ToList()),
+                    listFavourites: new FavoritesList(Enumerable.Empty<FavoritesListProduct>().ToList()),
+                    cart: new Cart(Enumerable.Empty<CartProduct>().ToList()),
                     email: "kakawkawww17@mail.ru",
-                    dateTimeCreation: DateTime.Now,
-                    dateOfBirth: new DateTime(2002, 11, 11),
-                    gender: UserGenderType.Man,
-                    phoneNumber: "79157675803"
+                    dateTimeCreation: DateTime.Now
                 );
 
 

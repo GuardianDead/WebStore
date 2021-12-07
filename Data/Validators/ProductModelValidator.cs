@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using System;
 using WebStore.Data.Entities;
 
 namespace WebStore.Validators
@@ -8,11 +7,9 @@ namespace WebStore.Validators
     {
         public ProductModelValidator(IValidator<Subcategory> productSubcategoryValidator)
         {
-            RuleFor(i => i.Id)
-                .NotNull().NotEmpty().WithMessage("Номер модели товара не может быть пустым");
             RuleFor(i => i.Name)
                 .NotNull().NotEmpty().WithMessage("Название модели не может быть пустым");
-            RuleFor(i => i.Guarantee)
+            RuleFor(i => i.DaysGuarantee)
                 .NotNull().NotEmpty().WithMessage("Гарантия модели товара не может быть пустым")
                 .GreaterThanOrEqualTo(0).WithMessage("Гарантия модели товара должна быть больше или равна 0");
             RuleFor(i => i.Brand)
@@ -39,10 +36,9 @@ namespace WebStore.Validators
             RuleFor(i => i.СountryManufacturer)
                 .NotNull().NotEmpty().WithMessage("Id модели товара не может быть пустая");
             RuleFor(i => i.DateTimeCreation)
-                .NotNull().NotEmpty().WithMessage("Время создания модели товара не может быть пустым")
-                .LessThanOrEqualTo(DateTime.Now).WithMessage("Время создания модели товара не может быть в будущем времени");
+                .NotNull().NotEmpty().WithMessage("Время создания модели товара не может быть пустым");
             RuleFor(i => i.Gender)
-                .NotNull().NotEmpty().WithMessage("Пол модели товара не может быть пустым")
+                .NotNull().WithMessage("Пол модели товара не может быть пустым")
                 .IsInEnum().WithMessage("Пол пользователя должен быть типа 'UserGenderType'");
         }
     }

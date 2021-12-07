@@ -12,12 +12,12 @@ namespace WebStore.Data.Entities
         public int Id { get; private init; }
         [Required]
         [DisplayName("Товары")]
-        public IEnumerable<FavoritesListProduct> Products { get; set; }
+        public List<FavoritesListProduct> Products { get; set; }
 
         public FavoritesList()
         {
         }
-        public FavoritesList(IEnumerable<FavoritesListProduct> products)
+        public FavoritesList(List<FavoritesListProduct> products)
         {
             Products = products;
         }

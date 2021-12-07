@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebStore.Data;
 
 namespace WebStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211207002109_Добавление-Вспомогательных-Атрибутов-И-Исправление-Проблемы-С-Датами-И-Временем")]
+    partial class ДобавлениеВспомогательныхАтрибутовИИсправлениеПроблемыСДатамиИВременем
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -212,8 +214,8 @@ namespace WebStore.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ApproximateDaysDelivery")
-                        .HasColumnType("int");
+                    b.Property<TimeSpan>("ApproximateDeliveryTime")
+                        .HasColumnType("time");
 
                     b.Property<decimal>("DeliveryCost")
                         .HasColumnType("decimal(18,4)");
@@ -386,15 +388,15 @@ namespace WebStore.Migrations
                     b.Property<DateTime>("DateTimeCreation")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DaysGuarantee")
-                        .HasColumnType("int");
-
                     b.Property<string>("Features")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Gender")
                         .HasColumnType("int");
+
+                    b.Property<TimeSpan>("Guarantee")
+                        .HasColumnType("time");
 
                     b.Property<byte[]>("MainPhoto")
                         .IsRequired()
@@ -435,8 +437,8 @@ namespace WebStore.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("DaysLifeTime")
-                        .HasColumnType("int");
+                    b.Property<TimeSpan>("LifeTime")
+                        .HasColumnType("time");
 
                     b.Property<string>("Order")
                         .IsRequired()
@@ -539,7 +541,7 @@ namespace WebStore.Migrations
                     b.Property<string>("Firstname")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("Gender")
+                    b.Property<int>("Gender")
                         .HasColumnType("int");
 
                     b.Property<string>("Lastname")

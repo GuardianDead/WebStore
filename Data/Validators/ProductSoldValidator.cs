@@ -9,9 +9,9 @@ namespace WebStore.Validators
         {
             RuleFor(i => i.Id)
                 .NotNull().NotEmpty().WithMessage("Номер проданного товара не может быть пустым");
-            RuleFor(i => i.LifeTime)
+            RuleFor(i => i.DaysLifeTime)
                 .NotNull().WithMessage("Количество дней хранения проданного товара в бд не может быть пустым")
-                .GreaterThanOrEqualTo(0).WithMessage("Количество дней хранения проданного товара в бд должно быть больше или равно 0");
+                .GreaterThanOrEqualTo(0).WithMessage("Значение хранения проданного товара в бд должно быть больше или равно 0");
             RuleFor(i => i.Order)
                 .NotNull().WithMessage("Заказ не может быть пустым")
                 .SetValidator(orderValidator);

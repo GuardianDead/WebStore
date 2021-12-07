@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using WebStore.Data.Mocks;
@@ -46,8 +47,11 @@ namespace WebStore.Data
                 productArticleMock, productMock
             };
 
-            var results = mocks.Select(async mock => await mock.InitAsync(cancellationToken));
-            return await new ValueTask<bool>(results.All(result => result.Result == true));
+            var results = new List<bool>();
+            foreach (IMockAsync mock in mocks)
+                results.Add(await mock.InitAsync(cancellationToken));
+
+            return results.All(result => result);
         }
     }
 }

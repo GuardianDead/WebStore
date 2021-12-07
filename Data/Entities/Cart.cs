@@ -12,12 +12,12 @@ namespace WebStore.Data.Entities
         public int Id { get; private init; }
         [Required]
         [DisplayName("Товары")]
-        public IEnumerable<CartProduct> Products { get; set; }
+        public List<CartProduct> Products { get; set; }
 
         public Cart()
         {
         }
-        public Cart(IEnumerable<CartProduct> products)
+        public Cart(List<CartProduct> products)
         {
             Products = products;
         }

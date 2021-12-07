@@ -14,7 +14,7 @@ namespace WebStore.Data.Entities
         public int Id { get; private init; }
         [Required]
         [DisplayName("Товары")]
-        public IEnumerable<Product> Products { get; set; }
+        public List<Product> Products { get; set; }
         [Required]
         [DisplayName("Адрес")]
         public Address Address { get; set; }
@@ -23,9 +23,12 @@ namespace WebStore.Data.Entities
         public Delivery Delivery { get; set; }
         [DisplayName("Номер телефона")]
         [DataType(DataType.PhoneNumber)]
+        [Phone]
         public string PhoneNumber { get; set; }
         [Required]
         [DisplayName("Способ оплаты")]
+        [EnumDataType(typeof(OrderPaymentMethodType))]
+        [DataType(DataType.Text)]
         public OrderPaymentMethodType OrderPaymentMethod { get; set; }
         [Required]
         [DisplayName("Время создания")]
@@ -33,6 +36,8 @@ namespace WebStore.Data.Entities
         public DateTime DateTimeCreation { get; set; }
         [Required]
         [DisplayName("Статус")]
+        [EnumDataType(typeof(OrderStatusType))]
+        [DataType(DataType.Text)]
         public OrderStatusType OrderStatus { get; set; }
         [Required]
         [DisplayName("Сумма")]
@@ -42,15 +47,17 @@ namespace WebStore.Data.Entities
         public string TrackNumber { get; set; }
         [Required]
         [DisplayName("Электронная почта")]
+        [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string Email { get; set; }
 
         public Order()
         {
         }
-        public Order(IEnumerable<Product> products, Delivery delivery,
+        public Order(List<Product> products, Delivery delivery,
             OrderPaymentMethodType orderPaymentMethodType, DateTime dateTimeCreation,
             OrderStatusType orderStatusType, Address address, decimal totalCost,
-            string phoneNumber, string trackNumber, string email)
+            string trackNumber, string email)
         {
             Products = products;
             Delivery = delivery;
@@ -60,7 +67,6 @@ namespace WebStore.Data.Entities
             Address = address;
             TotalCost = totalCost;
             TrackNumber = trackNumber;
-            PhoneNumber = phoneNumber;
             Email = email;
         }
     }

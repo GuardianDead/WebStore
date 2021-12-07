@@ -42,41 +42,47 @@ namespace WebStore.Data.Mocks.OrderMock
             var orders = new Order[]
             {
                 new Order(
-                    products: selectedProducts[0],
+                    products: selectedProducts[0].ToList(),
                     delivery: deliveries[0],
                     orderPaymentMethodType: OrderPaymentMethodType.Card,
                     dateTimeCreation: DateTime.Now,
                     orderStatusType: OrderStatusType.AwaitingProcessing,
                     address: new Address(country: "Россия",city: "Муром",street: "Мечникова",houseNumber: "55",postalCode: "602267"),
                     totalCost: selectedProducts[0].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[0].DeliveryCost,
-                    phoneNumber: "79157675803",
                     trackNumber: "ZH4152621324RW",
                     email: "kakawkawww13@mail.ru"
-                    ),
+                    )
+                    {
+                        PhoneNumber = "79157675803"
+                    },
                 new Order(
-                    products: selectedProducts[1],
+                    products: selectedProducts[1].ToList(),
                     delivery: deliveries[1],
                     orderPaymentMethodType: OrderPaymentMethodType.Cash,
                     dateTimeCreation: DateTime.Now,
                     orderStatusType: OrderStatusType.Arrived,
                     address: new Address(country: "Россия",city: "Муром",street: "Мечникова",houseNumber: "55",postalCode: "602267"),
                     totalCost: selectedProducts[1].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[1].DeliveryCost,
-                    phoneNumber: "79157675803",
                     trackNumber: "ZH3262363235WF",
                     email: "kakawkawww12@mail.ru"
-                    ),
+                    )
+                    {
+                        PhoneNumber = "79157675803"
+                    },
                 new Order(
-                    products: selectedProducts[2],
+                    products: selectedProducts[2].ToList(),
                     delivery: deliveries[0],
                     orderPaymentMethodType: OrderPaymentMethodType.Card,
                     dateTimeCreation: DateTime.Now,
                     orderStatusType: OrderStatusType.Canceled,
                     address: new Address("Россия","Муром","Мечникова","55","602267"),
                     totalCost: selectedProducts[2].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[0].DeliveryCost,
-                    phoneNumber: "79157675803",
                     trackNumber: "ZH3262363235WF",
                     email: "kakawkawww17@mail.ru"
-                    ),
+                    )
+                    {
+                        PhoneNumber = "79157672475"
+                    },
             };
 
             foreach (Order order in orders)
