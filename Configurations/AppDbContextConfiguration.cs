@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Scrutor;
+using System;
 using WebStore.Data;
 using WebStore.Data.Entities;
 
@@ -26,10 +27,20 @@ namespace WebStore.Configurations
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<User, Role>(options =>
             {
+                options.SignIn.RequireConfirmedAccount = false;
+                options.SignIn.RequireConfirmedPhoneNumber = false;
+                options.Lockout.AllowedForNewUsers = true;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(60);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.User.RequireUniqueEmail = true;
                 options.Password.RequireNonAlphanumeric = false;
             })
               .AddEntityFrameworkStores<AppDbContext>()
-              .AddDefaultTokenProviders();
+              .AddDefaultTokenProviders()
+              .AddRoles<Role>()
+              .AddUserManager<UserManager<User>>()
+              .AddRoleManager<RoleManager<Role>>()
+              .AddSignInManager<SignInManager<User>>();
 
             return services;
         }

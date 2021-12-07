@@ -16,7 +16,6 @@ namespace WebStore.Data.Entities
         [Required]
         [DisplayName("Способ")]
         [EnumDataType(typeof(DeliveryMethodType))]
-        [DataType(DataType.Text)]
         public DeliveryMethodType DeliveryMethod { get; set; }
         [Required]
         [DisplayName("Стоимость")]

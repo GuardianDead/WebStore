@@ -20,11 +20,10 @@ namespace WebStore.Data.Entities
         public string Lastname { get; set; }
         [DisplayName("Дата рождения")]
         [DataType(DataType.Date)]
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         [DisplayName("Гендер")]
-        [EnumDataType(typeof(UserGenderType))]
-        [DataType(DataType.Text)]
-        public UserGenderType? Gender { get; set; }
+        [EnumDataType(typeof(GenderType))]
+        public GenderType? Gender { get; set; }
         [Required]
         [DisplayName("История заказов")]
         public OrderHistory OrderHistory { get; set; }
@@ -55,11 +54,11 @@ namespace WebStore.Data.Entities
 
         public User()
         {
+
         }
         public User(OrderHistory orderHistory, FavoritesList listFavourites,
             Cart cart, string email, DateTime dateTimeCreation, string userName)
         {
-            PhoneNumber = string.Empty;
             this.UserName = userName;
             this.Email = email;
             OrderHistory = orderHistory;

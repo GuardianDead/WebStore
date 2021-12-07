@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading;
@@ -30,20 +31,20 @@ namespace WebStore.Data.Mocks.UserMock
             if (await db.Users.AnyAsync(cancellationToken))
                 return true;
 
-            var orders = db.Orders.Where(order => order.Address.PostalCode == "602267");
+            List<Order> selectedOrders = await db.Orders.Where(order => order.Address.PostalCode == "602267").ToListAsync(cancellationToken);
 
             var admin = new User(
                     userName: "kakawkawww13",
-                    orderHistory: new OrderHistory(orders.Take(1).ToList()),
-                    listFavourites: new FavoritesList(Enumerable.Empty<FavoritesListProduct>().ToList()),
-                    cart: new Cart(Enumerable.Empty<CartProduct>().ToList()),
+                    orderHistory: new OrderHistory(selectedOrders.Take(1).ToList()),
+                    listFavourites: new FavoritesList(new List<FavoritesListProduct>()),
+                    cart: new Cart(new List<CartProduct>()),
                     email: "kakawkawww13@mail.ru",
                     dateTimeCreation: DateTime.Now
                 )
             {
                 DateOfBirth = new DateTime(2002, 11, 24),
                 PhoneNumber = "79157675803",
-                Gender = UserGenderType.Man,
+                Gender = GenderType.Man,
                 Firstname = "Александр",
                 Surname = "Андрианов",
                 Lastname = "Евгеньевич",
@@ -51,9 +52,9 @@ namespace WebStore.Data.Mocks.UserMock
             };
             var user = new User(
                     userName: "kakawkawww17",
-                    orderHistory: new OrderHistory(orders.Skip(1).Take(2).ToList()),
-                    listFavourites: new FavoritesList(Enumerable.Empty<FavoritesListProduct>().ToList()),
-                    cart: new Cart(Enumerable.Empty<CartProduct>().ToList()),
+                    orderHistory: new OrderHistory(selectedOrders.Skip(1).Take(2).ToList()),
+                    listFavourites: new FavoritesList(new List<FavoritesListProduct>()),
+                    cart: new Cart(new List<CartProduct>()),
                     email: "kakawkawww17@mail.ru",
                     dateTimeCreation: DateTime.Now
                 );
@@ -62,8 +63,8 @@ namespace WebStore.Data.Mocks.UserMock
             await userValidator.ValidateAndThrowAsync(admin, cancellationToken);
             await userValidator.ValidateAndThrowAsync(user, cancellationToken);
 
-            var adminIdentityCreateResult = await userManager.CreateAsync(admin, "21081990wwwWWW");
-            var userIdentityCreateResult = await userManager.CreateAsync(user, "79157734732wwwWWW");
+            IdentityResult adminIdentityCreateResult = await userManager.CreateAsync(admin, "21081990wwwWWW");
+            IdentityResult userIdentityCreateResult = await userManager.CreateAsync(user, "79157734732wwwWWW");
             if (!adminIdentityCreateResult.Succeeded)
                 throw new NotImplementedException($"Ошибка при добавление администратора c электронной почтой {admin.Email}, подробнее об ошибках: {string.Join("; ", adminIdentityCreateResult.Errors)}");
             if (!userIdentityCreateResult.Succeeded)
@@ -72,15 +73,15 @@ namespace WebStore.Data.Mocks.UserMock
             var receivedAdmin = await userManager.Users.SingleAsync(user => user.Email == "kakawkawww13@mail.ru", cancellationToken);
             var receivedUser = await userManager.Users.SingleAsync(user => user.Email == "kakawkawww17@mail.ru", cancellationToken);
 
-            var adminIdentityAddToRoleResult = await userManager.AddToRoleAsync(receivedAdmin, RoleConst.Admin);
-            var userIdentityAddToRoleResult = await userManager.AddToRoleAsync(receivedUser, RoleConst.User);
+            IdentityResult adminIdentityAddToRoleResult = await userManager.AddToRoleAsync(receivedAdmin, RoleConst.Admin);
+            IdentityResult userIdentityAddToRoleResult = await userManager.AddToRoleAsync(receivedUser, RoleConst.User);
             if (!adminIdentityAddToRoleResult.Succeeded)
                 throw new NotImplementedException($"Ошибка при добавление администратору роли администратора c электронной почтой {receivedAdmin.Email}, подробнее об ошибках: {string.Join("; ", adminIdentityAddToRoleResult.Errors)}");
             if (!userIdentityAddToRoleResult.Succeeded)
                 throw new NotImplementedException($"Ошибка при добавление пользователю роли пользователя c электронной почтой {receivedUser.Email}, подробнее об ошибках: {string.Join("; ", userIdentityAddToRoleResult.Errors)}");
 
-            var adminIdentityConfrimEmailResult = await userManager.ConfirmEmailAsync(receivedAdmin, await userManager.GenerateEmailConfirmationTokenAsync(receivedAdmin));
-            var userIdentityConfrimEmailResult = await userManager.ConfirmEmailAsync(receivedUser, await userManager.GenerateEmailConfirmationTokenAsync(receivedUser));
+            IdentityResult adminIdentityConfrimEmailResult = await userManager.ConfirmEmailAsync(receivedAdmin, await userManager.GenerateEmailConfirmationTokenAsync(receivedAdmin));
+            IdentityResult userIdentityConfrimEmailResult = await userManager.ConfirmEmailAsync(receivedUser, await userManager.GenerateEmailConfirmationTokenAsync(receivedUser));
             if (!adminIdentityConfrimEmailResult.Succeeded)
                 throw new NotImplementedException($"Ошибка при подтверждения почты администратора c электронной почтой {receivedAdmin.Email}, подробнее об ошибках: {string.Join("; ", adminIdentityConfrimEmailResult.Errors)}");
             if (!userIdentityConfrimEmailResult.Succeeded)
@@ -88,33 +89,19 @@ namespace WebStore.Data.Mocks.UserMock
 
             var adminClaims = new Claim[]
             {
-                new Claim(ClaimTypes.StreetAddress, string.Join(", ",receivedAdmin.Address), ClaimValueTypes.String),
-                new Claim(ClaimTypes.Surname, receivedAdmin.Surname, ClaimValueTypes.String),
-                new Claim(ClaimTypes.PostalCode, receivedAdmin.Address.PostalCode, ClaimValueTypes.String),
-                new Claim(ClaimTypes.MobilePhone,receivedAdmin.PhoneNumber, ClaimValueTypes.String),
                 new Claim(ClaimTypes.Role,RoleConst.Admin, ClaimValueTypes.String),
-                new Claim(ClaimTypes.GivenName,receivedAdmin.UserName, ClaimValueTypes.String),
-                new Claim(ClaimTypes.DateOfBirth,receivedAdmin.DateOfBirth.ToString(), ClaimValueTypes.DateTime),
-                new Claim(ClaimTypes.Country,receivedAdmin.Address.Country, ClaimValueTypes.String),
-                new Claim(ClaimTypes.Gender,receivedAdmin.Gender.ToString(), ClaimValueTypes.String),
-                new Claim(ClaimTypes.Email,receivedAdmin.Email, ClaimValueTypes.Email),
+                new Claim(ClaimTypes.GivenName,receivedUser.UserName, ClaimValueTypes.String),
+                new Claim(ClaimTypes.Email,receivedUser.Email, ClaimValueTypes.Email),
             };
             var userClaims = new Claim[]
             {
-                new Claim(ClaimTypes.StreetAddress, string.Join(", ",receivedUser.Address), ClaimValueTypes.String),
-                new Claim(ClaimTypes.Surname, receivedUser.Surname, ClaimValueTypes.String),
-                new Claim(ClaimTypes.PostalCode, receivedUser.Address.PostalCode, ClaimValueTypes.String),
-                new Claim(ClaimTypes.MobilePhone,receivedUser.PhoneNumber, ClaimValueTypes.String),
                 new Claim(ClaimTypes.Role,RoleConst.Admin, ClaimValueTypes.String),
                 new Claim(ClaimTypes.GivenName,receivedUser.UserName, ClaimValueTypes.String),
-                new Claim(ClaimTypes.DateOfBirth,receivedUser.DateOfBirth.ToString(), ClaimValueTypes.DateTime),
-                new Claim(ClaimTypes.Country,receivedUser.Address.Country, ClaimValueTypes.String),
-                new Claim(ClaimTypes.Gender,receivedUser.Gender.ToString(), ClaimValueTypes.String),
                 new Claim(ClaimTypes.Email,receivedUser.Email, ClaimValueTypes.Email),
             };
 
-            var adminIdentityAddClaimsResult = await userManager.AddClaimsAsync(receivedAdmin, adminClaims);
-            var userIdentityAddClaimsResult = await userManager.AddClaimsAsync(receivedUser, userClaims);
+            IdentityResult adminIdentityAddClaimsResult = await userManager.AddClaimsAsync(receivedAdmin, adminClaims);
+            IdentityResult userIdentityAddClaimsResult = await userManager.AddClaimsAsync(receivedUser, userClaims);
             if (!adminIdentityAddClaimsResult.Succeeded)
                 throw new NotImplementedException($"Ошибка при добавление администратору утверждения c электронной почтой {receivedAdmin.Email}, подробнее об ошибках: {string.Join("; ", adminIdentityAddClaimsResult.Errors)}");
             if (!userIdentityAddClaimsResult.Succeeded)

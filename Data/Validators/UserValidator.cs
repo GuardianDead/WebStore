@@ -12,13 +12,13 @@ namespace WebStore.Validators.Identity
             RuleFor(i => i.Address)
                 .SetValidator(addressValidator);
             RuleFor(i => i.OrderHistory)
-                .NotNull().WithMessage("Заказы не могут быть неопределен")
+                .NotNull().WithMessage("Заказы не могут быть неопределены")
                 .SetValidator(orderHistoryValidator);
             RuleFor(i => i.ListFavourites)
-                .NotNull().WithMessage("Избранные товары не могут быть неопределен")
+                .NotNull().WithMessage("Избранные товары не могут быть неопределены")
                 .SetValidator(listFavouritesValidator);
             RuleFor(i => i.Cart)
-                .NotNull().WithMessage("Корзина товаров не может быть неопределен")
+                .NotNull().WithMessage("Корзина товаров не может быть неопределена")
                 .SetValidator(cartValidator);
             RuleFor(i => i.PhoneNumber)
                 .ChildRules(i => i.RuleFor(i => i.Length)

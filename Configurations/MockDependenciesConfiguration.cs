@@ -6,7 +6,7 @@ namespace WebStore.Configurations
 {
     public static class MockDependenciesConfiguration
     {
-        public static IServiceCollection AddMockDependencies(this IServiceCollection services)
+        public static IServiceCollection AddAppMockDependencies(this IServiceCollection services)
         {
             services.Scan(
                 options =>

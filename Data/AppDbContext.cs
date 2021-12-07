@@ -1,7 +1,9 @@
 ﻿using Innofactor.EfCoreJsonValueConverter;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebStore.Data.Entities;
+using WebStore.Domain.Types;
 
 namespace WebStore.Data
 {
@@ -14,6 +16,12 @@ namespace WebStore.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<User>().Property(o => o.Gender).HasConversion(new EnumToStringConverter<GenderType>());
+            builder.Entity<ProductModel>().Property(o => o.Gender).HasConversion(new EnumToStringConverter<GenderType>());
+            builder.Entity<Order>().Property(o => o.OrderPaymentMethod).HasConversion(new EnumToStringConverter<OrderPaymentMethodType>());
+            builder.Entity<Order>().Property(o => o.OrderStatus).HasConversion(new EnumToStringConverter<OrderStatusType>());
+            builder.Entity<Delivery>().Property(o => o.DeliveryMethod).HasConversion(new EnumToStringConverter<DeliveryMethodType>());
+
             builder.AddJsonFields();
             builder.Entity<ProductModel>(i =>
             {

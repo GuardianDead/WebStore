@@ -13,7 +13,7 @@ using WebStore.Data.Mocks.UserMock;
 
 namespace WebStore.Data
 {
-    public class AppDbContextSeed : ISeedAsync
+    public class AppDbContextSeed
     {
         private readonly IDeliveryMock deliveryMock;
         private readonly ICategoryMock categoryMock;

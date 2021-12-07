@@ -28,7 +28,6 @@ namespace WebStore.Data.Entities
         [Required]
         [DisplayName("Способ оплаты")]
         [EnumDataType(typeof(OrderPaymentMethodType))]
-        [DataType(DataType.Text)]
         public OrderPaymentMethodType OrderPaymentMethod { get; set; }
         [Required]
         [DisplayName("Время создания")]
@@ -37,7 +36,6 @@ namespace WebStore.Data.Entities
         [Required]
         [DisplayName("Статус")]
         [EnumDataType(typeof(OrderStatusType))]
-        [DataType(DataType.Text)]
         public OrderStatusType OrderStatus { get; set; }
         [Required]
         [DisplayName("Сумма")]

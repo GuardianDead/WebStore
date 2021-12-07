@@ -31,9 +31,8 @@ namespace WebStore.Data.Entities
         public string СountryManufacturer { get; set; }
         [Required]
         [DisplayName("Пол")]
-        [EnumDataType(typeof(UserGenderType))]
-        [DataType(DataType.Text)]
-        public UserGenderType Gender { get; set; }
+        [EnumDataType(typeof(GenderType))]
+        public GenderType Gender { get; set; }
         [Required]
         [DisplayName("Бренд")]
         public string Brand { get; set; }
@@ -60,7 +59,7 @@ namespace WebStore.Data.Entities
         {
         }
         public ProductModel(string name, decimal price, int daysGuarantee, string countryManufacturer,
-            UserGenderType userGenderType, string brand, Subcategory productSubcategory, byte[] mainPhoto,
+            GenderType userGenderType, string brand, Subcategory productSubcategory, byte[] mainPhoto,
             Dictionary<string, string> features, List<string> materials, List<byte[]> photos, DateTime dateTimeCreation)
         {
             Id = Guid.NewGuid();
