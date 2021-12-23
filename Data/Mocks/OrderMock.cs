@@ -26,7 +26,7 @@ namespace WebStore.Data.Mocks.OrderMock
             if (await db.Orders.AnyAsync(cancellationToken))
                 return true;
 
-            var products = await db.Products.ToListAsync(cancellationToken);
+            var products = await db.Products.Include(product => product.Article.Model).ToListAsync(cancellationToken);
             var selectedProducts = new IEnumerable<Product>[]
             {
                 products.Skip(0).Take(3),
@@ -48,7 +48,7 @@ namespace WebStore.Data.Mocks.OrderMock
                     dateTimeCreation: DateTime.Now,
                     orderStatusType: OrderStatusType.AwaitingProcessing,
                     address: new Address(country: "Россия",city: "Муром",street: "Мечникова",houseNumber: "55",postalCode: "602267"),
-                    totalCost: selectedProducts[0].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[0].Cost,
+                    totalCost: selectedProducts[0].Aggregate(0.0m,(sum,productArticle) => sum + productArticle.Article.Model.Price) + deliveries[0].Cost,
                     trackNumber: "ZH4152621324RW",
                     email: "kakawkawww13@mail.ru"
                     )

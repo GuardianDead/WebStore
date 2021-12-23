@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using WebStore.Data.Mocks;
 using WebStore.Data.Mocks.CategoryMock;
 using WebStore.Data.Mocks.DeliveryMock;
+using WebStore.Data.Mocks.OrderMock;
 using WebStore.Data.Mocks.ProductArticleMock;
 using WebStore.Data.Mocks.ProductModelMock;
 using WebStore.Data.Mocks.RoleMock;
@@ -23,10 +24,11 @@ namespace WebStore.Data
         private readonly IProductModelMock productModelMock;
         private readonly IProductArticleMock productArticleMock;
         private readonly IProductMock productMock;
+        private readonly IOrderMock orderMock;
 
         public AppDbContextSeed(IDeliveryMock deliveryMock, ICategoryMock categoryMock, IRoleMock roleMock,
             ISubcategoryMock subcategoryMock, IUserMock userMock, IProductModelMock productModelMock,
-            IProductArticleMock productArticleMock, IProductMock productMock)
+            IProductArticleMock productArticleMock, IProductMock productMock, IOrderMock orderMock)
         {
             this.deliveryMock = deliveryMock;
             this.categoryMock = categoryMock;
@@ -36,6 +38,7 @@ namespace WebStore.Data
             this.productModelMock = productModelMock;
             this.productArticleMock = productArticleMock;
             this.productMock = productMock;
+            this.orderMock = orderMock;
         }
 
         public async ValueTask<bool> SeedAsync(CancellationToken cancellationToken = default)
@@ -43,8 +46,8 @@ namespace WebStore.Data
             var mocks = new IMockAsync[]
             {
                 deliveryMock, categoryMock, roleMock,
-                subcategoryMock, userMock, productModelMock,
-                productArticleMock, productMock
+                subcategoryMock, productModelMock,
+                productArticleMock, productMock, orderMock, userMock
             };
 
             var results = new List<bool>();

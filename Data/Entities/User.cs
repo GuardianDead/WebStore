@@ -61,9 +61,9 @@ namespace WebStore.Data.Entities
         {
             this.UserName = userName;
             this.Email = email;
+            Cart = cart;
             OrderHistory = orderHistory;
             ListFavourites = listFavourites;
-            Cart = cart;
             DateTimeCreation = dateTimeCreation;
         }
     }

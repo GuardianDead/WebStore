@@ -30,7 +30,6 @@ namespace WebStore.Data.Mocks.RoleMock
                 new Role(RoleConst.Admin),
                 new Role(RoleConst.Moderator),
                 new Role(RoleConst.User),
-                new Role(RoleConst.Guest),
             };
 
             foreach (Role role in roles)

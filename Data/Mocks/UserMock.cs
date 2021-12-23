@@ -36,8 +36,8 @@ namespace WebStore.Data.Mocks.UserMock
             var admin = new User(
                     userName: "kakawkawww13",
                     orderHistory: new OrderHistory(selectedOrders.Take(1).ToList()),
-                    listFavourites: new FavoritesList(new List<FavoritesListProduct>()),
-                    cart: new Cart(new List<CartProduct>()),
+                    listFavourites: new FavoritesList(Enumerable.Empty<FavoritesListProduct>().ToList()),
+                    cart: new Cart(Enumerable.Empty<CartProduct>().ToList()),
                     email: "kakawkawww13@mail.ru",
                     dateTimeCreation: DateTime.Now
                 )
@@ -53,12 +53,11 @@ namespace WebStore.Data.Mocks.UserMock
             var user = new User(
                     userName: "kakawkawww17",
                     orderHistory: new OrderHistory(selectedOrders.Skip(1).Take(2).ToList()),
-                    listFavourites: new FavoritesList(new List<FavoritesListProduct>()),
-                    cart: new Cart(new List<CartProduct>()),
+                    listFavourites: new FavoritesList(Enumerable.Empty<FavoritesListProduct>().ToList()),
+                    cart: new Cart(Enumerable.Empty<CartProduct>().ToList()),
                     email: "kakawkawww17@mail.ru",
                     dateTimeCreation: DateTime.Now
                 );
-
 
             await userValidator.ValidateAndThrowAsync(admin, cancellationToken);
             await userValidator.ValidateAndThrowAsync(user, cancellationToken);
@@ -89,15 +88,11 @@ namespace WebStore.Data.Mocks.UserMock
 
             var adminClaims = new Claim[]
             {
-                new Claim(ClaimTypes.Role,RoleConst.Admin, ClaimValueTypes.String),
-                new Claim(ClaimTypes.GivenName,receivedUser.UserName, ClaimValueTypes.String),
-                new Claim(ClaimTypes.Email,receivedUser.Email, ClaimValueTypes.Email),
+                new Claim("DateTimeCreation", DateTime.Now.ToString("DD.MM.YYYY"), ClaimValueTypes.DateTime),
             };
             var userClaims = new Claim[]
             {
-                new Claim(ClaimTypes.Role,RoleConst.Admin, ClaimValueTypes.String),
-                new Claim(ClaimTypes.GivenName,receivedUser.UserName, ClaimValueTypes.String),
-                new Claim(ClaimTypes.Email,receivedUser.Email, ClaimValueTypes.Email),
+                new Claim("DateTimeCreation", DateTime.Now.ToString("dd.MM.yyyy"), ClaimValueTypes.DateTime),
             };
 
             IdentityResult adminIdentityAddClaimsResult = await userManager.AddClaimsAsync(receivedAdmin, adminClaims);

@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WebStore.Data.Entities;
 using WebStore.Domain.Types;
+using WebStore.Services;
 
 namespace WebStore.Data.Mocks.ProductModelMock
 {
@@ -41,14 +42,14 @@ namespace WebStore.Data.Mocks.ProductModelMock
 
             var productModelsMainPhotos = new List<byte[]>()
             {
-                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\NIKE Air Zoom Pegasus.jfif",cancellationToken),
-                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K.jpg",cancellationToken),
-                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Джинсы Levi's 514™ Straight (Big & Tall).jfif",cancellationToken),
-                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Брюки KORPO COLLEZIONI.png",cancellationToken),
-                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Зимняя куртка мужская SHARK FORCE 21013.jfif",cancellationToken),
-                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Пальто Tom Farr.jfif",cancellationToken),
-                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Кепка мужская Denkor Восьмиклинка-Хулиганка.jfif",cancellationToken),
-                await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Шляпа ARMANI.jfif",cancellationToken),
+                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\NIKE Air Zoom Pegasus.jfif",cancellationToken)),
+                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K.jpg",cancellationToken)),
+                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Джинсы Levi's 514™ Straight (Big & Tall).jfif",cancellationToken)),
+                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Брюки KORPO COLLEZIONI.png",cancellationToken)),
+                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Зимняя куртка мужская SHARK FORCE 21013.jfif",cancellationToken)),
+                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Пальто Tom Farr.jfif",cancellationToken)),
+                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Кепка мужская Denkor Восьмиклинка-Хулиганка.jfif",cancellationToken)),
+                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Шляпа ARMANI.jfif",cancellationToken)),
             };
             var productModelsPhotos = new List<List<byte[]>>()
             {
@@ -132,7 +133,7 @@ namespace WebStore.Data.Mocks.ProductModelMock
                 #endregion
                 #region Товар2 Ботинки Adidas
                 Subcategory { Name: "Ботинки" } => new ProductModel(
-                      name: "Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K",
+                      name: "Ботинки Adidas Terrex Trailmaker Mid R.RDY K",
                       price: 7399,
                       daysGuarantee: 180,
                       countryManufacturer: "Вьетнам",
@@ -206,7 +207,7 @@ namespace WebStore.Data.Mocks.ProductModelMock
                 #endregion
                 #region Товар5 Куртка SHARK FORCE
                 Subcategory { Name: "Куртки" } => new ProductModel(
-                      name: "Зимняя куртка мужская SHARK FORCE",
+                      name: "Зимняя куртка SHARK FORCE",
                       price: 19080,
                       daysGuarantee: 365 * 3,
                       countryManufacturer: "Пекин",
@@ -243,7 +244,7 @@ namespace WebStore.Data.Mocks.ProductModelMock
                 #endregion
                 #region Товар7 Кепка Denkor
                 Subcategory { Name: "Кепки" } => new ProductModel(
-                      name: "Кепка мужская Denkor Восьмиклинка-Хулиганка",
+                      name: "Кепка Denkor Восьмиклинка-Хулиганка",
                       price: 1190,
                       daysGuarantee: 12,
                       countryManufacturer: "Россия",
