@@ -1,10 +1,4 @@
-﻿.carousel__dots {
-  margin-top: 30px;
-  display: flex;
-  justify-content: center;
-  align-items: center; }
-
-.carousel {
+﻿.carousel {
   max-width: 100em;
   width: 90vw; }
   .carousel__carousel-item {
@@ -16,18 +10,19 @@
     font-size: 1.8em;
     margin-bottom: 1em;
     margin-left: 1em; }
-  .carousel__dots {
+  ::deep .carousel__dots {
     margin-top: 30px;
     display: flex;
     justify-content: center;
     align-items: center; }
-    .carousel__dots li {
-      margin: 0px 3px; }
-      .carousel__dots li button {
-        height: 5px;
-        width: 30px;
-        background-color: black; }
-      .carousel__dots li.slick-active {
+    ::deep .carousel__dots li {
+      cursor: pointer;
+      margin: 0px 3px;
+      height: 6px;
+      font-size: 0;
+      width: 30px;
+      background-color: black; }
+      ::deep .carousel__dots li.slick-active {
         background-color: gray; }
   .carousel__prev-arrow {
     z-index: 2;
@@ -115,6 +110,7 @@
 
 .image-block__favorites {
   position: absolute;
+  cursor: pointer;
   top: 10px;
   right: 10px;
   opacity: 0.6; }
@@ -125,6 +121,7 @@
 
 .image-block__cart {
   position: absolute;
+  cursor: pointer;
   top: 40px;
   right: 11.5px;
   opacity: 0.6; }

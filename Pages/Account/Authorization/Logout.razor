@@ -1,0 +1,17 @@
+﻿@page "/account/authorization/logout/{returnUrl?}"
+@attribute [Authorize]
+@code{
+    [CascadingParameter] public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    [Parameter] public string ReturnUrl { get; set; }
+
+    [Inject] public TokenAuthenticationStateService TokenAuthenticationStateService { get; set; }
+    [Inject] public NavigationManager NavigationManager { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        ReturnUrl = string.IsNullOrEmpty(ReturnUrl) ? NavigationManager.BaseUri : ReturnUrl.Replace('$', '/');
+        await TokenAuthenticationStateService.LogoutAuthenticationStateAsync();
+        NavigationManager.NavigateTo(ReturnUrl, true);
+    }
+}

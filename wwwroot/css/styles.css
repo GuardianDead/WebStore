@@ -368,7 +368,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .logo {
   display: flex;
-  align-items: center; }
+  align-items: center;
+  cursor: pointer; }
   .logo img {
     width: 4.5em;
     height: 5.5em;

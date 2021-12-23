@@ -1,0 +1,10 @@
+﻿[*.cs]
+
+# CS0618: Тип или член устарел
+dotnet_diagnostic.CS0618.severity = none
+
+# CA2012: Используйте ValueTasks правильно
+dotnet_diagnostic.CA2012.severity = none
+
+# AsyncFixer02: Long-running or blocking operations inside an async method
+dotnet_diagnostic.AsyncFixer02.severity = none

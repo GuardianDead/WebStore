@@ -11,7 +11,7 @@
     margin: 0em auto;
     max-width: 100%;
     padding: 0em 2em; }
-  .login__form {
+  ::deep .login__form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -33,18 +33,36 @@
   font-weight: 600;
   font-size: 20px; }
 
+.form__errors-block {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5em; }
+
 .form__error {
   display: inline-block;
   color: red;
-  line-height: 1.3em; }
+  line-height: 1.3em;
+  text-align: justify; }
 
 .form__email-block {
   position: relative;
   width: 100%; }
 
 .form__password-block {
+  margin-top: 0.7em;
   position: relative;
   width: 100%; }
+
+::deep .form__check-box {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5em;
+  margin-bottom: 0; }
 
 .form__disclaimer {
   text-align: center;
@@ -80,13 +98,14 @@
   gap: 0.5em;
   width: 100%; }
 
-.email-block__input {
+::deep .email-block__input {
   border-radius: 5px;
   box-shadow: 0px 0px 1px black;
   padding: 1em 1em;
   min-width: 100px;
   width: 100%; }
-  .email-block__input.invalid {
+  ::deep .email-block__input.invalid {
+    box-shadow: 0px 0px 1px red;
     border: 1px red solid; }
 
 .email-block__label {
@@ -106,23 +125,18 @@
     transform: translateY(-10px);
     background-color: white; }
 
-.email-block__error {
-  display: inline-block;
-  color: red;
-  padding-top: 0.8em;
-  line-height: 1.3em; }
-
-.password-block__input {
+::deep .password-block__input {
   border-radius: 5px;
   box-shadow: 0px 0px 1px black;
   padding: 1em 1em;
   min-width: 100px;
   width: 100%;
   padding-right: 2.8em; }
-  .password-block__input.invalid {
+  ::deep .password-block__input.invalid {
+    box-shadow: 0px 0px 1px red;
     border: 1px red solid; }
 
-.password-block__label {
+::deep .password-block__label {
   color: #65657b;
   left: 14px;
   line-height: 14px;
@@ -132,20 +146,15 @@
   transform-origin: 0 50%;
   transition: transform 200ms, color 200ms;
   top: 16px; }
-  .password-block__label.shift {
+  ::deep .password-block__label.shift {
     transition: 0.3s all ease;
     position: absolute;
     top: 0;
     transform: translateY(-10px);
     background-color: white; }
 
-.password-block__error {
-  display: inline-block;
-  color: red;
-  padding-top: 0.8em;
-  line-height: 1.3em; }
-
 .password-block__control {
+  cursor: pointer;
   position: absolute;
   top: 9.5px;
   right: 11px;
@@ -162,36 +171,32 @@
     height: 27px;
     background: url("../icons/login/Slash-eye.svg") center/contain no-repeat; }
 
-.check-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5em;
-  margin-bottom: 0; }
-  .check-box__input {
-    display: none; }
-  .check-box__fake-input {
-    position: relative;
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    box-shadow: 0px 0px 1px black;
-    border-radius: 1px; }
-    .check-box__fake-input::before {
-      content: '';
-      position: absolute;
-      top: 25%;
-      left: 24%;
-      transform: translate(-50%, -50%);
-      width: 11px;
-      height: 7px;
-      border-right: 3px solid black;
-      border-top: 3px solid black;
-      transform: rotate(135deg);
-      transition: 0.15s all ease;
-      opacity: 0; }
-  .check-box__input:checked + .check-box__fake-input::before {
-    opacity: 1; }
+.check-box__input {
+  display: none; }
+
+.check-box__fake-input {
+  position: relative;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  box-shadow: 0px 0px 1px black;
+  border-radius: 1px; }
+  .check-box__fake-input::before {
+    content: '';
+    position: absolute;
+    top: 25%;
+    left: 24%;
+    transform: translate(-50%, -50%);
+    width: 11px;
+    height: 7px;
+    border-right: 3px solid black;
+    border-top: 3px solid black;
+    transform: rotate(135deg);
+    transition: 0.15s all ease;
+    opacity: 0; }
+
+.check-box__input:checked + .check-box__fake-input::before {
+  opacity: 1; }
 
 .external-logins-block__title {
   text-align: center;
@@ -213,7 +218,9 @@
     height: 2.5em;
     width: 2.5em; }
 
-@media (max-width: 700px) {
+@media (max-width: 830px) {
+  .login__block {
+    padding: 1.5em 0em; }
   .form__disclaimer {
     text-align: center;
     line-height: 1.3em; }
@@ -239,5 +246,5 @@
 @media (max-width: 400px) {
   .login__container {
     padding: 0em 1em; }
-  .login__form {
+  ::deep .login__form {
     padding: 2em; } }
