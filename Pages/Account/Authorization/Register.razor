@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="form__password-confirm-block">
-                    <input class="password-block__input @(IsConfirmPasswordInputValid ? "" : "invalid")" @bind="ConfirmPassword" @oninput="((e) => ConfirmPasswordInputChangeValue(e))" type="@(IsConfirmPasswordShow ? "text" : "password")" aria-label="Строка для ввода пароля пользователя" />
+                    <input class="password-block__input @(IsConfirmPasswordInputValid ? "" : "invalid")" @bind="confirmPassword" @oninput="((e) => ConfirmPasswordInputChangeValue(e))" type="@(IsConfirmPasswordShow ? "text" : "password")" aria-label="Строка для ввода пароля пользователя" />
                     <span class="password-block__control @(IsConfirmPasswordShow ? "view" : "")" @onclick="@(() => IsConfirmPasswordShow = !IsConfirmPasswordShow)" />
                     <label class="password-block__label @(IsConfirmPasswordLabelShift ? "shift" : "")">Подтвердите пароль</label>
                 </div>
