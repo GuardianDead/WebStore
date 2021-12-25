@@ -1,9 +1,4 @@
-﻿using FluentValidation;
-using FluentValidation.AspNetCore;
-using Microsoft.Extensions.DependencyInjection;
-using System.Globalization;
-
-namespace WebStore.Configurations
+﻿namespace WebStore.Configurations
 {
     public static class ValidationConfiguration
     {
@@ -18,7 +13,7 @@ namespace WebStore.Configurations
                 option.ImplicitlyValidateRootCollectionElements = true;
                 option.LocalizationEnabled = true;
                 option.ValidatorOptions.Severity = Severity.Warning;
-                //option.DisableDataAnnotationsValidation = true;
+                option.DisableDataAnnotationsValidation = true;
                 option.RegisterValidatorsFromAssemblyContaining<Startup>();
             });
             return services;

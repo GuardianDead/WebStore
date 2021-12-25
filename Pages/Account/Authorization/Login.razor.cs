@@ -18,16 +18,13 @@ namespace WebStore.Pages.Account.Authorization
     {
         [CascadingParameter] public Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
+        [Parameter] public string ReturnUrl { get; set; }
+
         [Inject] public IValidator<LoginViewModel> LoginViewModelValidator { get; set; }
         [Inject] public UserManager<User> UserManager { get; set; }
         [Inject] public SignInManager<User> SignInManager { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public TokenAuthenticationStateService TokenAuthenticationStateService { get; set; }
-
-        [Parameter] public string ReturnUrl { get; set; }
-
-        public ClaimsPrincipal currentUser;
-        public LoginViewModel LoginViewModel { get; set; } = new LoginViewModel();
 
         public bool IsEmailLabelShift { get => !string.IsNullOrEmpty(LoginViewModel.Email); }
         public bool IsPasswordLabelShift { get => !string.IsNullOrEmpty(LoginViewModel.Password); }
@@ -36,14 +33,19 @@ namespace WebStore.Pages.Account.Authorization
         public bool IsEmailInputValid { get; set; } = true;
         public bool IsPasswordInputValid { get; set; } = true;
 
+        public ClaimsPrincipal currentUser;
+        public LoginViewModel LoginViewModel { get; set; } = new LoginViewModel();
+
         protected override async Task OnInitializedAsync()
         {
-            LoginViewModel.ReturnUrl = string.IsNullOrEmpty(ReturnUrl) ? NavigationManager.BaseUri.Replace('$', '/') : ReturnUrl.Replace('$', '/');
+            LoginViewModel.ReturnUrl = string.IsNullOrEmpty(ReturnUrl) ? NavigationManager.BaseUri.Replace('$', '/') : ReturnUrl.Replace('$', '/'); // Костыль, требуется заменить символы '/' на '$' в возвращаемом URL адресе при его отправке и наоборот
             currentUser = (await AuthenticationStateTask).User;
 
             //TODO : Сделать авторизацию через ExternalLoging
             //TODO : Сделать LockOut
         }
+
+        public void NavigateToRegister() => NavigationManager.NavigateTo($"{NavigationManager.BaseUri}account/authorization/register/{LoginViewModel.ReturnUrl.Replace('/', '$')}", true);
 
         public void EmailInputChangeValue(ChangeEventArgs e)
         {

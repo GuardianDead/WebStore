@@ -19,14 +19,13 @@ namespace WebStore.Pages.Account.Authorization
     public class RegisterBase : ComponentBase
     {
         [CascadingParameter] public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+        [Parameter] public string ReturnUrl { get; set; }
 
         [Inject] public IValidator<RegisterViewModel> RegisterViewModelValidator { get; set; }
         [Inject] public UserManager<User> UserManager { get; set; }
         [Inject] public SignInManager<User> SignInManager { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public TokenAuthenticationStateService TokenAuthenticationStateService { get; set; }
-
-        [Parameter] public string ReturnUrl { get; set; }
 
         public RegisterViewModel RegisterViewModel { get; set; } = new RegisterViewModel();
         public AuthenticationState userAuthenticationState;
@@ -43,16 +42,15 @@ namespace WebStore.Pages.Account.Authorization
         public bool IsPasswordInputValid { get; set; } = true;
         public bool IsConfirmPasswordInputValid { get; set; } = true;
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            RegisterViewModel.ReturnUrl = string.IsNullOrEmpty(ReturnUrl) ? NavigationManager.BaseUri : ReturnUrl.Replace('%', '/');
-            userAuthenticationState = await TokenAuthenticationStateService.GetAuthenticationStateAsync();
-            if (userAuthenticationState.User.Identity.IsAuthenticated)
-                NavigationManager.NavigateTo(RegisterViewModel.ReturnUrl, true);
+            RegisterViewModel.ReturnUrl = string.IsNullOrEmpty(ReturnUrl) ? NavigationManager.BaseUri : ReturnUrl.Replace('$', '/'); // Костыль, требуется заменить символы '/' на '$' в возвращаемом URL адресе при его отправке и наоборот
 
             //TODO : Сделать регистрацию через ExternalLoging
             //TODO : Сделать LockOut
         }
+
+        public void NavigateToLogin() => NavigationManager.NavigateTo($"{NavigationManager.BaseUri}account/authorization/login/{RegisterViewModel.ReturnUrl.Replace('/', '$')}", true);
 
         public void EmailInputChangeValue(ChangeEventArgs e)
         {
@@ -128,7 +126,7 @@ namespace WebStore.Pages.Account.Authorization
 
             var сlaims = new Claim[]
             {
-                new Claim("DateTimeCreation", DateTime.Now.ToString("DD.MM.YYYY"), ClaimValueTypes.DateTime)
+                new Claim("DateTimeCreation", DateTime.Now.ToString("dd.MM.yyyy"), ClaimValueTypes.DateTime)
             };
             var createdUser = new User(
                     orderHistory: new OrderHistory(new List<Order>()),
@@ -145,7 +143,6 @@ namespace WebStore.Pages.Account.Authorization
 
             await TokenAuthenticationStateService.SetAuthenticationStateAsync(new AuthenticationState(claimsPrincipal), RegisterViewModel.Remember);
             NavigationManager.NavigateTo(RegisterViewModel.ReturnUrl, true);
-
         }
     }
 }
