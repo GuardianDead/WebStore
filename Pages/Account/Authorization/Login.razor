@@ -1,7 +1,6 @@
 ﻿@page "/account/authorization/login/{returnUrl?}";
 @inherits LoginBase
-@attribute [Authorize(policy: PolicyConst.Guest)]
-@attribute [IgnoreAntiforgeryToken]
+@attribute [Authorize(Policy = PolicyConst.User)]
 
 <section class="login">
     <div class="login__container">
@@ -33,7 +32,7 @@
                 <span class="form__disclaimer">Выполняя вход вы соглашаетесь с <a href="/rules/privacy" aria-label="Перейти на страницу политики конфиденциальности" title="Перейти на страницу политики конфиденциальности">Политикой конфиденциальности</a> и <a href="/rules/use-conditions" aria-label="Перейти на страницу условий использования" title="Перейти на страницу условий использования">Условиями использования</a> Veco</span>
                 <button class="form__button-submut" type="submit" aria-label="Кнопка подтверждения отправки данных">Войти</button>
                 <a class="form__fogot-password" href="#">Забыл пароль</a>
-                <a class="form__register" href="/account/authorization/register/@LoginViewModel.ReturnUrl.Replace('/','%')">Зарегистрироваться</a>
+                <a class="form__register" @onclick="NavigateToRegister">Зарегистрироваться</a>
 
                 @*<div class="form__external-logins-block external-logins-block">
                         <span class="external-logins-block__title">Войти с помощью</span>

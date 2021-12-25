@@ -115,8 +115,9 @@
         }
     }
 
-    &__register {
+    &__login {
         color: rgb(145, 145, 145);
+        cursor: pointer;
 
         &:hover {
             color: rgb(182, 182, 182);

@@ -90,9 +90,10 @@
   .form__fogot-password:hover {
     color: #b6b6b6; }
 
-.form__register {
-  color: #919191; }
-  .form__register:hover {
+.form__login {
+  color: #919191;
+  cursor: pointer; }
+  .form__login:hover {
     color: #b6b6b6; }
 
 .form__external-logins-block {

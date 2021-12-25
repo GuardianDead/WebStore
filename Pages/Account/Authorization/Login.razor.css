@@ -86,7 +86,8 @@
     color: #b6b6b6; }
 
 .form__register {
-  color: #919191; }
+  color: #919191;
+  cursor: pointer; }
   .form__register:hover {
     color: #b6b6b6; }
 
