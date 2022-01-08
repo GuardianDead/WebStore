@@ -37,8 +37,7 @@
     <div class="container section3__container">
         <div class="carousel">
             <h2 class="carousel__name">Новинки</h2>
-            <div @onclick="async () => await theCarousel.Prev()" class="carousel__prev-arrow unselectable"><span class="unselectable">&#60;</span></div>
-            <BlazorSlickCarousel @ref="theCarousel" Configurations="configurations">
+            <BlazorSlickCarousel Configurations="configurations">
                 <BlazorSlickCarouselContent>
                     @if (productModelsSection1 is not null)
                     {
@@ -86,7 +85,6 @@
                     <span>Loading...</span>
                 </BlazorSlickCarouselLoading>
             </BlazorSlickCarousel>
-            <div @onclick="async () => await theCarousel.Next()" class="carousel__next-arrow unselectable"><span class="unselectable">&#62;</span></div>
         </div>
     </div>
 </section>
@@ -94,8 +92,7 @@
     <div class="container section4__container">
         <div class="carousel">
             <h2 class="carousel__name">Популярное</h2>
-            <div @onclick="async () => await theCarousel.Prev()" class="carousel__prev-arrow unselectable"><span class="unselectable">&#60;</span></div>
-            <BlazorSlickCarousel @ref="theCarousel" Configurations="configurations">
+            <BlazorSlickCarousel Configurations="configurations">
                 <BlazorSlickCarouselContent>
                     @if (productModelsSection2 is not null)
                     {
@@ -143,7 +140,6 @@
                     <span>Loading...</span>
                 </BlazorSlickCarouselLoading>
             </BlazorSlickCarousel>
-            <div @onclick="async () => await theCarousel.Next()" class="carousel__next-arrow unselectable"><span class="unselectable">&#62;</span></div>
         </div>
     </div>
 </section>
@@ -159,8 +155,7 @@
     <div class="container section6__container">
         <div class="carousel">
             <h2 class="carousel__name">Еще от Nike</h2>
-            <div @onclick="async () => await theCarousel.Prev()" class="carousel__prev-arrow unselectable"><span class="unselectable">&#60;</span></div>
-            <BlazorSlickCarousel @ref="theCarousel" Configurations="configurations">
+            <BlazorSlickCarousel Configurations="configurations">
                 <BlazorSlickCarouselContent>
                     @if (productModelsSection3 is not null)
                     {
@@ -208,7 +203,6 @@
                     <span>Loading...</span>
                 </BlazorSlickCarouselLoading>
             </BlazorSlickCarousel>
-            <div @onclick="async () => await theCarousel.Next()" class="carousel__next-arrow unselectable"><span class="unselectable">&#62;</span></div>
         </div>
     </div>
 </section>

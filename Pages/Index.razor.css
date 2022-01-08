@@ -24,51 +24,45 @@
       background-color: black; }
       ::deep .carousel__dots li.slick-active {
         background-color: gray; }
-  .carousel__prev-arrow {
-    z-index: 2;
-    width: min-content;
-    height: min-content;
+  .carousel ::deep .slick-prev:before {
+    content: '<';
+    font-size: 30px;
     position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    margin-left: 1.5em;
-    padding: 1em 2em;
-    cursor: pointer;
+    top: 40%;
+    right: 31%; }
+  .carousel ::deep .slick-prev {
+    margin-left: 50px;
+    padding: 40px 37px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%; }
-    .carousel__prev-arrow span {
-      padding-bottom: 0.22em;
-      text-align: center;
-      font-size: 4em; }
-    .carousel__prev-arrow:hover {
+    padding-top: 35px;
+    border-radius: 50%;
+    box-shadow: none;
+    background-color: darkgray; }
+    .carousel ::deep .slick-prev:hover {
       background-color: #e2e2e2; }
-    .carousel__prev-arrow:active {
+    .carousel ::deep .slick-prev:active {
       background-color: #e2e2e2; }
-  .carousel__next-arrow {
-    z-index: 2;
-    width: min-content;
-    height: min-content;
+  .carousel ::deep .slick-next:before {
+    content: '>';
+    font-size: 30px;
     position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    margin-right: 1.5em;
-    padding: 1em 2em;
-    cursor: pointer;
+    top: 40%;
+    left: 31%; }
+  .carousel ::deep .slick-next {
+    margin-right: 50px;
+    padding: 40px 37px;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 50%; }
-    .carousel__next-arrow span {
-      padding-bottom: 0.22em;
-      text-align: center;
-      font-size: 4em; }
-    .carousel__next-arrow:hover {
+    padding-top: 35px;
+    border-radius: 50%;
+    box-shadow: none;
+    background-color: darkgray; }
+    .carousel ::deep .slick-next:hover {
       background-color: #e2e2e2; }
-    .carousel__next-arrow:active {
+    .carousel ::deep .slick-next:active {
       background-color: #e2e2e2; }
 
 .carousel-item__image-block {

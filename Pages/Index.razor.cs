@@ -17,7 +17,9 @@ namespace WebStore.Pages
 
         [Inject] public AppDbContext Db { get; set; }
 
-        public BlazorSlickCarousel theCarousel;
+        public BlazorSlickCarousel theCarousel1;
+        public BlazorSlickCarousel theCarousel2;
+        public BlazorSlickCarousel theCarousel3;
         public WMBSCInitialSettings configurations;
 
         public List<ProductModel> productModelsSection1;
@@ -29,57 +31,52 @@ namespace WebStore.Pages
         protected override async Task OnInitializedAsync()
         {
             // <= 500px размера экрана
-            WMBSCSettings breakpoint500Settings = new WMBSCSettings
-            {
-                dotsClass = "carousel__dots",
-                arrows = false,
-                dots = true,
-                waitForAnimate = false,
-                slidesToScroll = 1,
-                touchThreshold = 20,
-                slidesToShow = 1
-            };
             WMBSCResponsiveSettings breakpoint500Responsive = new WMBSCResponsiveSettings
             {
                 breakpoint = 500,
-                settings = breakpoint500Settings
-            };
+                settings = new WMBSCSettings()
+                {
+                    dotsClass = "carousel__dots",
+                    arrows = false,
+                    dots = true,
+                    waitForAnimate = false,
+                    slidesToScroll = 1,
+                    touchThreshold = 20,
 
-            // <= 825px размера экрана
-            WMBSCSettings breakpoint825Settings = new WMBSCSettings
-            {
-                dotsClass = "carousel__dots",
-                arrows = false,
-                dots = true,
-                waitForAnimate = false,
-                slidesToScroll = 1,
-                touchThreshold = 20,
-                centerMode = true,
-                slidesToShow = 2,
+                }
             };
+            // <= 825px размера экрана
             WMBSCResponsiveSettings breakpoint825Responsive = new WMBSCResponsiveSettings
             {
                 breakpoint = 825,
-                settings = breakpoint825Settings
-            };
-
-            List<WMBSCResponsiveSettings> responsiveSettingsList = new List<WMBSCResponsiveSettings>()
+                settings = new WMBSCSettings
                 {
-                breakpoint825Responsive,
-                breakpoint500Responsive
-                };
+                    dotsClass = "carousel__dots",
+                    arrows = false,
+                    dots = true,
+                    waitForAnimate = false,
+                    slidesToScroll = 1,
+                    touchThreshold = 20,
+                    centerMode = true,
+                    slidesToShow = 2,
+                }
+            };
             configurations = new WMBSCInitialSettings
             {
                 dotsClass = "carousel__dots",
-                arrows = false,
+                arrows = true,
                 dots = true,
-                waitForAnimate = false,
+                waitForAnimate = true,
                 slidesToShow = 3,
                 slidesToScroll = 1,
                 touchThreshold = 20,
                 centerMode = true,
 
-                responsive = responsiveSettingsList,
+                responsive = new List<WMBSCResponsiveSettings>()
+                {
+                    breakpoint825Responsive,
+                    breakpoint500Responsive
+                }
             };
 
             productModelsSection1 = Db.ProductModels.AsNoTracking().Take(7).ToList();
@@ -92,8 +89,8 @@ namespace WebStore.Pages
                 var userEmailClaim = currentUserState.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email);
                 currentUser = Db.Users
                     .Include(user => user.Cart.Products)
-                    .Include(user => user.ListFavourites.Products)
-                    .SingleOrDefault(user => user.Email == userEmailClaim.Value);
+                            .Include(user => user.ListFavourites.Products)
+                            .SingleOrDefault(user => user.Email == userEmailClaim.Value);
             }
         }
 

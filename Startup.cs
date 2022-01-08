@@ -35,7 +35,7 @@ namespace WebStore
             if (Env.IsDevelopment())
                 services.AddAppMockDependencies();
 
-            services.AddWMBSC();
+            services.AddWMBSC(false);
             services.AddHttpContextAccessor();
         }
 
