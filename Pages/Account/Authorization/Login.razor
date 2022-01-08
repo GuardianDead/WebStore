@@ -1,6 +1,6 @@
 ﻿@page "/account/authorization/login/{returnUrl?}";
 @inherits LoginBase
-@attribute [Authorize(Policy = PolicyConst.User)]
+@attribute [AllowAnonymous]
 
 <section class="login">
     <div class="login__container">

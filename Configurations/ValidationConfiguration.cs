@@ -1,4 +1,9 @@
-﻿namespace WebStore.Configurations
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
+
+namespace WebStore.Configurations
 {
     public static class ValidationConfiguration
     {

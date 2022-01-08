@@ -28,7 +28,7 @@ namespace WebStore.Pages.Account.Authorization
         [Inject] public TokenAuthenticationStateService TokenAuthenticationStateService { get; set; }
 
         public RegisterViewModel RegisterViewModel { get; set; } = new RegisterViewModel();
-        public AuthenticationState userAuthenticationState;
+        public ClaimsPrincipal currentUserState;
         public string confirmPassword;
 
         public bool IsEmailLabelShift { get => !string.IsNullOrEmpty(RegisterViewModel.Email); }
@@ -42,9 +42,13 @@ namespace WebStore.Pages.Account.Authorization
         public bool IsPasswordInputValid { get; set; } = true;
         public bool IsConfirmPasswordInputValid { get; set; } = true;
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             RegisterViewModel.ReturnUrl = string.IsNullOrEmpty(ReturnUrl) ? NavigationManager.BaseUri : ReturnUrl.Replace('$', '/'); // Костыль, требуется заменить символы '/' на '$' в возвращаемом URL адресе при его отправке и наоборот
+            currentUserState = (await AuthenticationStateTask).User;
+
+            if (currentUserState.Identity.IsAuthenticated)
+                NavigationManager.NavigateTo(RegisterViewModel.ReturnUrl);
 
             //TODO : Сделать регистрацию через ExternalLoging
             //TODO : Сделать LockOut

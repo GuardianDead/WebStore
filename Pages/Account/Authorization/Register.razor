@@ -1,6 +1,6 @@
 ﻿@page "/account/authorization/register/{returnUrl?}"
 @inherits RegisterBase
-@attribute [Authorize(Policy = PolicyConst.User)]
+@attribute [AllowAnonymous]
 
 <section class="register">
     <div class="register__container">

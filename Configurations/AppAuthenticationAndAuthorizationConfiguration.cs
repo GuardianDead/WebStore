@@ -47,7 +47,6 @@ namespace WebStore.Configurations
                 });
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(PolicyConst.Guest, builder => builder.RequireAssertion(x => !x.User.Identity.IsAuthenticated));
                 options.AddPolicy(PolicyConst.Admin, bulder => bulder.RequireClaim(ClaimTypes.Role, RoleConst.Admin));
                 options.AddPolicy(PolicyConst.Moderator, bulder => bulder.RequireAssertion(x => x.User.HasClaim(ClaimTypes.Role, RoleConst.Moderator) || x.User.HasClaim(ClaimTypes.Role, RoleConst.Admin)));
                 options.AddPolicy(PolicyConst.User, bulder => bulder.RequireAssertion(x => x.User.HasClaim(ClaimTypes.Role, RoleConst.Moderator) || x.User.HasClaim(ClaimTypes.Role, RoleConst.Admin) || x.User.HasClaim(ClaimTypes.Role, RoleConst.User)));

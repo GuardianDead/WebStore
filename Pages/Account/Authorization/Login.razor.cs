@@ -33,13 +33,16 @@ namespace WebStore.Pages.Account.Authorization
         public bool IsEmailInputValid { get; set; } = true;
         public bool IsPasswordInputValid { get; set; } = true;
 
-        public ClaimsPrincipal currentUser;
+        public ClaimsPrincipal currentUserState;
         public LoginViewModel LoginViewModel { get; set; } = new LoginViewModel();
 
         protected override async Task OnInitializedAsync()
         {
             LoginViewModel.ReturnUrl = string.IsNullOrEmpty(ReturnUrl) ? NavigationManager.BaseUri.Replace('$', '/') : ReturnUrl.Replace('$', '/'); // Костыль, требуется заменить символы '/' на '$' в возвращаемом URL адресе при его отправке и наоборот
-            currentUser = (await AuthenticationStateTask).User;
+            currentUserState = (await AuthenticationStateTask).User;
+
+            if (currentUserState.Identity.IsAuthenticated)
+                NavigationManager.NavigateTo(LoginViewModel.ReturnUrl);
 
             //TODO : Сделать авторизацию через ExternalLoging
             //TODO : Сделать LockOut
@@ -105,7 +108,7 @@ namespace WebStore.Pages.Account.Authorization
             }
 
             var claimsPrincipal = await SignInManager.CreateUserPrincipalAsync(findedUser);
-            if (currentUser.Identity.IsAuthenticated)
+            if (currentUserState.Identity.IsAuthenticated)
             {
                 Errors.Add(new ValidationFailure("Identity", "Данный пользователь уже авторизован в системе"));
                 return;
