@@ -79,6 +79,7 @@
         display: flex;
         align-items: stretch;
         justify-content: center;
+        cursor: pointer;
 
         a {
             display: flex;
@@ -120,6 +121,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
 
             img {
                 margin: 0.6em;
@@ -155,6 +157,7 @@
             border: 0.1em solid rgb(240, 240, 240);
             border-radius: 2em;
             outline: none;
+            cursor: pointer;
 
             &:hover {
                 background-color: rgb(226, 226, 226);
@@ -168,6 +171,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
 
         &__count {
             position: absolute;
@@ -203,6 +207,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
 
         &__count {
             position: absolute;
@@ -237,6 +242,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
 
         img {
             margin: 0.5em;
@@ -254,6 +260,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
 
         img {
             margin: 0.3em;
@@ -269,6 +276,7 @@
 
     &__user-block {
         position: relative;
+        cursor: pointer;
     }
 
     &__user-links {
@@ -284,6 +292,7 @@
         z-index: 15;
         background-color: white;
         border: 1px solid rgb(179, 179, 179);
+        cursor: pointer;
 
         &.show {
             display: flex;
@@ -297,6 +306,7 @@
         justify-content: flex-end;
         align-items: center;
         margin: 0.5em 1em;
+        cursor: pointer;
 
         &:hover {
             background-color: rgb(226, 226, 226);
@@ -370,28 +380,6 @@
             }
         }
     }
-    /*.burger-menu_active{
-      span{
-         height: 0;
-      }
-      span::before{
-         transform: rotate(45deg);
-      }
-      span::after{
-         transform: rotate(-45deg);
-      }
-   }
-   .navbar{
-      //display: inline-block;
-      transition: 0.5s;
-      transform-origin: right center;
-      transform: translateX(100%);
-      opacity: 0;
-   }
-   .navbar_active{
-      transform: translateX(0%);
-      opacity: 1;
-   } */
     .panel {
         grid-template-columns: min-content min-content min-content min-content;
         justify-self: right;
@@ -476,6 +464,7 @@
                 outline: none;
                 transition: 0.5s ease all;
                 background-color: transparent;
+                cursor: pointer;
 
                 &:hover {
                     background-color: transparent;

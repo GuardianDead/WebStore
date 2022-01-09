@@ -1,0 +1,28 @@
+﻿.loader {
+    &__block{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 1em;
+    }
+}
+
+.block {
+    &__loader {
+        justify-self: center;
+        align-self: center;
+        background-color: transparent;
+
+        img {
+            margin-top: 22vh;
+            background-color: transparent;
+            height: 7em;
+            width: 7em;
+        }
+    }
+
+    &__text{
+        font-size: 1.5em;
+    }
+}

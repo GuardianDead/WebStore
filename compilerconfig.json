@@ -42,5 +42,9 @@
   {
     "outputFile": "wwwroot/css/styles.css",
     "inputFile": "wwwroot/scss/styles.scss"
+  },
+  {
+    "outputFile": "Pages/Shared/Loader.razor.css",
+    "inputFile": "Pages/Shared/Loader.razor.scss"
   }
 ]
