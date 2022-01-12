@@ -7,9 +7,8 @@
             <div class="footer__block-links block-links">
                 <div class="block-links__help">
                     <div class="block__spoiler one">
-                        <!-- one -->
-                        <h3 class="spoiler__title">ПОМОЩЬ</h3> <!-- active -->
-                        <div class="spoiler__content">
+                        <h3 class="spoiler__title @(firstSpoilerContent.Id == selectedSpoilerContent?.Id ? "active" : string.Empty)" @onclick="() => ToogleSpoilerAsync(firstSpoilerContent)">ПОМОЩЬ</h3>
+                        <div class="spoiler__content" @ref="firstSpoilerContent">
                             <ul class="help__links-list">
                                 <li><a class="links-list__link" href="#" aria-label="Перейти к разделу Статус заказа">Статус заказа</a></li>
                                 <li><a class="links-list__link" href="#" aria-label="Перейти к разделу Доставка">Доставка</a></li>
@@ -32,8 +31,8 @@
                 </div>
                 <div class="block-links__about">
                     <div class="block__spoiler">
-                        <h3 class="spoiler__title">О VECO</h3>
-                        <div class="spoiler__content">
+                        <h3 class="spoiler__title @(secondSpoilerContent.Id == selectedSpoilerContent?.Id ? "active" : string.Empty)" @onclick="() => ToogleSpoilerAsync(secondSpoilerContent)">О VECO</h3>
+                        <div class="spoiler__content" @ref="secondSpoilerContent">
                             <ul class="about__links-list">
                                 <li><a class="links-list__link" href="#" aria-label="Перейти к разделу Новости">Новости</a></li>
                                 <li><a class="links-list__link" href="#" aria-label="Перейти к разделу Карьера">Карьера</a></li>
@@ -52,8 +51,8 @@
                 </div>
                 <div class="block-links__confidentials">
                     <div class="block__spoiler">
-                        <h3 class="spoiler__title">ПОЛИТИКА</h3>
-                        <div class="spoiler__content">
+                        <h3 class="spoiler__title @(thirdSpoilerContent.Id == selectedSpoilerContent?.Id ? "active" : string.Empty)" @onclick="() => ToogleSpoilerAsync(thirdSpoilerContent)">ПОЛИТИКА</h3>
+                        <div class="spoiler__content" @ref="thirdSpoilerContent">
                             <ul class="confidentials__links-list">
                                 <li><a class="links-list__link" href="#" aria-label="Перейти к разделу Каталог">Каталог</a></li>
                                 <li><a class="links-list__link" href="#" aria-label="Перейти к разделу Условия использования">Условия использования</a></li>
@@ -76,8 +75,8 @@
                 </div>
                 <div class="block-links__contact contact">
                     <div class="block__spoiler">
-                        <h3 class="spoiler__title">КОНТАКТЫ</h3>
-                        <div class="spoiler__content">
+                        <h3 class="spoiler__title @(fourthSpoilerContent.Id == selectedSpoilerContent?.Id ? "active" : string.Empty)" @onclick="() => ToogleSpoilerAsync(fourthSpoilerContent)">КОНТАКТЫ</h3>
+                        <div class="spoiler__content" @ref="fourthSpoilerContent">
                             <ul class="contact__info-list">
                                 <li class="info-list__info">Почта: Veco@gmail.com</li>
                                 <li class="info-list__info">Телефона: +7 920 342 24-52</li>
