@@ -1,4 +1,4 @@
-﻿@inherits LayoutComponentBase
+﻿@inherits MainLayoutBase
 
 <div class="warrper">
 
@@ -38,28 +38,3 @@
     <Footer />
 
 </div>
-
-@code{
-    [Inject] public IJSRuntime JSRuntime { get; set; }
-
-    public bool ScrollToUpIsActive { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await JSRuntime.InvokeVoidAsync("SetMainLayouteDotnetReference", DotNetObjectReference.Create(this));
-    }
-
-    [JSInvokable]
-    public void ShowScrollToUp()
-    {
-        ScrollToUpIsActive = true;
-        StateHasChanged();
-    }
-    [JSInvokable]
-    public void HideScrollToUp()
-    {
-        ScrollToUpIsActive = false;
-        StateHasChanged();
-    }
-    public async Task ScrollToTopAsync() => await JSRuntime.InvokeVoidAsync("scrollToTop");
-}
