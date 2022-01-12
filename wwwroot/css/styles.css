@@ -138,15 +138,6 @@ h1, h2, h3, h4, h5, h6 {
   font-size: inherit;
   font-weight: 400; }
 
-.loader {
-  justify-self: center;
-  align-self: center;
-  background-color: transparent; }
-  .loader img {
-    background-color: transparent;
-    height: 3.5em;
-    width: 3.5em; }
-
 ::-webkit-scrollbar {
   background-color: #dbdbdb; }
 
@@ -395,7 +386,8 @@ h1, h2, h3, h4, h5, h6 {
 .category__link {
   display: flex;
   align-items: stretch;
-  justify-content: center; }
+  justify-content: center;
+  cursor: pointer; }
   .category__link a {
     display: flex;
     align-items: center;
@@ -426,7 +418,8 @@ h1, h2, h3, h4, h5, h6 {
       left: 0.06em;
       display: flex;
       align-items: center;
-      justify-content: center; }
+      justify-content: center;
+      cursor: pointer; }
       .panel__search__lupa img {
         margin: 0.6em;
         width: 1.5em;
@@ -453,7 +446,8 @@ h1, h2, h3, h4, h5, h6 {
       background-color: #f0f0f0;
       border: 0.1em solid #f0f0f0;
       border-radius: 2em;
-      outline: none; }
+      outline: none;
+      cursor: pointer; }
       .panel__search input:hover {
         background-color: #e2e2e2;
         border: 0.1em solid #e2e2e2; }
@@ -461,7 +455,8 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center; }
+    justify-content: center;
+    cursor: pointer; }
     .panel__favorites__count {
       position: absolute;
       top: 0px;
@@ -488,7 +483,8 @@ h1, h2, h3, h4, h5, h6 {
     position: relative;
     display: flex;
     align-items: center;
-    justify-content: center; }
+    justify-content: center;
+    cursor: pointer; }
     .panel__cart__count {
       position: absolute;
       top: 0px;
@@ -514,7 +510,8 @@ h1, h2, h3, h4, h5, h6 {
   .panel__login {
     display: flex;
     align-items: center;
-    justify-content: center; }
+    justify-content: center;
+    cursor: pointer; }
     .panel__login img {
       margin: 0.5em;
       width: 1.9em;
@@ -525,7 +522,8 @@ h1, h2, h3, h4, h5, h6 {
   .panel__user {
     display: flex;
     align-items: center;
-    justify-content: center; }
+    justify-content: center;
+    cursor: pointer; }
     .panel__user img {
       margin: 0.3em;
       width: 2.4em;
@@ -534,7 +532,8 @@ h1, h2, h3, h4, h5, h6 {
       border-radius: 50%;
       background-color: #e2e2e2; }
   .panel__user-block {
-    position: relative; }
+    position: relative;
+    cursor: pointer; }
   .panel__user-links {
     border-radius: 5px;
     position: absolute;
@@ -547,7 +546,8 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
     z-index: 15;
     background-color: white;
-    border: 1px solid #b3b3b3; }
+    border: 1px solid #b3b3b3;
+    cursor: pointer; }
     .panel__user-links.show {
       display: flex; }
 
@@ -555,7 +555,8 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin: 0.5em 1em; }
+  margin: 0.5em 1em;
+  cursor: pointer; }
   .user-menu__link:hover {
     background-color: #e2e2e2;
     border-radius: 3px; }
@@ -608,28 +609,6 @@ h1, h2, h3, h4, h5, h6 {
         transform: translateY(-6.5px); }
       .burger-menu span::after {
         transform: translateY(6.5px); }
-  /*.burger-menu_active{
-      span{
-         height: 0;
-      }
-      span::before{
-         transform: rotate(45deg);
-      }
-      span::after{
-         transform: rotate(-45deg);
-      }
-   }
-   .navbar{
-      //display: inline-block;
-      transition: 0.5s;
-      transform-origin: right center;
-      transform: translateX(100%);
-      opacity: 0;
-   }
-   .navbar_active{
-      transform: translateX(0%);
-      opacity: 1;
-   } */
   .panel {
     grid-template-columns: min-content min-content min-content min-content;
     justify-self: right;
@@ -677,7 +656,8 @@ h1, h2, h3, h4, h5, h6 {
         padding: 0;
         outline: none;
         transition: 0.5s ease all;
-        background-color: transparent; }
+        background-color: transparent;
+        cursor: pointer; }
         .panel__search input:hover {
           background-color: transparent;
           border: none; }

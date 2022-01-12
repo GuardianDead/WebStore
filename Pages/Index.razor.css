@@ -39,7 +39,7 @@
     padding-top: 35px;
     border-radius: 50%;
     box-shadow: none;
-    background-color: darkgray; }
+    background-color: transparent; }
     .carousel ::deep .slick-prev:hover {
       background-color: #e2e2e2; }
     .carousel ::deep .slick-prev:active {
@@ -59,7 +59,7 @@
     padding-top: 35px;
     border-radius: 50%;
     box-shadow: none;
-    background-color: darkgray; }
+    background-color: transparent; }
     .carousel ::deep .slick-next:hover {
       background-color: #e2e2e2; }
     .carousel ::deep .slick-next:active {

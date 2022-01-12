@@ -41,7 +41,6 @@
     <None Include="wwwroot\scss\footer.scss" />
     <None Include="wwwroot\scss\header.scss" />
     <None Include="wwwroot\scss\imports\defultstyle.scss" />
-    <None Include="wwwroot\scss\imports\loader.scss" />
     <None Include="wwwroot\scss\imports\scroll-to-top.scss" />
     <None Include="wwwroot\scss\imports\scrollbar.scss" />
   </ItemGroup>

@@ -2,13 +2,12 @@
     <Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
-                @*<NotAuthorized>
-
+                <NotAuthorized>
+                    <AccessDenied />
                 </NotAuthorized>
                 <Authorizing>
-                    <h1>Authorization in progress</h1>
-                    <p>Only visible while authorization is in progress.</p>
-                </Authorizing>*@
+                    <Loader />
+                </Authorizing>
             </AuthorizeRouteView>
         </Found>
         <NotFound>

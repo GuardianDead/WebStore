@@ -30,31 +30,29 @@ namespace WebStore.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            // <= 500px размера экрана
-            WMBSCResponsiveSettings breakpoint500Responsive = new WMBSCResponsiveSettings
+            WMBSCResponsiveSettings breakpoint500Responsive = new WMBSCResponsiveSettings // <= 500px размера экрана
             {
                 breakpoint = 500,
                 settings = new WMBSCSettings()
                 {
                     dotsClass = "carousel__dots",
-                    arrows = false,
+                    arrows = true,
                     dots = true,
-                    waitForAnimate = false,
+                    waitForAnimate = true,
                     slidesToScroll = 1,
                     touchThreshold = 20,
 
                 }
             };
-            // <= 825px размера экрана
-            WMBSCResponsiveSettings breakpoint825Responsive = new WMBSCResponsiveSettings
+            WMBSCResponsiveSettings breakpoint825Responsive = new WMBSCResponsiveSettings // <= 825px размера экрана
             {
                 breakpoint = 825,
                 settings = new WMBSCSettings
                 {
                     dotsClass = "carousel__dots",
-                    arrows = false,
+                    arrows = true,
                     dots = true,
-                    waitForAnimate = false,
+                    waitForAnimate = true,
                     slidesToScroll = 1,
                     touchThreshold = 20,
                     centerMode = true,
