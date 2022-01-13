@@ -1,7 +1,7 @@
 .sidenav{
    display: none;
 }
-@media (max-width: 700px){
+@media (max-width: 835px){
    .sidenav {
       position: fixed;
       top: 0;
@@ -21,12 +21,21 @@
          margin-right: 1.7em;
       }
    }
-   .sidenav.scroling{
-      .closebtn{
-         top: 15px;
-         padding: 6px 6px 0px 0px;
-      }
-   }
+    .sidenav.expand100 {
+        width: 100%;
+    }
+    .sidenav.expand75 {
+        width: 75%;
+    }
+    .sidenav.close{
+        width: 0%;
+    }
+    .sidenav.scroling {
+        .closebtn {
+            top: 15px;
+            padding: 6px 6px 0px 0px;
+        }
+    }
    .navbar-mobile {
       &__link {
          display: flex;

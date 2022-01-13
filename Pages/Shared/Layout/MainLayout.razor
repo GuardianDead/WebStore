@@ -2,35 +2,48 @@
 
 <div class="warrper">
 
-    <div class="dark-overlay" onclick="closeNav()"></div> <!-- show -->
-    <nav id="mySidenav" class="sidenav">
-        <!-- scroling -->
-        <a class="closebtn" onclick="closeNav()" aria-label="Закрыть боковое меню категорий">&times;</a>
-        <ul class="sidenav__navbar-mobile">
-            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с категорией Обувь"><h3>Обувь</h3></a><a class="link__arrow" href="#" onclick="openSubcaregoriesNav()" aria-label="Перейти в раздел подкатегорий категории Обувь"><img src="./icons/sidebar/White-right-arrow-category.svg" alt="Иконка белой стрелки вправо" title="Перейти в раздел подкатегорий категории Обувь"></a></li>
-            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с категорией Низ"><h3>Низ</h3></a><a class="link__arrow" href="#" onclick="openSubcaregoriesNav()" aria-label="Перейти в раздел подкатегорий категории Обувь"><img src="./icons/sidebar/White-right-arrow-category.svg" alt="Иконка белой стрелки вправо" title="Перейти в раздел подкатегорий категории Низ"></a></li>
-            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с категорией Верх"><h3>Верх</h3></a><a class="link__arrow" href="#" onclick="openSubcaregoriesNav()" aria-label="Перейти в раздел подкатегорий категории Обувь"><img src="./icons/sidebar/White-right-arrow-category.svg" alt="Иконка белой стрелки вправо" title="Перейти в раздел подкатегорий категории Верх"></a></li>
-            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с категорией Головные уборы"><h3>Головные уборы</h3></a><a class="link__arrow" href="#" onclick="openSubcaregoriesNav()" aria-label="Перейти в раздел подкатегорий категории Обувь"><img src="./icons/sidebar/White-right-arrow-category.svg" alt="Иконка белой стрелки вправо" title="Перейти в раздел подкатегорий категории Головные уборы"></a></li>
-        </ul>
-    </nav>
-    <nav id="mySidenav-subcaregories" class="sidenav">
-        <!-- show -->
-        <a class="returnbtn" onclick="closeSubcaregoriesNav()" aria-label="Закрыть боковое меню подкатегорий"><img src="./icons/sidebar/White-right-arrow.svg" alt="Иконка белой стрелки вправо" title="Вернутся назад"></a> <!-- scroling -->
-        <ul class="sidenav__navbar-mobile">
-            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с подкатегорией Кроссовки"><h3>Кроссовки</h3></a></li>
-            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с подкатегорией Макасины"><h3>Макасины</h3></a></li>
-            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с подкатегорией Туфли"><h3>Туфли</h3></a></li>
-            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с подкатегорией Тапки"><h3>Тапки</h3></a></li>
-            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с подкатегорией Каблуки"><h3>Каблуки</h3></a></li>
-            <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с подкатегорией Ботинки"><h3>Ботинки</h3></a></li>
-        </ul>
-    </nav>
+    <div class="dark-overlay @(DarkOverlayIsShow ? "show" : string.Empty)" @onclick="CloseCategorySideNavigation"></div>
 
+    <nav id="mySidenav" class="sidenav @(ClassWightCategorySideNavigation)">
+        <a class="closebtn" @onclick="CloseCategorySideNavigation" aria-label="Закрыть боковое меню категорий">&times;</a>
+        <ul class="sidenav__navbar-mobile">
+            @if (categories is not null)
+            {
+                @foreach (var category in categories)
+                {
+                    <li class="navbar-mobile__link">
+                        <a href="#" aria-label="Перейти в раздел товаров с категорией @category.Name">
+                            <h3>@category.Name</h3>
+                        </a>
+                        <a class="link__arrow" @onclick="() => OpenSubcategorySideNavigationAsync(category)" aria-label="Перейти в раздел подкатегорий категории @category.Name">
+                            <img src="/icons/sidebar/White-right-arrow-category.svg" alt="Иконка белой стрелки вправо" title="Перейти в раздел подкатегорий категории @category.Name">
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+    </nav>
+    <nav id="mySidenav-subcaregories" class="sidenav @(ClassWightSubcategorySideNavigation)">
+        <a class="returnbtn" @onclick="CloseSubcategorySideNavigation" aria-label="Закрыть боковое меню подкатегорий"><img src="/icons/sidebar/White-right-arrow.svg" alt="Иконка белой стрелки вправо" title="Вернутся назад"></a>
+        <ul class="sidenav__navbar-mobile">
+            @if (selectedSubcaregories is not null)
+            {
+                @foreach (var subcategory in selectedSubcaregories)
+                {
+                    <li class="navbar-mobile__link">
+                        <a href="#" aria-label="Перейти в раздел товаров с подкатегорией @subcategory.Name">
+                            <h3>@subcategory.Name</h3>
+                        </a>
+                    </li>
+                }
+            }
+        </ul>
+    </nav>
 
     <div class="scroll-to-up @(ScrollToUpIsActive ? "active" : string.Empty)" @onclick="ScrollToTopAsync"><img src="/icons/import/Scroll-to-top.svg" alt="Кнопка для скрола в самый вверх сайта" title="Подняться наверх"></div>
 
     <Header />
-
+    
     <main class="content">
         @Body
     </main>

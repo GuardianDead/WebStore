@@ -122,5 +122,11 @@ namespace WebStore.Pages.Shared.Layout
             IsSearchPanelActive = false;
             StateHasChanged();
         }
+        [JSInvokable]
+        public async Task OpenCategorySideNavigationAsync()
+        {
+            var currentWindowInnerWidth = await JSRuntime.InvokeAsync<int>("getCurrentWindowInnerWidth");
+            await JSRuntime.InvokeVoidAsync("openCategorySideNavigation", currentWindowInnerWidth <= 420 ? "expand100" : "expand75");
+        }
     }
 }

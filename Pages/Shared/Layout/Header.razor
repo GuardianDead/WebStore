@@ -51,7 +51,7 @@
                     <a class="panel__login" @onclick="NavigateToLogin" aria-label="Авторизоваться"><img src="/icons/header/Login.svg" alt="Иконка авторизации" title="Войти"></a>
                 }
             </div>
-            <a class="burger-menu" onclick="openNav()"><span /></a>
+            <a class="burger-menu" @onclick="OpenCategorySideNavigationAsync"><span /></a>
         </div>
         <div class="subcategories @(IsSubcategoriesShow ? "show" : string.Empty)">
             @if (selectedSubcaregories is not null)

@@ -54,6 +54,12 @@ function scrollToTop() {
         behavior: 'smooth'
     })
 }
+function openCategorySideNavigation(classWidthCategorySideNavagation) {
+    GLOBAL.MainLayouteDotNetReference.invokeMethodAsync('OpenCategorySideNavigation', classWidthCategorySideNavagation);
+}
+function openSubcategorySideNavigation(classWidthSubcategorySideNavagation) {
+    GLOBAL.MainLayouteDotNetReference.invokeMethodAsync('OpenSubcategorySideNavigation', classWidthSubcategorySideNavagation);
+}
 
 //Header
 function showSubcategories() {
@@ -95,53 +101,6 @@ function hideSpoilerContent(spoilerContent) {
     } else {
         showSpoilerContent(spoilerContent);
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const openNav = () => {
-    if (window.innerWidth <= 420){
-        $('#mySidenav').css({'width':'100%'})
-    }
-    else {        
-        $('#mySidenav').css({'width':'75%'})
-    }
-    $('.dark-overlay').addClass('show');
-}
-const closeNav = () => {
-    $('.dark-overlay').removeClass('show');
-    $('#mySidenav').css({"width":"0%"})
-    $('#mySidenav-subcaregories').css({"width":"0%"})
-}
-
-const openSubcaregoriesNav = () => {
-    if (window.innerWidth <= 420){
-        $('#mySidenav-subcaregories').css({"width":"100%"})
-    }
-    else {        
-        $('#mySidenav-subcaregories').css({"width":"75%"})
-    }
-}
-const closeSubcaregoriesNav = () =>{
-    $('#mySidenav-subcaregories').css({"width":"0%"})
 }
 
 window.addEventListener("scroll", () => { 
