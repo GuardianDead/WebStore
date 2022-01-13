@@ -18,6 +18,8 @@ namespace WebStore.Pages.Shared.Layout
         public bool DarkOverlayIsShow { get; set; }
         public string ClassWightCategorySideNavigation { get; set; }
         public string ClassWightSubcategorySideNavigation { get; set; }
+        public bool ReturnButtonIsScroling { get; set; }
+        public bool CategorySideNavigationIsScroling { get; set; }
 
         public static List<Subcategory> subcategories;
         public static List<Category> categories = new List<Category>();
@@ -34,6 +36,31 @@ namespace WebStore.Pages.Shared.Layout
             return JSRuntime.InvokeVoidAsync("SetMainLayouteDotnetReference", DotNetObjectReference.Create(this)).AsTask();
         }
 
+        [JSInvokable]
+        public void CancelCategorySideNavigationIsScroling()
+        {
+            CategorySideNavigationIsScroling = false;
+            StateHasChanged();
+        }
+        [JSInvokable]
+        public void EnableCategorySideNavigationIsScroling()
+        {
+            CategorySideNavigationIsScroling = true;
+            StateHasChanged();
+        }
+        [JSInvokable]
+        public void CancelReturnButtonScroling()
+        {
+            ReturnButtonIsScroling = false;
+            StateHasChanged();
+        }
+        [JSInvokable]
+        public void EnableReturnButtonScroling()
+        {
+            ReturnButtonIsScroling = true;
+            StateHasChanged();
+        }
+        [JSInvokable]
         public Task ScrollToTopAsync() => JSRuntime.InvokeVoidAsync("scrollToTop").AsTask();
         [JSInvokable]
         public void ShowScrollToUp()

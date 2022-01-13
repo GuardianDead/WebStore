@@ -21,9 +21,10 @@ namespace WebStore.Pages.Shared.Layout
         [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public UserManager<User> UserManager { get; set; }
 
-        public static bool IsSubcategoriesShow { get; set; } = false;
-        public bool IsUserPanelShow { get; set; } = false;
-        public bool IsSearchPanelActive { get; set; } = false;
+        public static bool SubcategoriesIsShow { get; set; }
+        public bool UserPanelIsShow { get; set; }
+        public bool SearchPanelIsActive { get; set; }
+        public bool HeaderIsScroling { get; set; }
 
         public static List<Subcategory> subcategories;
         public static List<Category> categories = new List<Category>();
@@ -64,38 +65,50 @@ namespace WebStore.Pages.Shared.Layout
         public int CountCartProducts() => currentUser.Cart.Products.Count;
 
         [JSInvokable]
-        public ValueTask HideSubcategoriesAsync()
+        public void СancelHeaderScrolling()
         {
-            IsSubcategoriesShow = false;
+            HeaderIsScroling = false;
+            StateHasChanged();
+        }
+        [JSInvokable]
+        public void EnableHeaderScrolling()
+        {
+            HeaderIsScroling = true;
+            StateHasChanged();
+        }
+        [JSInvokable]
+        public async ValueTask HideSubcategoriesAsync()
+        {
+            SubcategoriesIsShow = false;
             selectedCategory = null;
             selectedSubcaregories = null;
+            await JSRuntime.InvokeVoidAsync("hideSubcategories");
             StateHasChanged();
-            return JSRuntime.InvokeVoidAsync("hideSubcategories");
         }
         [JSInvokable]
-        public ValueTask ShowSubcategoriesAsync(Category category)
+        public async ValueTask ShowSubcategoriesAsync(Category category)
         {
-            IsSubcategoriesShow = true;
+            SubcategoriesIsShow = true;
             selectedCategory = category;
             selectedSubcaregories = subcategories.Where(subcategory => subcategory.Category.Id == category.Id).ToList();
+            await JSRuntime.InvokeVoidAsync("showSubcategories");
             StateHasChanged();
-            return JSRuntime.InvokeVoidAsync("showSubcategories");
         }
         [JSInvokable]
-        public async ValueTask ToggleUserPanelAsync()
+        public ValueTask ToggleUserPanelAsync() => UserPanelIsShow ? HideUserPanelAsync() : ShowUserPanelAsync();
+        [JSInvokable]
+        public async ValueTask ShowUserPanelAsync()
         {
-            if (IsUserPanelShow)
-            {
-                await JSRuntime.InvokeVoidAsync("hideUserPanel");
-                IsUserPanelShow = !IsUserPanelShow;
-                StateHasChanged();
-            }
-            else
-            {
-                await JSRuntime.InvokeVoidAsync("showUserPanel");
-                IsUserPanelShow = !IsUserPanelShow;
-                StateHasChanged();
-            }
+            UserPanelIsShow = true;
+            await JSRuntime.InvokeVoidAsync("showUserPanel");
+            StateHasChanged();
+        }
+        [JSInvokable]
+        public async ValueTask HideUserPanelAsync()
+        {
+            UserPanelIsShow = false;
+            await JSRuntime.InvokeVoidAsync("hideUserPanel");
+            StateHasChanged();
         }
         [JSInvokable]
         public async ValueTask ToggleSearchPanelAsync()
@@ -103,13 +116,13 @@ namespace WebStore.Pages.Shared.Layout
             var currentWindowInnerWidth = await JSRuntime.InvokeAsync<int>("getCurrentWindowInnerWidth");
             if (currentWindowInnerWidth <= 835)
             {
-                if (IsSearchPanelActive)
+                if (SearchPanelIsActive)
                 {
                     //TODO : Ищем имена тех товаров который ввел пользователь
                 }
                 else
                 {
-                    IsSearchPanelActive = true;
+                    SearchPanelIsActive = true;
                     StateHasChanged();
                 }
             }
@@ -119,7 +132,7 @@ namespace WebStore.Pages.Shared.Layout
         [JSInvokable]
         public void HideSearchPanel()
         {
-            IsSearchPanelActive = false;
+            SearchPanelIsActive = false;
             StateHasChanged();
         }
         [JSInvokable]

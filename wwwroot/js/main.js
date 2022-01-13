@@ -25,6 +25,24 @@ $(window).scroll((e) => {
     else {
         GLOBAL.MainLayouteDotNetReference.invokeMethodAsync('HideScrollToUp');
     }
+    let st = window.pageYOffset || document.documentElement.scrollTop;
+    let lastScrollTop = 0;
+    if (st > lastScrollTop) {
+        if (document.documentElement.scrollTop > 0) {
+            GLOBAL.HeaderDotNetReference.invokeMethodAsync('HideUserPanelAsync');
+            GLOBAL.HeaderDotNetReference.invokeMethodAsync('HideSubcategoriesAsync');
+            GLOBAL.HeaderDotNetReference.invokeMethodAsync('EnableHeaderScrolling');
+            GLOBAL.MainLayouteDotNetReference.invokeMethodAsync('EnableCategorySideNavigationIsScroling');
+            GLOBAL.MainLayouteDotNetReference.invokeMethodAsync('EnableReturnButtonScroling');
+        }
+    } else {
+        if (document.documentElement.scrollTop == 0) {
+            GLOBAL.HeaderDotNetReference.invokeMethodAsync('СancelHeaderScrolling');
+            GLOBAL.MainLayouteDotNetReference.invokeMethodAsync('СancelCategorySideNavigationIsScroling');
+            GLOBAL.MainLayouteDotNetReference.invokeMethodAsync('СancelReturnButtonScroling');
+        }
+    }
+    lastScrollTop = st <= 0 ? 0 : st;
 })
 $(document).click((e) => {
     if (!e.target.closest('.subcategories, .category__link')) {
@@ -103,28 +121,6 @@ function hideSpoilerContent(spoilerContent) {
     }
 }
 
-window.addEventListener("scroll", () => { 
-   var st = window.pageYOffset || document.documentElement.scrollTop; 
-   var lastScrollTop = 0;
-   if (st > lastScrollTop){
-    if(document.documentElement.scrollTop > 0){
-        $('.panel__user-links').slideUp(150);
-        $('.panel__user-links').removeClass('show');
-        hideSubcategories()
-        $('.header').addClass('scroling');
-        $('#mySidenav').addClass('scroling');
-        $('.returnbtn').addClass('scroling');
-      }
-   } else {
-      if(document.documentElement.scrollTop == 0){
-        $('.header').removeClass('scroling');
-        $('#mySidenav').removeClass('scroling');
-        $('.returnbtn').removeClass('scroling')
-      }
-   }
-   lastScrollTop = st <= 0 ? 0 : st;
-}, false);
-
 const scorePassword = (pass) => {
     var score = 0;
     if (!pass)
@@ -163,7 +159,6 @@ function passwordConfirmInputValueChange() {
         passwordConfirmLabel.classList.add('shift')
     }
 }
-
 $('.counter__plus').click(e => {
     const counterInput = $(e.target).prev()[0];
     counterInput.value++;

@@ -4,7 +4,7 @@
 
     <div class="dark-overlay @(DarkOverlayIsShow ? "show" : string.Empty)" @onclick="CloseCategorySideNavigation"></div>
 
-    <nav id="mySidenav" class="sidenav @(ClassWightCategorySideNavigation)">
+    <nav id="mySidenav" class="sidenav @(CategorySideNavigationIsScroling ? "scroling" : string.Empty) @(ClassWightCategorySideNavigation)">
         <a class="closebtn" @onclick="CloseCategorySideNavigation" aria-label="Закрыть боковое меню категорий">&times;</a>
         <ul class="sidenav__navbar-mobile">
             @if (categories is not null)
@@ -24,7 +24,7 @@
         </ul>
     </nav>
     <nav id="mySidenav-subcaregories" class="sidenav @(ClassWightSubcategorySideNavigation)">
-        <a class="returnbtn" @onclick="CloseSubcategorySideNavigation" aria-label="Закрыть боковое меню подкатегорий"><img src="/icons/sidebar/White-right-arrow.svg" alt="Иконка белой стрелки вправо" title="Вернутся назад"></a>
+        <a class="returnbtn @(ReturnButtonIsScroling ? "scroling" : string.Empty)" @onclick="CloseSubcategorySideNavigation" aria-label="Закрыть боковое меню подкатегорий"><img src="/icons/sidebar/White-right-arrow.svg" alt="Иконка белой стрелки вправо" title="Вернутся назад"></a>
         <ul class="sidenav__navbar-mobile">
             @if (selectedSubcaregories is not null)
             {

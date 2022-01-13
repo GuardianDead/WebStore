@@ -2,7 +2,7 @@
 
 @if (currentUserState is not null)
 {
-    <header class="header">
+    <header class="header @(HeaderIsScroling ? "scroling" : string.Empty)">
         <div class="container header__container">
             <a class="logo" @onclick="NavigateToIndex" aria-label="Лого"><img src="/icons/header/Logo.svg" alt="Лого" title="Лого"></a>
             <nav class="navbar">
@@ -11,15 +11,15 @@
                     {
                         @foreach (var category in categories)
                         {
-                            <li class="category__link" @onmouseover="() => ShowSubcategoriesAsync(category)"><a href="#" aria-label="Перейти в раздел товаров с категорией @category.Name"><h3>@category.Name</h3></a></li>
+                            <li class="category__link" @onmouseover="async () => await ShowSubcategoriesAsync(category)"><a href="#" aria-label="Перейти в раздел товаров с категорией @category.Name"><h3>@category.Name</h3></a></li>
                         }
                     }
                 </ul>
             </nav>
             <div class="panel">
                 <div class="panel__search">
-                    <span id="searchLupa" class="panel__search__lupa @(IsSearchPanelActive ? "active" : string.Empty)" @onclick="async () => await ToggleSearchPanelAsync()"><img src="/icons/header/Lupa.svg" alt="Поисковая лупа" title="Поиск"></span>
-                    <input id="searchInput" class="panel__search__input @(IsSearchPanelActive ? "active" : string.Empty)" @bind="searchContent" @onblur="HideSearchPanel" placeholder="Поиск товара" type="search" aria-label="Поисковик товара по имени">
+                    <span id="searchLupa" class="panel__search__lupa @(SearchPanelIsActive ? "active" : string.Empty)" @onclick="async () => await ToggleSearchPanelAsync()"><img src="/icons/header/Lupa.svg" alt="Поисковая лупа" title="Поиск"></span>
+                    <input id="searchInput" class="panel__search__input @(SearchPanelIsActive ? "active" : string.Empty)" @bind="searchContent" @onblur="HideSearchPanel" placeholder="Поиск товара" type="search" aria-label="Поисковик товара по имени">
                 </div>
                 @if (currentUserState.Identity.IsAuthenticated)
                 {
@@ -39,7 +39,7 @@
                     </a>
                     <div class="panel__user-block" @onclick="async () => await ToggleUserPanelAsync()">
                         <div class="panel__user" aria-label="Войти в личный кабинет"><img src="/icons/header/User.svg" alt="Иконка пользователя" title="Войти в личный кабинет"></div>
-                        <ul class="panel__user-links @(IsUserPanelShow ? "show" : string.Empty)">
+                        <ul class="panel__user-links @(UserPanelIsShow ? "show" : string.Empty)">
                             <li class="user-menu__link"><a href="#" aria-label="Перейти в заказы пользователя">Заказы<img src="/icons/header/Orders (cube).svg" alt="Иконка заказов пользователя" title="Заказы"></a></li>
                             <li class="user-menu__link"><a href="#" aria-label="Перейти в настройки личного кабинета пользователя">Настройки<img src="/icons/header/Settings.svg" alt="Иконка настроек" title="Настройки"></a></li>
                             <li class="user-menu__link"><a @onclick="NavigateToLogout" aria-label="Выйти из аккаунта">Выйти<img src="/icons/header/Exit.svg" alt="Иконка выхода пользователя из системы" title="Выход"></a></li>
@@ -53,13 +53,13 @@
             </div>
             <a class="burger-menu" @onclick="OpenCategorySideNavigationAsync"><span /></a>
         </div>
-        <div class="subcategories @(IsSubcategoriesShow ? "show" : string.Empty)">
+        <div class="subcategories @(SubcategoriesIsShow ? "show" : string.Empty)">
             @if (selectedSubcaregories is not null)
             {
                 <ul class="subcategories__list">
                     @foreach (var subcategory in selectedSubcaregories)
                     {
-                        <li class="subcategory" @onclick="() => HideSubcategoriesAsync()"><a href="#" aria-label="Перейти в каталог товаров с подкатегорией @subcategory.Name"><h3>@subcategory.Name</h3></a></li>
+                        <li class="subcategory" @onclick="async () => await HideSubcategoriesAsync()"><a href="#" aria-label="Перейти в каталог товаров с подкатегорией @subcategory.Name"><h3>@subcategory.Name</h3></a></li>
                     }
                 </ul>
             }
