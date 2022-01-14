@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace WebStore.Pages.Account.Authorization
         [CascadingParameter] public Task<AuthenticationState> AuthenticationStateTask { get; set; }
         [Parameter] public string ReturnUrl { get; set; }
 
+        [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public IValidator<RegisterViewModel> RegisterViewModelValidator { get; set; }
         [Inject] public UserManager<User> UserManager { get; set; }
         [Inject] public SignInManager<User> SignInManager { get; set; }
@@ -30,17 +32,21 @@ namespace WebStore.Pages.Account.Authorization
         public RegisterViewModel RegisterViewModel { get; set; } = new RegisterViewModel();
         public ClaimsPrincipal currentUserState;
         public string confirmPassword;
+        public string passwordMeterScoreClassName;
+        public string passwordLabelScoreWord;
 
-        public bool IsEmailLabelShift { get => !string.IsNullOrEmpty(RegisterViewModel.Email); }
+        public bool IsEmailLabelShift
+        { get => !string.IsNullOrEmpty(RegisterViewModel.Email); }
         public bool IsPasswordLabelShift { get => !string.IsNullOrEmpty(RegisterViewModel.Password); }
         public bool IsConfirmPasswordLabelShift { get => !string.IsNullOrEmpty(confirmPassword); }
-        public bool IsPasswordShow { get; set; } = false;
-        public bool IsConfirmPasswordShow { get; set; } = false;
-
+        public bool IsPasswordShow { get; set; }
+        public bool IsConfirmPasswordShow { get; set; }
         public List<ValidationFailure> Errors { get; set; } = new List<ValidationFailure>();
         public bool IsEmailInputValid { get; set; } = true;
         public bool IsPasswordInputValid { get; set; } = true;
         public bool IsConfirmPasswordInputValid { get; set; } = true;
+        public bool PasswordMeterIsShow { get; set; }
+        public bool PasswordLabelIsShow { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -62,11 +68,43 @@ namespace WebStore.Pages.Account.Authorization
             IsEmailInputValid = true;
             Errors.RemoveAll(error => error.PropertyName == nameof(RegisterViewModel.Email));
         }
-        public void PasswordInputChangeValue(ChangeEventArgs e)
+        public async Task PasswordInputChangeValueAsync(ChangeEventArgs e)
         {
             RegisterViewModel.Password = e.Value.ToString();
             IsPasswordInputValid = true;
             Errors.RemoveAll(error => error.PropertyName == nameof(RegisterViewModel.Password));
+            if (string.IsNullOrEmpty(RegisterViewModel.Password))
+            {
+                PasswordMeterIsShow = false;
+                PasswordLabelIsShow = false;
+            }
+            else
+            {
+                PasswordMeterIsShow = true;
+                PasswordLabelIsShow = true;
+                var scorePassword = await JSRuntime.InvokeAsync<int>("getScorePassword", RegisterViewModel.Password);
+                if (scorePassword <= 100)
+                {
+                    passwordMeterScoreClassName = "strong";
+                    passwordLabelScoreWord = "Сильный";
+                }
+                if (scorePassword <= 75)
+                {
+                    passwordMeterScoreClassName = "high-medium";
+                    passwordLabelScoreWord = "Выше среднего";
+                }
+                if (scorePassword <= 50)
+                {
+                    passwordMeterScoreClassName = "medium";
+                    passwordLabelScoreWord = "Средний";
+                }
+                if (scorePassword <= 25)
+                {
+                    passwordMeterScoreClassName = "simple";
+                    passwordLabelScoreWord = "Слабый";
+                }
+            }
+            StateHasChanged();
         }
         public void ConfirmPasswordInputChangeValue(ChangeEventArgs e)
         {
