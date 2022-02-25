@@ -15,6 +15,9 @@ namespace WebStore.Data.Entities
         [Required]
         [DisplayName("Количество")]
         public int Count { get; set; }
+        [Required]
+        [DisplayName("Товар выбран?")]
+        public bool IsSelected { get; set; }
 
         public CartProduct()
         {

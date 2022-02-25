@@ -82,4 +82,8 @@
     <PackageReference Include="WMBlazorSlickCarousel" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\cart\" />
+  </ItemGroup>
+
 </Project>

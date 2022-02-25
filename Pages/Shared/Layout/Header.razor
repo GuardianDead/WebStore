@@ -23,14 +23,14 @@
                 </div>
                 @if (currentUserState.Identity.IsAuthenticated)
                 {
-                    <a class="panel__favorites" href="#" aria-label="Перейти в каталог избранных товаров" title="Иконка избранного">
+                    <a class="panel__favorites" @onclick="NavigateToFavoritesList" aria-label="Перейти в каталог избранных товаров" title="Иконка избранного">
                         <img src="/icons/header/Heart.svg" alt="Иконка избранного" title="Иконка избранного">
                         @if (CountFavoriteProducts() != 0)
                         {
                             <span class="panel__favorites__count">@CountFavoriteProducts()</span>
                         }
                     </a>
-                    <a class="panel__cart" href="#" aria-label="Перейти в каталог товаров в корзине" title="Иконка избранного">
+                    <a class="panel__cart" @onclick="NavigateToCart" aria-label="Перейти в каталог товаров в корзине" title="Иконка корзины">
                         <img src="/icons/header/Cart.svg" alt="Иконка корзины" title="Иконка корзины">
                         @if (CountCartProducts() != 0)
                         {

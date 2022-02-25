@@ -1,137 +1,53 @@
 ﻿@page "/account/favorites"
+@inherits FavoritesBase
+@attribute [Authorize]
 
 <section class="favorites">
     <div class="favorites__container">
         <div class="favorites__block">
             <h1 class="favorites__title">Избранное</h1>
-            <div class="favorites__product-cards">
-                <div class="favorites__product-card">
-                    <div class="favorites__image-block">
-                        <a class="favorites__image" href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall"><img src="./images/favorites/Джинсы_Levi_s_514__Straight__Big___Tall_-removebg-preview.webp" alt="Картинка джинсов Levi-s-514-Straight-Big-Tall" title="Джинсы Levi-s-514-Straight-Big-Tall"></a>
-                        <a class="favorites__favorites-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в избранное"><img src="./icons/favorites/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
-                        <a class="favorites__cart-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в корзину"><img src="./icons/favorites/Cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a>
-                        <div class="favorites__block-discount hasDiscount">
-                            <!-- hasDiscount -->
-                            <span class="block-discount__amount">-20%</span>
-                            <img class="block-discount__icon" src="./icons/favorites/Discount.svg" alt="Иконка скидки" title="Скидка товара">
-                        </div>
+            @if (favoritesProductsList is not null && favoritesProductsList.Count == 0)
+            {
+                <div class="favorites__empty-image"><img src="/images/favorites/Корзина с избранными товарами.png" alt="Изображение корзины с избранными товарами"></div>
+                <h3 class="favorites__empty-title">Похоже ваш список избранных товаров пуст</h3>
+                <h3 class="favorites__empty-message">Жмите ♡ на товаре и добавляйте сюда то, что нравится.</h3>
+            }
+            else
+            {
+                @if (favoritesProductsList is not null)
+                {
+                    <div class="favorites__product-cards">
+                        @foreach (var favoriteProduct in favoritesProductsList)
+                        {
+                            <div class="favorites__product-card">
+                                <div class="favorites__image-block">
+                                    <a class="favorites__image" href="#" aria-label="Перейти в личную карточку товара @favoriteProduct.ProductArticle.Model.Subcategory @favoriteProduct.ProductArticle.Model.Name"><img src="data:image/png;base64,@Convert.ToBase64String(favoriteProduct.ProductArticle.Model.MainPhoto)" alt="Картинка @favoriteProduct.ProductArticle.Model.Subcategory @favoriteProduct.ProductArticle.Model.Name" title="@favoriteProduct.ProductArticle.Model.Subcategory @favoriteProduct.ProductArticle.Model.Name"></a>
+                                    <a class="favorites__favorites-icon" @onclick="() => RemoveProductInUserFavorites(favoriteProduct)" aria-label="Удалить товар @favoriteProduct.ProductArticle.Model.Subcategory @favoriteProduct.ProductArticle.Model.Name из избранного"><img src="/icons/favorites/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
+                                    @if (cartProductsList.Any(cartProduct => cartProduct.ProductArticle.Id == favoriteProduct.ProductArticle.Id))
+                                    {
+                                        <a class="favorites__cart-icon" @onclick="() => RemoveProductInUserCart(favoriteProduct)" aria-label="Добавить товар @favoriteProduct.ProductArticle.Model.Subcategory @favoriteProduct.ProductArticle.Model.Name в корзину"><img src="/icons/favorites/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a>
+                                    }
+                                    else
+                                    {
+                                        <a class="favorites__cart-icon" @onclick="() => AddProductInUserCart(favoriteProduct)" aria-label="Добавить товар @favoriteProduct.ProductArticle.Model.Subcategory @favoriteProduct.ProductArticle.Model.Name в корзину"><img src="/icons/favorites/Cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a>
+                                    }
+                                    @*<div class="favorites__block-discount hasDiscount">
+                                     hasDiscount
+                                    <span class="block-discount__amount">-20%</span>
+                                    <img class="block-discount__icon" src="/icons/favorites/Discount.svg" alt="Иконка скидки" title="Скидка товара">
+                                    </div>*@
+                                </div>
+                                <h3 class="favorites__name"><a href="#" aria-label="Перейти в личную карточку товара @favoriteProduct.ProductArticle.Model.Subcategory @favoriteProduct.ProductArticle.Model.Name">@favoriteProduct.ProductArticle.Model.Name</a></h3>
+                                @*<div class="favorites__block-price hasDiscount">
+                                 hasDiscount
+                                <span class="block-price__price">27 999 ₽</span>
+                                <span class="block-price__discount-price">22 400 ₽</span>
+                                </div>*@
+                            </div>
+                        }
                     </div>
-                    <h3 class="favorites__name"><a href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall">Джинсы Levis's</a></h3>
-                    <div class="favorites__block-price hasDiscount">
-                        <!-- hasDiscount -->
-                        <span class="block-price__price">27 999 ₽</span>
-                        <span class="block-price__discount-price">22 400 ₽</span>
-                    </div>
-                </div>
-                <div class="favorites__product-card">
-                    <div class="favorites__image-block">
-                        <a class="favorites__image" href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall"><img src="./images/favorites/Джинсы_Levi_s_514__Straight__Big___Tall_-removebg-preview.webp" alt="Картинка джинсов Levi-s-514-Straight-Big-Tall" title="Джинсы Levi-s-514-Straight-Big-Tall"></a>
-                        <a class="favorites__favorites-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в избранное"><img src="./icons/favorites/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
-                        <a class="favorites__cart-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в корзину"><img src="./icons/favorites/Cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a>
-                        <div class="favorites__block-discount hasDiscount">
-                            <!-- hasDiscount -->
-                            <span class="block-discount__amount">-20%</span>
-                            <img class="block-discount__icon" src="./icons/favorites/Discount.svg" alt="Иконка скидки" title="Скидка товара">
-                        </div>
-                    </div>
-                    <h3 class="favorites__name"><a href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall">Джинсы Levis's</a></h3>
-                    <div class="favorites__block-price hasDiscount">
-                        <!-- hasDiscount -->
-                        <span class="block-price__price">27 999 ₽</span>
-                        <span class="block-price__discount-price">22 400 ₽</span>
-                    </div>
-                </div>
-                <div class="favorites__product-card">
-                    <div class="favorites__image-block">
-                        <a class="favorites__image" href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall"><img src="./images/favorites/Джинсы_Levi_s_514__Straight__Big___Tall_-removebg-preview.webp" alt="Картинка джинсов Levi-s-514-Straight-Big-Tall" title="Джинсы Levi-s-514-Straight-Big-Tall"></a>
-                        <a class="favorites__favorites-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в избранное"><img src="./icons/favorites/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
-                        <a class="favorites__cart-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в корзину"><img src="./icons/favorites/Cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a>
-                        <div class="favorites__block-discount hasDiscount">
-                            <!-- hasDiscount -->
-                            <span class="block-discount__amount">-20%</span>
-                            <img class="block-discount__icon" src="./icons/favorites/Discount.svg" alt="Иконка скидки" title="Скидка товара">
-                        </div>
-                    </div>
-                    <h3 class="favorites__name"><a href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall">Джинсы Levis's</a></h3>
-                    <div class="favorites__block-price hasDiscount">
-                        <!-- hasDiscount -->
-                        <span class="block-price__price">27 999 ₽</span>
-                        <span class="block-price__discount-price">22 400 ₽</span>
-                    </div>
-                </div>
-                <div class="favorites__product-card">
-                    <div class="favorites__image-block">
-                        <a class="favorites__image" href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall"><img src="./images/favorites/Пальто_Tom_Farr-removebg-preview.webp" alt="Картинка джинсов Levi-s-514-Straight-Big-Tall" title="Джинсы Levi-s-514-Straight-Big-Tall"></a>
-                        <a class="favorites__favorites-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в избранное"><img src="./icons/favorites/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
-                        <a class="favorites__cart-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в корзину"><img src="./icons/favorites/Cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a>
-                        <div class="favorites__block-discount hasDiscount">
-                            <!-- hasDiscount -->
-                            <span class="block-discount__amount">-20%</span>
-                            <img class="block-discount__icon" src="./icons/favorites/Discount.svg" alt="Иконка скидки" title="Скидка товара">
-                        </div>
-                    </div>
-                    <h3 class="favorites__name"><a href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall">Джинсы Levis's</a></h3>
-                    <div class="favorites__block-price hasDiscount">
-                        <!-- hasDiscount -->
-                        <span class="block-price__price">27 999 ₽</span>
-                        <span class="block-price__discount-price">22 400 ₽</span>
-                    </div>
-                </div>
-                <div class="favorites__product-card">
-                    <div class="favorites__image-block">
-                        <a class="favorites__image" href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall"><img src="./images/favorites/Ботинки_для_девочек_adidas_Terrex_Trailmaker_Mid_R.RDY_K3-removebg-preview.webp" alt="Картинка джинсов Levi-s-514-Straight-Big-Tall" title="Джинсы Levi-s-514-Straight-Big-Tall"></a>
-                        <a class="favorites__favorites-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в избранное"><img src="./icons/favorites/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
-                        <a class="favorites__cart-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в корзину"><img src="./icons/favorites/Cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a>
-                        <div class="favorites__block-discount hasDiscount">
-                            <!-- hasDiscount -->
-                            <span class="block-discount__amount">-20%</span>
-                            <img class="block-discount__icon" src="./icons/favorites/Discount.svg" alt="Иконка скидки" title="Скидка товара">
-                        </div>
-                    </div>
-                    <h3 class="favorites__name"><a href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall">Джинсы Levis's</a></h3>
-                    <div class="favorites__block-price hasDiscount">
-                        <!-- hasDiscount -->
-                        <span class="block-price__price">27 999 ₽</span>
-                        <span class="block-price__discount-price">22 400 ₽</span>
-                    </div>
-                </div>
-                <div class="favorites__product-card">
-                    <div class="favorites__image-block">
-                        <a class="favorites__image" href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall"><img src="./images/favorites/Ботинки_для_девочек_adidas_Terrex_Trailmaker_Mid_R.RDY_K3-removebg-preview.webp" alt="Картинка джинсов Levi-s-514-Straight-Big-Tall" title="Джинсы Levi-s-514-Straight-Big-Tall"></a>
-                        <a class="favorites__favorites-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в избранное"><img src="./icons/favorites/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
-                        <a class="favorites__cart-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в корзину"><img src="./icons/favorites/Cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a>
-                        <div class="favorites__block-discount hasDiscount">
-                            <!-- hasDiscount -->
-                            <span class="block-discount__amount">-20%</span>
-                            <img class="block-discount__icon" src="./icons/favorites/Discount.svg" alt="Иконка скидки" title="Скидка товара">
-                        </div>
-                    </div>
-                    <h3 class="favorites__name"><a href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall">Джинсы Levis's</a></h3>
-                    <div class="favorites__block-price hasDiscount">
-                        <!-- hasDiscount -->
-                        <span class="block-price__price">27 999 ₽</span>
-                        <span class="block-price__discount-price">22 400 ₽</span>
-                    </div>
-                </div>
-                <div class="favorites__product-card">
-                    <div class="favorites__image-block">
-                        <a class="favorites__image" href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall"><img src="./images/favorites/Ботинки_для_девочек_adidas_Terrex_Trailmaker_Mid_R.RDY_K3-removebg-preview.webp" alt="Картинка джинсов Levi-s-514-Straight-Big-Tall" title="Джинсы Levi-s-514-Straight-Big-Tall"></a>
-                        <a class="favorites__favorites-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в избранное"><img src="./icons/favorites/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
-                        <a class="favorites__cart-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в корзину"><img src="./icons/favorites/Cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a>
-                        <div class="favorites__block-discount hasDiscount">
-                            <!-- hasDiscount -->
-                            <span class="block-discount__amount">-20%</span>
-                            <img class="block-discount__icon" src="./icons/favorites/Discount.svg" alt="Иконка скидки" title="Скидка товара">
-                        </div>
-                    </div>
-                    <h3 class="favorites__name"><a href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall">Джинсы Levis's</a></h3>
-                    <div class="favorites__block-price hasDiscount">
-                        <!-- hasDiscount -->
-                        <span class="block-price__price">27 999 ₽</span>
-                        <span class="block-price__discount-price">22 400 ₽</span>
-                    </div>
-                </div>
-            </div>
+                }
+            }
         </div>
     </div>
 </section>

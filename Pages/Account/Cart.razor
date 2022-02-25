@@ -1,103 +1,86 @@
 ﻿@page "/account/cart"
+@inherits CartBase
+@attribute [Authorize]
 
 <section class="cart">
     <div class="cart__container">
         <div class="cart__block">
             <h1 class="cart__title">Корзина</h1>
-            <div class="cart__main-block">
-                <div class="main-block__products-cards">
-                    <div class="products-cards__product-card">
-                        <a class="product-card__image" href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall"><img src="./images/cart/Джинсы_Levi_s_514__Straight__Big___Tall_-removebg-preview.webp" alt="Картинка джинсов Levi-s-514-Straight-Big-Tall" title="Джинсы Levi-s-514-Straight-Big-Tall"></a>
-                        <div class="product-card__product-info">
-                            <h3 class="product-info__name"><a href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall">Джинсы Levi-s-514-Straight-Big-Tall</a></h3>
-                            <span class="product-info__brand">Бренд: Levi's</span>
-                            <span class="product-info__color">Цвет: Голубой</span>
+            @if (cartProductsList is not null && cartProductsList.Count == 0)
+            {
+                <div class="cart__empty-image"><img src="/images/cart/Корзина товаров.svg" alt="Изображение корзины товаров"></div>
+                <h3 class="cart__empty-title">Похоже ваша корзина пуста</h3>
+                <h3 class="cart__empty-message">Жмите 🛒 на товаре и добавляйте сюда то, что хотите купить.</h3>
+            }
+            else
+            {
+                if (cartProductsList is not null)
+                {
+                    <div class="cart__main-block">
+                        <div class="main-block__products-cards">
+                            <label class="products-cards__select-all-checkbox select-checkbox unselectable"><input name="login-remember-me-checkbox" @bind="IsSelectedAll" @onclick="SelectAllToggle" type="checkbox" aria-label="Чек-бокс для выборки всех товаров в корзине"><span></span>Выбрать все товары</label>
+                            @foreach (var cartProduct in cartProductsList)
+                            {
+                                <div class="products-cards__product-card">
+                                    <a class="product-card__image" href="#" aria-label="Перейти в личную карточку товара @cartProduct.ProductArticle.Model.Subcategory @cartProduct.ProductArticle.Model.Name"><img src="data:image/png;base64,@Convert.ToBase64String(cartProduct.ProductArticle.Model.MainPhoto)" alt="Картинка @cartProduct.ProductArticle.Model.Subcategory @cartProduct.ProductArticle.Model.Name" title="@cartProduct.ProductArticle.Model.Subcategory @cartProduct.ProductArticle.Model.Name"></a>
+                                    <div class="product-card__product-info">
+                                        <h3 class="product-info__name"><a href="#" aria-label="Перейти в личную карточку товара @cartProduct.ProductArticle.Model.Subcategory @cartProduct.ProductArticle.Model.Name">@cartProduct.ProductArticle.Model.Subcategory @cartProduct.ProductArticle.Model.Name</a></h3>
+                                        <span class="product-info__color">Цвет: @cartProduct.ProductArticle.Color</span>
+                                        <span class="product-info__size">Размер: @cartProduct.ProductArticle.Size</span>
+                                    </div>
+                                    <div class="product-card__counter-block">
+                                        <div class="counter-block__counter">
+                                            <div class="counter__minus" @onclick="() => Decrement(cartProduct)"/>
+                                            <input class="counter-input" disabled type="text" maxlength="3" @bind="cartProduct.Count" aria-label="Место ввода количества желаемого товара">
+                                            <div class="counter__plus" @onclick="() => Increment(cartProduct)"/>
+                                        </div>
+                                        <span class="counter-block__price">@((cartProduct.ProductArticle.Model.Price*cartProduct.Count).ToString("### ### ###")) ₽</span>
+                                    </div>
+                                    @*<div class="product-card__block-price hasDiscount">
+                                     hasDiscount
+                                    <span class="block-price__price">27 999 ₽</span>
+                                    <span class="block-price__discount-price">22 400 ₽</span>
+                                    </div>*@
+                                <div class="product-card__icons-block">
+                                    @if (cartProductsList.Any(cartProduct => cartProduct.ProductArticle.Id == cartProduct.ProductArticle.Id))
+                                    {
+                                        <a class="icons-block__cart-icon" @onclick="() => RemoveProductInUserCart(cartProduct)" aria-label="Удалить товар @cartProduct.ProductArticle.Model.Subcategory @cartProduct.ProductArticle.Model.Name из корзины"><img src="/icons/cart/Slash-cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины"></a>
+                                    }
+                                    else
+                                    {
+                                        <a class="icons-block__cart-icon" @onclick="() => AddProductInUserCart(cartProduct)" aria-label="Добавить товар @cartProduct.ProductArticle.Model.Subcategory @cartProduct.ProductArticle.Model.Name в корзину"><img src="/icons/cart/Cart.svg" alt="Иконка корзины" title="Добавить в корзины"></a>
+                                    }
+                                    <label class="cart-icon__select-checkbox select-checkbox"><input name="login-remember-me-checkbox" @bind="cartProduct.IsSelected" @onclick="() => ProductSelecterToggle(cartProduct)" type="checkbox" aria-label="Чек-бокс для выборки всех товаров в корзине"><span></span></label>
+                                    @if (favoritesProductsList.Any(favoriteProduct => favoriteProduct.ProductArticle.Id == cartProduct.ProductArticle.Id))
+                                    {
+                                        <a class="icons-block__favorites-icon" @onclick="() => RemoveProductInUserFavorites(cartProduct)" aria-label="Удалить товар @cartProduct.ProductArticle.Model.Subcategory @cartProduct.ProductArticle.Model.Name из избранного"><img src="/icons/cart/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
+                                    }
+                                    else
+                                    {
+                                        <a class="icons-block__favorites-icon" @onclick="() => AddProductInUserFavorites(cartProduct)" aria-label="Добавить товар @cartProduct.ProductArticle.Model.Subcategory @cartProduct.ProductArticle.Model.Name в избранное"><img src="/icons/cart/Heart.svg" alt="Иконка избранного" title="Добавить в избранное"></a>
+                                    }
+                                </div>
+                                </div>
+                            }
                         </div>
-                        <div class="product-card__counter-block">
-                            <div class="counter-block__counter"><div class="counter__minus"></div><input class="counter-input" type="text" maxlength="3" value="1" aria-label="Место ввода количества желаемого товара"><div class="counter__plus"></div></div>
-                            <span class="counter-block__price"><strong>27 999 ₽</strong>/шт.</span>
-                        </div>
-                        <div class="product-card__block-price hasDiscount">
-                            <!-- hasDiscount -->
-                            <span class="block-price__price">27 999 ₽</span>
-                            <span class="block-price__discount-price">22 400 ₽</span>
-                        </div>
-                        <div class="product-card__icons-block">
-                            <a class="icons-block__cart-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в корзину"><img src="./icons/cart/Cross.svg" alt="Иконка крестика" title="Удалить из корзины"></a>
-                            <a class="icons-block__favorites-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в избранное"><img src="./icons/cart/Heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
-                        </div>
-                    </div>
-                    <div class="products-cards__product-card">
-                        <a class="product-card__image" href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall"><img src="./images/cart/Джинсы_Levi_s_514__Straight__Big___Tall_-removebg-preview.webp" alt="Картинка джинсов Levi-s-514-Straight-Big-Tall" title="Джинсы Levi-s-514-Straight-Big-Tall"></a>
-                        <div class="product-card__product-info">
-                            <h3 class="product-info__name"><a href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall">Джинсы Levi-s-514-Straight-Big-Tall</a></h3>
-                            <span class="product-info__brand">Бренд: Levi's</span>
-                            <span class="product-info__color">Цвет: Голубой</span>
-                        </div>
-                        <div class="product-card__counter-block">
-                            <div class="counter-block__counter"><div class="counter__minus"></div><input class="counter-input" type="text" maxlength="3" value="1" aria-label="Место ввода количества желаемого товара"><div class="counter__plus"></div></div>
-                            <span class="counter-block__price"><strong>27 999 ₽</strong>/шт.</span>
-                        </div>
-                        <div class="product-card__block-price">
-                            <!-- hasDiscount -->
-                            <span class="block-price__price">27 999 ₽</span>
-                            <span class="block-price__discount-price">22 400 ₽</span>
-                        </div>
-                        <div class="product-card__icons-block">
-                            <a class="icons-block__cart-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в корзину"><img src="./icons/cart/Cross.svg" alt="Иконка крестика" title="Удалить из корзины"></a>
-                            <a class="icons-block__favorites-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в избранное"><img src="./icons/cart/Heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
-                        </div>
-                    </div>
-                    <div class="products-cards__product-card">
-                        <a class="product-card__image" href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall"><img src="./images/cart/Джинсы_Levi_s_514__Straight__Big___Tall_-removebg-preview.webp" alt="Картинка джинсов Levi-s-514-Straight-Big-Tall" title="Джинсы Levi-s-514-Straight-Big-Tall"></a>
-                        <div class="product-card__product-info">
-                            <h3 class="product-info__name"><a href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall">Джинсы Levi-s-514-Straight-Big-Tall</a></h3>
-                            <span class="product-info__brand">Бренд: Levi's</span>
-                            <span class="product-info__color">Цвет: Голубой</span>
-                        </div>
-                        <div class="product-card__counter-block">
-                            <div class="counter-block__counter"><div class="counter__minus"></div><input class="counter-input" type="text" maxlength="3" value="1" aria-label="Место ввода количества желаемого товара"><div class="counter__plus"></div></div>
-                            <span class="counter-block__price"><strong>27 999 ₽</strong>/шт.</span>
-                        </div>
-                        <div class="product-card__block-price">
-                            <!-- hasDiscount -->
-                            <span class="block-price__price">27 999 ₽</span>
-                            <span class="block-price__discount-price">22 400 ₽</span>
-                        </div>
-                        <div class="product-card__icons-block">
-                            <a class="icons-block__cart-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в корзину"><img src="./icons/cart/Cross.svg" alt="Иконка крестика" title="Удалить из корзины"></a>
-                            <a class="icons-block__favorites-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в избранное"><img src="./icons/cart/Heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
-                        </div>
-                    </div>
-                    <div class="products-cards__product-card">
-                        <a class="product-card__image" href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall"><img src="./images/cart/Джинсы_Levi_s_514__Straight__Big___Tall_-removebg-preview.webp" alt="Картинка джинсов Levi-s-514-Straight-Big-Tall" title="Джинсы Levi-s-514-Straight-Big-Tall"></a>
-                        <div class="product-card__product-info">
-                            <h3 class="product-info__name"><a href="#" aria-label="Перейти в личную карточку товара Джинсы Levi-s-514-Straight-Big-Tall">Джинсы Levi-s-514-Straight-Big-Tall</a></h3>
-                            <span class="product-info__brand">Бренд: Levi's</span>
-                            <span class="product-info__color">Цвет: Голубой</span>
-                        </div>
-                        <div class="product-card__counter-block">
-                            <div class="counter-block__counter"><div class="counter__minus"></div><input class="counter-input" type="text" maxlength="3" value="1" aria-label="Место ввода количества желаемого товара"><div class="counter__plus"></div></div>
-                            <span class="counter-block__price"><strong>27 999 ₽</strong>/шт.</span>
-                        </div>
-                        <div class="product-card__block-price hasDiscount">
-                            <!-- hasDiscount -->
-                            <span class="block-price__price">27 999 ₽</span>
-                            <span class="block-price__discount-price">22 400 ₽</span>
-                        </div>
-                        <div class="product-card__icons-block">
-                            <a class="icons-block__cart-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в корзину"><img src="./icons/cart/Cross.svg" alt="Иконка крестика" title="Удалить из корзины"></a>
-                            <a class="icons-block__favorites-icon" href="#" aria-label="Добавить товар Джинсы Levi-s-514-Straight-Big-Tall в избранное"><img src="./icons/cart/Heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
+                        <div class="main-block__information-block">
+                            @if (totalCost != 0)
+                            {
+                                <div class="information-block__info"><span>Товары – @cartProductsList.Where(cartProduct => cartProduct.IsSelected).Count() шт.</span><span>@totalCost.ToString("### ### ###") ₽</span></div>
+                                <div class="information-block__info"><span>Скидка</span><span>300 ₽</span></div>
+                                <div class="information-block__info"><span><strong>Итого</strong></span><span><strong>@totalCost.ToString("### ### ###") ₽</strong></span></div>
+                            }
+                            else
+                            {
+                                <div class="information-block__info"><span>Товары – 0 шт.</span><span>0 ₽</span></div>
+                                <div class="information-block__info"><span>Скидка</span><span>300 ₽</span></div>
+                                <div class="information-block__info"><span><strong>Итого</strong></span><span><strong>0 ₽</strong></span></div>
+                            }
+                            <a class="information-block__button" href="#" type="submit" aria-label="Кнопка для перехода на страницу Оформления заказа">Оформить заказ</a>
                         </div>
                     </div>
-                </div>
-                <div class="main-block__information-block">
-                    <div class="information-block__info"><span>Товары – 5</span><span>30300 ₽</span></div>
-                    <div class="information-block__info"><span>Скидка</span><span>-300 ₽</span></div>
-                    <div class="information-block__info"><span><strong>Итого</strong></span><span><strong>30000 ₽</strong></span></div>
-                    <a class="information-block__button" type="submit" aria-label="">Оформить заказ</a>
-                </div>
-            </div>
+                }
+            }
         </div>
     </div>
 </section>

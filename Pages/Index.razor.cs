@@ -27,6 +27,8 @@ namespace WebStore.Pages
         public List<ProductModel> productModelsSection3;
         public User currentUser;
         public ClaimsPrincipal currentUserState;
+        public List<CartProduct> userCartProducts;
+        public List<FavoritesListProduct> userFavoriteListProducts;
 
         protected override async Task OnInitializedAsync()
         {
@@ -86,15 +88,43 @@ namespace WebStore.Pages
             {
                 var userEmailClaim = currentUserState.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email);
                 currentUser = Db.Users
+                    .Include(user => user.ListFavourites.Products)
                     .Include(user => user.Cart.Products)
-                            .Include(user => user.ListFavourites.Products)
-                            .SingleOrDefault(user => user.Email == userEmailClaim.Value);
+                    .SingleOrDefault(user => user.Email == userEmailClaim.Value);
+                userFavoriteListProducts = Db.FavoritesListProducts
+                    .Include(p => p.ProductArticle.Model)
+                    .Where(p => currentUser.ListFavourites.Products.Contains(p))
+                    .ToList();
+                userCartProducts = Db.CartProducts
+                    .Include(p => p.ProductArticle.Model)
+                    .Where(p => currentUser.Cart.Products.Contains(p))
+                    .ToList();
             }
         }
 
-        public void AddProductInUserCart(ProductModel productModel) => currentUser.Cart.Products.Add(new CartProduct(Db.ProductArticles.Single(productArticle => productArticle.Model.Id == productModel.Id), 1));
-        public void AddProductInUserFavorites(ProductModel productModel) => currentUser.ListFavourites.Products.Add(new FavoritesListProduct(Db.ProductArticles.Single(productArticle => productArticle.Model.Id == productModel.Id)));
-        public void RemoveProductInUserCart(ProductModel productModel) => currentUser.Cart.Products.Remove(currentUser.Cart.Products.Single(cartProduct => cartProduct.ProductArticle.Model.Id == productModel.Id));
-        public void RemoveProductInUserFavorites(ProductModel productModel) => currentUser.ListFavourites.Products.Remove(currentUser.ListFavourites.Products.Single(faforiteProduct => faforiteProduct.ProductArticle.Model.Id == productModel.Id));
+        public void AddProductInUserCart(ProductModel productModel)
+        {
+            userCartProducts.Add(new CartProduct(Db.ProductArticles.Include(productArticle => productArticle.Model).First(productArticle => productArticle.Model.Id == productModel.Id), 1));
+            currentUser.Cart.Products = userCartProducts;
+            Db.SaveChanges();
+        }
+        public void AddProductInUserFavorites(ProductModel productModel)
+        {
+            userFavoriteListProducts.Add(new FavoritesListProduct(Db.ProductArticles.Include(productArticle => productArticle.Model).First(productArticle => productArticle.Model.Id == productModel.Id)));
+            currentUser.ListFavourites.Products = userFavoriteListProducts;
+            Db.SaveChanges();
+        }
+        public void RemoveProductInUserCart(ProductModel productModel)
+        {
+            userCartProducts.Remove(userCartProducts.First(cartProduct => cartProduct.ProductArticle.Model.Id == productModel.Id));
+            currentUser.Cart.Products = userCartProducts;
+            Db.SaveChanges();
+        }
+        public void RemoveProductInUserFavorites(ProductModel productModel)
+        {
+            userFavoriteListProducts.Remove(userFavoriteListProducts.First(favoriteProduct => favoriteProduct.ProductArticle.Model.Id == productModel.Id));
+            currentUser.ListFavourites.Products = userFavoriteListProducts;
+            Db.SaveChanges();
+        }
     }
 }

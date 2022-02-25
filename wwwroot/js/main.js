@@ -151,16 +151,6 @@ function getScorePassword(password) {
     return parseInt(score);
 }
 
-function ConfirmInputValueChange() {
-    const passwordConfirmInput = document.getElementById('password-confirm-input')
-    const passwordConfirmLabel = document.getElementById('password-confirm-label')
-
-    if (passwordConfirmInput.value == "") {
-        passwordConfirmLabel.classList.remove('shift')
-    } else {
-        passwordConfirmLabel.classList.add('shift')
-    }
-}
 $('.counter__plus').click(e => {
     const counterInput = $(e.target).prev()[0];
     counterInput.value++;
@@ -179,6 +169,10 @@ $('.counter__minus').click(e => {
     $($($($(e.target).parent()).parent()).parent().find('.block-price__price')[0]).html(sum + ' ₽')
     $($($($(e.target).parent()).parent()).parent().find('.block-price__discount-price')[0]).html(sumDiscount + ' ₽')
 })
+$('.counter-input').on('input', function () {
+    $(this).val($(this).val().replace(/[A-Za-zА-Яа-яЁё]/, ''))
+});
+
 $('.counter-input').on('input', e => {
     e.target.value = e.target.value.replace(/[^0-9]/g, '');
     if(e.target.value <= 1) {
