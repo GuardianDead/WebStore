@@ -1,85 +1,63 @@
 ﻿@page "/account/orders"
+@inherits OrdersBase
+@attribute [Authorize]
 
 <section class="orders">
     <div class="orders__container">
         <div class="orders__block">
             <h1 class="orders__title">Заказы</h1>
-            <div class="orders__orders-cards">
-                <div class="orders-cards__order-card">
-                    <div class="order-card__title-block">
-                        <h2 class="order-card__number">Номер: 62876846</h2>
-                        <h3 class="order-card__status">Статус: Отменён</h3>
-                        <h3 class="order-card__date">Дата заказа: 24 ноября 2021, 11:35</h3>
-                        <h3 class="order-card__track">Код отслеживания: ZF971699982HK</h3>
-                    </div>
-                    <div class="order-card__main-block">
-                        <div class="main-block__products-block">
-                            <div class="main-block__products-cards">
-                                <div class="products-block__product-card">
-                                    <a class="product-card__image" href="#" aria-label="Ссылка перехода на карточку товара NIKE_Air_Zoom_Pegasus"><img src="./images/orders/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="NIKE_Air_Zoom_Pegasus"></a>
-                                    <a class="product-card__name" href="#" aria-label="Ссылка перехода на карточку товара NIKE_Air_Zoom_Pegasus">Кроссовки NIKE Air Zoom Pegasus</a>
-                                    <div class="product-card__price-block hasDiscount">
-                                        <!-- hasDiscount -->
-                                        <span class="price-block__price">5600 ₽</span>
-                                        <span class="price-block__discount-price">5000 ₽</span>
-                                        <span class="price-block__count">x 1</span>
-                                    </div>
-                                </div>
-                                <div class="products-block__product-card">
-                                    <a class="product-card__image" href="#" aria-label="Ссылка перехода на карточку товара NIKE_Air_Zoom_Pegasus"><img src="./images/orders/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="NIKE_Air_Zoom_Pegasus"></a>
-                                    <a class="product-card__name" href="#" aria-label="Ссылка перехода на карточку товара NIKE_Air_Zoom_Pegasus">Кроссовки NIKE Air Zoom Pegasus</a>
-                                    <div class="product-card__price-block hasDiscount">
-                                        <!-- hasDiscount -->
-                                        <span class="price-block__price">5600 ₽</span>
-                                        <span class="price-block__discount-price">5000 ₽</span>
-                                        <span class="price-block__count">x 1</span>
-                                    </div>
-                                </div>
-                                <div class="products-block__product-card">
-                                    <a class="product-card__image" href="#" aria-label="Ссылка перехода на карточку товара NIKE_Air_Zoom_Pegasus"><img src="./images/orders/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="NIKE_Air_Zoom_Pegasus"></a>
-                                    <a class="product-card__name" href="#" aria-label="Ссылка перехода на карточку товара NIKE_Air_Zoom_Pegasus">Кроссовки NIKE Air Zoom Pegasus</a>
-                                    <div class="product-card__price-block hasDiscount">
-                                        <!-- hasDiscount -->
-                                        <span class="price-block__price">5600 ₽</span>
-                                        <span class="price-block__discount-price">5000 ₽</span>
-                                        <span class="price-block__count">x 1</span>
-                                    </div>
-                                </div>
+            @if (orders is not null && orders.Count == 0)
+            {
+                <div class="orders__empty-image"><img src="/icons/order-history/order-list-icon.svg" alt="Изображение листа заказов"></div>
+                <h3 class="orders__empty-title">Похоже история вашев заказов пуста</h3>
+                <h3 class="orders__empty-message">Попробуйте положить пару товаров 🛒 и сделать свой первый заказ!</h3>
+            }
+            else
+            {
+                <div class="orders__orders-cards">
+                    @foreach (var order in orders)
+                    {
+                        <div class="orders-cards__order-card">
+                            <div class="order-card__title-block">
+                                <h2 class="order-card__number"><strong>Номер:</strong> @order.Id</h2>
+                                <h3 class="order-card__status"><strong>Статус:</strong> @OrderStatusTypeRussianTranslator.GetRussianTranslate(order.Status)</h3>
+                                <h3 class="order-card__date"><strong>Дата и время заказа:</strong> @order.DateTimeCreation.ToLongDateString() @order.DateTimeCreation.ToLongTimeString()</h3>
+                                <h3 class="order-card__track"><strong>Код отслеживания:</strong> @order.TrackNumber</h3>
                             </div>
-                            <div class="main-block__block-info">
-                                <div class="block-info__payment-method-block">
-                                    <span class="payment-method-block__title">Способ оплаты: </span>
-                                    <span class="payment-method-block__payment-method">Наличными при получении: </span>
-                                </div>
-                                <div class="block-info__method-obtaining-block">
-                                    <span class="method-obtaining-block__title">Способ доставки: </span>
-                                    <span class="method-obtaining-block__method-obtaining">Почтой россии</span>
-                                </div>
-                                <div class="block-info__delivery-address-block">
-                                    <span class="delivery-address-block__title">Адрес доставки: </span>
-                                    <span class="delivery-address-block__method-obtaining">Москва, Тверская улица, д. 9с5</span>
-                                </div>
-                                <div class="block-info__recipient-block">
-                                    <span class="recipient-block__title">Адрес доставки: </span>
-                                    <span class="recipient-block__recipient">Андрианов Александр, тел. +7 915 767-58-03</span>
-                                </div>
-                                <div class="block-info__approximate-delivery-time-block">
-                                    <span class="approximate-delivery-time-block__title">Примерное время доставки: </span>
-                                    <span class="approximate-delivery-time-block__approximate-delivery-time">11 сентября 2021</span>
-                                </div>
-                                <div class="block-info__delivery-cost-block">
-                                    <span class="delivery-cost-block__title">Стоимость доставки: </span>
-                                    <span class="delivery-cost-block__delivery-cost">250 ₽</span>
-                                </div>
-                                <div class="block-info__order-cost-block">
-                                    <span class="order-cost-block__title">Общая стоиомсть заказа: </span>
-                                    <span class="order-cost-block__order-cost">5250 ₽</span>
+                            <div class="order-card__main-block">
+                                <div class="main-block__products-block">
+                                    <div class="products-block__order">
+                                        <div class="order__products-cards">
+                                            @foreach (var product in order.Products)
+                                            {
+                                                <div class="products-cards__product-card">
+                                                    <a class="product-card__image" href="#" aria-label="Ссылка перехода на карточку товара @product.Article.Model.Name"><img src="data:image/png;base64,@Convert.ToBase64String(product.Article.Model.MainPhoto)" alt="@product.Article.Model.Name"></a>
+                                                    <a class="product-card__name" href="#" aria-label="Ссылка перехода на карточку товара @product.Article.Model.Name">@product.Article.Model.Name</a>
+                                                    <div class="product-card__price-block"> <!-- hasDiscount -->
+                                                        <span class="price-block__price">@GetFullPriceForProduct(product,order).ToString("### ### ###") ₽</span>
+                                                        <!-- <span class="price-block__discount-price">5000 ₽</span> -->
+                                                        <span class="price-block__count">- @GetCountSameProducts(product,order)x</span>
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                        <div class="main-block__block-info">
+                                            <span class="block-info__payment-method"><strong>Способ оплаты:</strong> @OrderPaymentMethodTypeRussianTranslator.GetRussianTranslate(order.PaymentMethod)</span>
+                                            <span class="block-info__method-obtaining"><strong>Способ доставки:</strong> @DeliveryMethodTypeRussianTranslator.GetRussianTranslate(order.Delivery.DeliveryMethod) ("@order.Delivery.Name")</span>
+                                            <span class="block-info__delivery-address"><strong>Адрес доставки:</strong> @GetFullAdress(order.Address)</span>
+                                            <span class="block-info__recipient"><strong>Заказчик:</strong> @order.CustomerFullName</span> 
+                                            <span class="block-info__recipient"><strong>Телефон заказчика:</strong> +@order.PhoneNumber</span>
+                                            <span class="block-info__approximate-delivery-time"><strong>Примерная дата доставки:</strong> @order.DateTimeCreation.AddDays(order.Delivery.ApproximateDays).ToLongDateString()</span>
+                                            <span class="block-info__approximate-delivery-time"><strong>Стоимость доставки:</strong> @order.Delivery.Cost.ToString("### ###") ₽</span>
+                                            <span class="block-info__order-cost"><strong>Сумма заказа:</strong> @order.TotalCost.ToString("### ### ###") ₽</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 </div>
-            </div>
+            }
         </div>
     </div>
 </section>

@@ -48,6 +48,9 @@ namespace WebStore.Data.Entities
         [DataType(DataType.EmailAddress)]
         [EmailAddress]
         public string Email { get; set; }
+        [Required]
+        [DisplayName("Трек номер")]
+        public string CustomerFullName { get; set; }
 
         public Order()
         {
@@ -55,7 +58,7 @@ namespace WebStore.Data.Entities
         public Order(List<Product> products, Delivery delivery,
             OrderPaymentMethodType orderPaymentMethodType, DateTime dateTimeCreation,
             OrderStatusType orderStatusType, Address address, decimal totalCost,
-            string trackNumber, string email)
+            string trackNumber, string email, string customerFullName, string phoneNumber)
         {
             Products = products;
             Delivery = delivery;
@@ -66,6 +69,8 @@ namespace WebStore.Data.Entities
             TotalCost = totalCost;
             TrackNumber = trackNumber;
             Email = email;
+            CustomerFullName = customerFullName;
+            PhoneNumber = phoneNumber;
         }
     }
 }

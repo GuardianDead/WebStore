@@ -28,7 +28,10 @@ namespace WebStore.Pages.Shared.Layout
 
         protected override Task OnInitializedAsync()
         {
-            subcategories = Db.Subcategories.Include(x => x.Category).AsNoTracking().ToList();
+            subcategories = Db.Subcategories
+                .AsNoTracking()
+                .Include(x => x.Category)
+                .ToList();
             foreach (var subcategory in subcategories)
                 if (!categories.Any(category => category.Name == subcategory.Category.Name))
                     categories.Add(subcategory.Category);
