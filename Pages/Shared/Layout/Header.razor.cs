@@ -27,7 +27,7 @@ namespace WebStore.Pages.Shared.Layout
         public bool HeaderIsScroling { get; set; }
 
         public static List<Subcategory> subcategories;
-        public static List<Category> categories = new List<Category>();
+        public static List<Category> categories;
         public static Category selectedCategory;
         public static List<Subcategory> selectedSubcaregories;
         public string searchContent;
@@ -39,22 +39,24 @@ namespace WebStore.Pages.Shared.Layout
         protected override async Task OnInitializedAsync()
         {
             await JSRuntime.InvokeVoidAsync("SetHeaderDotnetReference", DotNetObjectReference.Create(this));
-
             returnUrl = NavigationManager.Uri.Replace('/', '$');
             currentUserState = (await AuthenticationStateTask).User;
             if (currentUserState.Identity.IsAuthenticated)
             {
                 var userEmail = currentUserState.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
                 currentUser = await Db.Users
+                    .AsNoTracking()
                     .Include(user => user.Cart.Products)
                     .Include(user => user.ListFavourites.Products)
                     .SingleAsync(user => user.Email == userEmail);
             }
-
-            subcategories = Db.Subcategories.Include(x => x.Category).AsNoTracking().ToList();
-            foreach (var subcategory in subcategories)
-                if (!categories.Any(category => category.Name == subcategory.Category.Name))
-                    categories.Add(subcategory.Category);
+            categories = await Db.Categories
+                .AsNoTracking()
+                .ToListAsync();
+            subcategories = await Db.Subcategories
+                .AsNoTracking()
+                .Include(subcategory => subcategory.Category)
+                .ToListAsync();
         }
 
         public void NavigateToIndex() => NavigationManager.NavigateTo(NavigationManager.BaseUri, true);
@@ -63,8 +65,8 @@ namespace WebStore.Pages.Shared.Layout
         public void NavigateToFavoritesList() => NavigationManager.NavigateTo($"{NavigationManager.BaseUri}/account/favorites", true);
         public void NavigateToLogin() => NavigationManager.NavigateTo($"{NavigationManager.BaseUri}account/authorization/login/{returnUrl}", true);
         public void NavigateToLogout() => NavigationManager.NavigateTo($"{NavigationManager.BaseUri}account/authorization/logout/{returnUrl}", true);
-        public int CountFavoriteProducts() => currentUser.ListFavourites.Products.Count;
-        public int CountCartProducts() => currentUser.Cart.Products.Count;
+        public int CountFavoriteProducts() => currentUser.ListFavourites.Products.Count();
+        public int CountCartProducts() => currentUser.Cart.Products.Count();
 
         [JSInvokable]
         public void СancelHeaderScrolling()
@@ -92,7 +94,9 @@ namespace WebStore.Pages.Shared.Layout
         {
             SubcategoriesIsShow = true;
             selectedCategory = category;
-            selectedSubcaregories = subcategories.Where(subcategory => subcategory.Category.Id == category.Id).ToList();
+            selectedSubcaregories = subcategories
+                .Where(subcategory => subcategory.Category.Id == category.Id)
+                .ToList();
             await JSRuntime.InvokeVoidAsync("showSubcategories");
             StateHasChanged();
         }

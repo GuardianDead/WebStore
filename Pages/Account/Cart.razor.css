@@ -115,7 +115,9 @@
   opacity: 1; }
 
 .product-card__image {
-  cursor: pointer; }
+  cursor: pointer;
+  padding: 0.4em;
+  background-color: #f6f6f6; }
   .product-card__image img {
     object-fit: contain;
     height: 10em;

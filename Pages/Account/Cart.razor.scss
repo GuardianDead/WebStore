@@ -147,6 +147,8 @@
 .product-card {
     &__image {
         cursor: pointer;
+        padding: 0.4em;
+        background-color: rgb(246,246,246);
 
         img {
             object-fit: contain;

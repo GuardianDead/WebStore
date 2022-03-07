@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
-using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -22,8 +21,6 @@ namespace WebStore.Pages.Account
 
         public decimal totalCost;
 
-        public List<FavoritesListProduct> favoritesProductsList;
-        public List<CartProduct> cartProductsList;
         private ClaimsPrincipal currentUserState;
         public User currentUser;
 
@@ -33,56 +30,51 @@ namespace WebStore.Pages.Account
             var userEmail = currentUserState.Claims.ToList().Single(claim => claim.Type == ClaimTypes.Email).Value;
             currentUser = await Db.Users
                 .Include(user => user.Cart.Products)
+                    .ThenInclude(cartProducts => cartProducts.ProductArticle.Model)
                 .Include(user => user.ListFavourites.Products)
+                    .ThenInclude(favoriteProducts => favoriteProducts.ProductArticle.Model)
                 .SingleAsync(user => user.Email == userEmail);
-            favoritesProductsList = Db.FavoritesListProducts
-                .Include(p => p.ProductArticle.Model)
-                .Where(p => currentUser.ListFavourites.Products.Contains(p))
-                .ToList();
-            cartProductsList = Db.CartProducts
-                .Include(p => p.ProductArticle.Model)
-                .Where(p => currentUser.Cart.Products.Contains(p))
-                .ToList();
-            cartProductsList.ForEach(cartProduct => cartProduct.IsSelected = true);
+            currentUser.Cart.Products.ForEach(cartProduct => cartProduct.IsSelected = true);
             UpdateTotalCurrentCostCart();
         }
 
-        public void UpdateTotalCurrentCostCart() => totalCost = cartProductsList.Where(cartProduct => cartProduct.IsSelected)
+        public void UpdateTotalCurrentCostCart() => totalCost = currentUser.Cart.Products.Where(cartProduct => cartProduct.IsSelected)
             .Sum(cartProduct => cartProduct.ProductArticle.Model.Price * cartProduct.Count);
 
-        public void AddProductInUserCart(CartProduct cartProduct)
+        public Task AddProductInFavoritesAsync(CartProduct cartProduct)
         {
-            cartProductsList.Add(new CartProduct(Db.ProductArticles.Include(productArticle => productArticle.Model).First(productArticle => productArticle.Id == cartProduct.ProductArticle.Id), 1));
-            currentUser.Cart.Products = cartProductsList;
-            UpdateTotalCurrentCostCart();
-            Db.SaveChanges();
-
+            var addedFavoriteProduct = currentUser.ListFavourites.Products
+                .SingleOrDefault(favoriteProduct => favoriteProduct.ProductArticle.Id == cartProduct.ProductArticle.Id);
+            if (currentUser.ListFavourites.Products.Contains(addedFavoriteProduct))
+                return Task.CompletedTask;
+            currentUser.ListFavourites.Products.Add(new FavoritesListProduct(cartProduct.ProductArticle));
+            return Db.SaveChangesAsync();
         }
-        public void AddProductInUserFavorites(CartProduct cartProduct)
+        public Task RemoveProductInCartAsync(CartProduct cartProduct)
         {
-            favoritesProductsList.Add(new FavoritesListProduct(Db.ProductArticles.Include(productArticle => productArticle.Model).First(productArticle => productArticle.Id == cartProduct.ProductArticle.Id)));
-            currentUser.ListFavourites.Products = favoritesProductsList;
-            Db.SaveChanges();
+            if (!currentUser.Cart.Products.Contains(cartProduct))
+                return Task.CompletedTask;
+            currentUser.Cart.Products.Remove(cartProduct);
+            return Db.SaveChangesAsync();
         }
-        public void RemoveProductInUserCart(CartProduct cartProduct)
+        public Task RemoveProductInFavoritesAsync(CartProduct cartProduct)
         {
-            cartProductsList.Remove(cartProductsList.First(cartProductList => cartProductList.ProductArticle.Id == cartProduct.ProductArticle.Id));
-            currentUser.Cart.Products = cartProductsList;
-            UpdateTotalCurrentCostCart();
-            Db.SaveChanges();
-        }
-        public void RemoveProductInUserFavorites(CartProduct cartProduct)
-        {
-            favoritesProductsList.Remove(favoritesProductsList.First(favoriteProduct => favoriteProduct.ProductArticle.Id == cartProduct.ProductArticle.Id));
-            currentUser.ListFavourites.Products = favoritesProductsList;
-            Db.SaveChanges();
+            var removedFavoriteProduct = currentUser.ListFavourites.Products
+                    .SingleOrDefault(cartProductList => cartProductList.ProductArticle.Id == cartProduct.ProductArticle.Id);
+            if (!currentUser.ListFavourites.Products.Contains(removedFavoriteProduct))
+                return Task.CompletedTask;
+            currentUser.ListFavourites.Products.Remove(removedFavoriteProduct);
+            return Db.SaveChangesAsync();
         }
 
-        public void Increment(CartProduct cartProduct)
+        public async Task IncrementAsync(CartProduct cartProduct)
         {
+            var currentCountProducts = await Db.ProductArticles.CountAsync(productArticle => productArticle.Id == cartProduct.ProductArticle.Id);
+            if (cartProduct.Count == currentCountProducts)
+                return;
             if (cartProduct.Count == 999)
                 return;
-            ++cartProduct.Count;
+            cartProduct.Count++;
             UpdateTotalCurrentCostCart();
         }
         public void Decrement(CartProduct cartProduct)
@@ -95,24 +87,24 @@ namespace WebStore.Pages.Account
 
         public void SelectAllToggle()
         {
-            if (IsSelectedAll && cartProductsList.All(cartProduct => cartProduct.IsSelected))
+            if (IsSelectedAll && currentUser.Cart.Products.All(cartProduct => cartProduct.IsSelected))
             {
                 IsSelectedAll = false;
-                cartProductsList.ForEach(cartProduct => cartProduct.IsSelected = false);
+                currentUser.Cart.Products.ForEach(cartProduct => cartProduct.IsSelected = false);
             }
-            else if (!IsSelectedAll && cartProductsList.Any(cartProduct => !cartProduct.IsSelected))
+            else if (!IsSelectedAll && currentUser.Cart.Products.Any(cartProduct => !cartProduct.IsSelected))
             {
                 IsSelectedAll = true;
-                cartProductsList.ForEach(cartProduct => cartProduct.IsSelected = true);
+                currentUser.Cart.Products.ForEach(cartProduct => cartProduct.IsSelected = true);
             }
             UpdateTotalCurrentCostCart();
         }
         public void ProductSelecterToggle(CartProduct cartProduct)
         {
             cartProduct.IsSelected = !cartProduct.IsSelected;
-            if (!IsSelectedAll && cartProductsList.All(cartProduct => cartProduct.IsSelected))
+            if (!IsSelectedAll && currentUser.Cart.Products.All(cartProduct => cartProduct.IsSelected))
                 IsSelectedAll = true;
-            else if (IsSelectedAll && cartProductsList.Any(cartProduct => !cartProduct.IsSelected))
+            else if (IsSelectedAll && currentUser.Cart.Products.Any(cartProduct => !cartProduct.IsSelected))
                 IsSelectedAll = false;
             UpdateTotalCurrentCostCart();
         }

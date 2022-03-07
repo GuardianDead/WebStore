@@ -6,57 +6,65 @@
     <div class="orders__container">
         <div class="orders__block">
             <h1 class="orders__title">Заказы</h1>
-            @if (orders is not null && orders.Count == 0)
+            @if (currentUser is null)
             {
-                <div class="orders__empty-image"><img src="/icons/order-history/order-list-icon.svg" alt="Изображение листа заказов"></div>
-                <h3 class="orders__empty-title">Похоже история вашев заказов пуста</h3>
-                <h3 class="orders__empty-message">Попробуйте положить пару товаров 🛒 и сделать свой первый заказ!</h3>
+                <Loader />
             }
             else
             {
-                <div class="orders__orders-cards">
-                    @foreach (var order in orders)
-                    {
-                        <div class="orders-cards__order-card">
-                            <div class="order-card__title-block">
-                                <h2 class="order-card__number"><strong>Номер:</strong> @order.Id</h2>
-                                <h3 class="order-card__status"><strong>Статус:</strong> @OrderStatusTypeRussianTranslator.GetRussianTranslate(order.Status)</h3>
-                                <h3 class="order-card__date"><strong>Дата и время заказа:</strong> @order.DateTimeCreation.ToLongDateString() @order.DateTimeCreation.ToLongTimeString()</h3>
-                                <h3 class="order-card__track"><strong>Код отслеживания:</strong> @order.TrackNumber</h3>
-                            </div>
-                            <div class="order-card__main-block">
-                                <div class="main-block__products-block">
-                                    <div class="products-block__order">
-                                        <div class="order__products-cards">
-                                            @foreach (var product in order.Products)
-                                            {
-                                                <div class="products-cards__product-card">
-                                                    <a class="product-card__image" href="#" aria-label="Ссылка перехода на карточку товара @product.Article.Model.Name"><img src="data:image/png;base64,@Convert.ToBase64String(product.Article.Model.MainPhoto)" alt="@product.Article.Model.Name"></a>
-                                                    <a class="product-card__name" href="#" aria-label="Ссылка перехода на карточку товара @product.Article.Model.Name">@product.Article.Model.Name</a>
-                                                    <div class="product-card__price-block"> <!-- hasDiscount -->
-                                                        <span class="price-block__price">@GetFullPriceForProduct(product,order).ToString("### ### ###") ₽</span>
-                                                        <!-- <span class="price-block__discount-price">5000 ₽</span> -->
-                                                        <span class="price-block__count">- @GetCountSameProducts(product,order)x</span>
+                @if (currentUser.OrderHistory.Orders.Count == 0)
+                {
+                    <div class="orders__empty-image"><img src="/icons/order-history/order-list-icon.svg" alt="Изображение листа заказов"></div>
+                    <h3 class="orders__empty-title">Похоже история вашев заказов пуста</h3>
+                    <h3 class="orders__empty-message">Попробуйте положить пару товаров 🛒 и сделать свой первый заказ!</h3>
+                }
+                else
+                {
+                    <div class="orders__orders-cards">
+                        @foreach (var order in currentUser.OrderHistory.Orders)
+                        {
+                            <div class="orders-cards__order-card">
+                                <div class="order-card__title-block">
+                                    <h2 class="order-card__number"><strong>Номер:</strong> @order.Id</h2>
+                                    <h3 class="order-card__status"><strong>Статус:</strong> @OrderStatusTypeRussianTranslator.GetRussianTranslate(order.Status)</h3>
+                                    <h3 class="order-card__date"><strong>Дата и время заказа:</strong> @order.DateTimeCreation.ToLongDateString() @order.DateTimeCreation.ToLongTimeString()</h3>
+                                    <h3 class="order-card__track"><strong>Код отслеживания:</strong> @order.TrackNumber</h3>
+                                </div>
+                                <div class="order-card__main-block">
+                                    <div class="main-block__products-block">
+                                        <div class="products-block__order">
+                                            <div class="order__products-cards">
+                                                @foreach (var product in order.Products)
+                                                {
+                                                    <div class="products-cards__product-card">
+                                                        <a class="product-card__image" href="#" aria-label="Ссылка перехода на карточку товара @product.Article.Model.Name"><img src="data:image/png;base64,@Convert.ToBase64String(product.Article.Model.MainPhoto)" alt="@product.Article.Model.Name"></a>
+                                                        <a class="product-card__name" href="#" aria-label="Ссылка перехода на карточку товара @product.Article.Model.Name">@product.Article.Model.Name</a>
+                                                        <div class="product-card__price-block">
+                                                            <!-- hasDiscount -->
+                                                            <span class="price-block__price">@order.Products.Where(orderProduct => orderProduct.Article.Id == product.Article.Id).Sum(orderProduct => orderProduct.Article.Model.Price).ToString("### ### ###") ₽</span>
+                                                            <!-- <span class="price-block__discount-price">5000 ₽</span> -->
+                                                            <span class="price-block__count">- @order.Products.Count(orderProduct => orderProduct.Article.Id == product.Article.Id)x</span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            }
-                                        </div>
-                                        <div class="main-block__block-info">
-                                            <span class="block-info__payment-method"><strong>Способ оплаты:</strong> @OrderPaymentMethodTypeRussianTranslator.GetRussianTranslate(order.PaymentMethod)</span>
-                                            <span class="block-info__method-obtaining"><strong>Способ доставки:</strong> @DeliveryMethodTypeRussianTranslator.GetRussianTranslate(order.Delivery.DeliveryMethod) ("@order.Delivery.Name")</span>
-                                            <span class="block-info__delivery-address"><strong>Адрес доставки:</strong> @GetFullAdress(order.Address)</span>
-                                            <span class="block-info__recipient"><strong>Заказчик:</strong> @order.CustomerFullName</span> 
-                                            <span class="block-info__recipient"><strong>Телефон заказчика:</strong> +@order.PhoneNumber</span>
-                                            <span class="block-info__approximate-delivery-time"><strong>Примерная дата доставки:</strong> @order.DateTimeCreation.AddDays(order.Delivery.ApproximateDays).ToLongDateString()</span>
-                                            <span class="block-info__approximate-delivery-time"><strong>Стоимость доставки:</strong> @order.Delivery.Cost.ToString("### ###") ₽</span>
-                                            <span class="block-info__order-cost"><strong>Сумма заказа:</strong> @order.TotalCost.ToString("### ### ###") ₽</span>
+                                                }
+                                            </div>
+                                            <div class="main-block__block-info">
+                                                <span class="block-info__payment-method"><strong>Способ оплаты:</strong> @OrderPaymentMethodTypeRussianTranslator.GetRussianTranslate(order.PaymentMethod)</span>
+                                                <span class="block-info__method-obtaining"><strong>Способ доставки:</strong> @DeliveryMethodTypeRussianTranslator.GetRussianTranslate(order.Delivery.DeliveryMethod) ("@order.Delivery.Name")</span>
+                                                <span class="block-info__delivery-address"><strong>Адрес доставки:</strong> @($"{order.Address.Country}, {order.Address.City}, {order.Address.Street}, {order.Address.HouseNumber}, {order.Address.PostalCode}")</span>
+                                                <span class="block-info__recipient"><strong>Заказчик:</strong> @order.CustomerFullName</span>
+                                                <span class="block-info__recipient"><strong>Телефон заказчика:</strong> +@order.PhoneNumber</span>
+                                                <span class="block-info__approximate-delivery-time"><strong>Примерная дата доставки:</strong> @order.DateTimeCreation.AddDays(order.Delivery.ApproximateDays).ToLongDateString()</span>
+                                                <span class="block-info__approximate-delivery-time"><strong>Стоимость доставки:</strong> @order.Delivery.Cost.ToString("### ###") ₽</span>
+                                                <span class="block-info__order-cost"><strong>Сумма заказа:</strong> @order.TotalCost.ToString("### ### ###") ₽</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    }
-                </div>
+                        }
+                    </div>
+                }
             }
         </div>
     </div>

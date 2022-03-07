@@ -22,21 +22,21 @@ namespace WebStore.Pages.Shared.Layout
         public bool CategorySideNavigationIsScroling { get; set; }
 
         public static List<Subcategory> subcategories;
-        public static List<Category> categories = new List<Category>();
+        public static List<Category> categories;
         public static Category selectedCategory;
         public static List<Subcategory> selectedSubcaregories;
 
-        protected override Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
-            subcategories = Db.Subcategories
+            categories = await Db.Categories
+                .AsNoTracking()
+                .ToListAsync();
+            subcategories = await Db.Subcategories
                 .AsNoTracking()
                 .Include(x => x.Category)
-                .ToList();
-            foreach (var subcategory in subcategories)
-                if (!categories.Any(category => category.Name == subcategory.Category.Name))
-                    categories.Add(subcategory.Category);
+                .ToListAsync();
 
-            return JSRuntime.InvokeVoidAsync("SetMainLayouteDotnetReference", DotNetObjectReference.Create(this)).AsTask();
+            await JSRuntime.InvokeVoidAsync("SetMainLayouteDotnetReference", DotNetObjectReference.Create(this)).AsTask();
         }
 
         [JSInvokable]
