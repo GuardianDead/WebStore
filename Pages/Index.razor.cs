@@ -7,7 +7,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using WebStore.Data;
 using WebStore.Data.Entities;
-using WMBlazorSlickCarousel.WMBSC;
 
 namespace WebStore.Pages
 {
@@ -17,114 +16,114 @@ namespace WebStore.Pages
 
         [Inject] public AppDbContext Db { get; set; }
 
-        public BlazorSlickCarousel theCarousel1;
-        public BlazorSlickCarousel theCarousel2;
-        public BlazorSlickCarousel theCarousel3;
-        public WMBSCInitialSettings configurations;
+        public WMBSCInitialSettings configurations = new WMBSCInitialSettings()
+        {
+            dotsClass = "carousel__dots",
+            arrows = true,
+            dots = true,
+            waitForAnimate = true,
+            slidesToShow = 3,
+            slidesToScroll = 1,
+            touchThreshold = 20,
+            centerMode = true,
+            responsive = new List<WMBSCResponsiveSettings>()
+            {
+                new WMBSCResponsiveSettings // <= 500px размера экрана
+                {
+                    breakpoint = 500,
+                    settings = new WMBSCSettings
+                    {
+                        dotsClass = "carousel__dots",
+                        arrows = true,
+                        dots = true,
+                        waitForAnimate = true,
+                        slidesToScroll = 1,
+                        touchThreshold = 20,
+                    }
+                },
+                new WMBSCResponsiveSettings // <= 825px размера экрана
+                {
+                    breakpoint = 825,
+                    settings = new WMBSCSettings
+                    {
+                        dotsClass = "carousel__dots",
+                        arrows = true,
+                        dots = true,
+                        waitForAnimate = true,
+                        slidesToScroll = 1,
+                        touchThreshold = 20,
+                        centerMode = true,
+                        slidesToShow = 2,
+                    }
+                }
+            }
+        };
 
-        public List<ProductModel> productModelsSection1;
-        public List<ProductModel> productModelsSection2;
-        public List<ProductModel> productModelsSection3;
-        public User currentUser;
+        public List<ProductModel> productsModelsSection1;
+        public List<ProductModel> productsModelsSection2;
+        public List<ProductModel> productsModelsSection3;
         public ClaimsPrincipal currentUserState;
-        public List<CartProduct> userCartProducts;
-        public List<FavoritesListProduct> userFavoriteListProducts;
+        public User currentUser;
+
+        public int CurrentCountProductsOfModel { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            WMBSCResponsiveSettings breakpoint500Responsive = new WMBSCResponsiveSettings // <= 500px размера экрана
-            {
-                breakpoint = 500,
-                settings = new WMBSCSettings()
-                {
-                    dotsClass = "carousel__dots",
-                    arrows = true,
-                    dots = true,
-                    waitForAnimate = true,
-                    slidesToScroll = 1,
-                    touchThreshold = 20,
-
-                }
-            };
-            WMBSCResponsiveSettings breakpoint825Responsive = new WMBSCResponsiveSettings // <= 825px размера экрана
-            {
-                breakpoint = 825,
-                settings = new WMBSCSettings
-                {
-                    dotsClass = "carousel__dots",
-                    arrows = true,
-                    dots = true,
-                    waitForAnimate = true,
-                    slidesToScroll = 1,
-                    touchThreshold = 20,
-                    centerMode = true,
-                    slidesToShow = 2,
-                }
-            };
-            configurations = new WMBSCInitialSettings
-            {
-                dotsClass = "carousel__dots",
-                arrows = true,
-                dots = true,
-                waitForAnimate = true,
-                slidesToShow = 3,
-                slidesToScroll = 1,
-                touchThreshold = 20,
-                centerMode = true,
-
-                responsive = new List<WMBSCResponsiveSettings>()
-                {
-                    breakpoint825Responsive,
-                    breakpoint500Responsive
-                }
-            };
-
-            productModelsSection1 = Db.ProductModels.AsNoTracking().Take(7).ToList();
-            productModelsSection2 = Db.ProductModels.AsNoTracking().Skip(3).Take(7).ToList();
-            productModelsSection3 = Db.ProductModels.AsNoTracking().Take(5).ToList();
-
+            productsModelsSection1 = await Db.ProductModels
+                .AsNoTracking()
+                .Where(productModel => Db.ProductArticles
+                    .Include(productArticle => productArticle.Model)
+                    .Where(productArticle => productArticle.Model.Id == productModel.Id)
+                    .Any(productArticle => productArticle.Count != 0))
+                .Take(9).ToListAsync();
+            productsModelsSection2 = productsModelsSection1;
+            productsModelsSection3 = productsModelsSection1;
             currentUserState = (await AuthenticationStateTask).User;
             if (currentUserState.Identity.IsAuthenticated)
             {
-                var userEmailClaim = currentUserState.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.Email);
-                currentUser = Db.Users
+                var userEmail = currentUserState.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
+                currentUser = await Db.Users
                     .Include(user => user.ListFavourites.Products)
+                        .ThenInclude(favoritesProducts => favoritesProducts.ProductArticle.Model)
                     .Include(user => user.Cart.Products)
-                    .SingleOrDefault(user => user.Email == userEmailClaim.Value);
-                userFavoriteListProducts = Db.FavoritesListProducts
-                    .Include(p => p.ProductArticle.Model)
-                    .Where(p => currentUser.ListFavourites.Products.Contains(p))
-                    .ToList();
-                userCartProducts = Db.CartProducts
-                    .Include(p => p.ProductArticle.Model)
-                    .Where(p => currentUser.Cart.Products.Contains(p))
-                    .ToList();
+                        .ThenInclude(favoritesProducts => favoritesProducts.ProductArticle.Model)
+                    .SingleOrDefaultAsync(user => user.Email == userEmail);
             }
         }
 
-        public void AddProductInUserCart(ProductModel productModel)
+        public async Task AddProductInCartAsync(ProductModel productModel)
         {
-            userCartProducts.Add(new CartProduct(Db.ProductArticles.Include(productArticle => productArticle.Model).First(productArticle => productArticle.Model.Id == productModel.Id), 1));
-            currentUser.Cart.Products = userCartProducts;
-            Db.SaveChanges();
+            if (currentUser.Cart.Products.Any(product => product.ProductArticle.Model.Id == productModel.Id))
+                return;
+            var addedFirstProductArticleOfModel = await Db.ProductArticles
+                .Include(productArticle => productArticle.Model)
+                .FirstAsync(productArticle => productArticle.Model.Id == productModel.Id && productArticle.Count != 0);
+            currentUser.Cart.Products.Add(new CartProduct(addedFirstProductArticleOfModel, 1));
+            await Db.SaveChangesAsync();
         }
-        public void AddProductInUserFavorites(ProductModel productModel)
+        public async Task AddProductInFavoritesAsync(ProductModel productModel)
         {
-            userFavoriteListProducts.Add(new FavoritesListProduct(Db.ProductArticles.Include(productArticle => productArticle.Model).First(productArticle => productArticle.Model.Id == productModel.Id)));
-            currentUser.ListFavourites.Products = userFavoriteListProducts;
-            Db.SaveChanges();
+            if (currentUser.ListFavourites.Products.Any(product => product.ProductArticle.Model.Id == productModel.Id))
+                return;
+            var addedFirstProductArticleOfModel = await Db.ProductArticles
+                .Include(productArticle => productArticle.Model)
+                .FirstAsync(productArticle => productArticle.Model.Id == productModel.Id && productArticle.Count != 0);
+            currentUser.ListFavourites.Products.Add(new FavoritesListProduct(addedFirstProductArticleOfModel));
+            await Db.SaveChangesAsync();
         }
-        public void RemoveProductInUserCart(ProductModel productModel)
+        public async Task RemoveProductFromCartAsync(ProductModel productModel)
         {
-            userCartProducts.Remove(userCartProducts.First(cartProduct => cartProduct.ProductArticle.Model.Id == productModel.Id));
-            currentUser.Cart.Products = userCartProducts;
-            Db.SaveChanges();
+            if (!currentUser.Cart.Products.Any(product => product.ProductArticle.Model.Id == productModel.Id))
+                return;
+            currentUser.Cart.Products.RemoveAll(cartProduct => cartProduct.ProductArticle.Model.Id == productModel.Id);
+            await Db.SaveChangesAsync();
         }
-        public void RemoveProductInUserFavorites(ProductModel productModel)
+        public async Task RemoveProductFromFavoritesAsync(ProductModel productModel)
         {
-            userFavoriteListProducts.Remove(userFavoriteListProducts.First(favoriteProduct => favoriteProduct.ProductArticle.Model.Id == productModel.Id));
-            currentUser.ListFavourites.Products = userFavoriteListProducts;
-            Db.SaveChanges();
+            if (!currentUser.ListFavourites.Products.Any(product => product.ProductArticle.Model.Id == productModel.Id))
+                return;
+            currentUser.ListFavourites.Products.RemoveAll(cartProduct => cartProduct.ProductArticle.Model.Id == productModel.Id);
+            await Db.SaveChangesAsync();
         }
     }
 }

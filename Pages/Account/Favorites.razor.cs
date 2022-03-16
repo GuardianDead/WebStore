@@ -23,7 +23,7 @@ namespace WebStore.Pages.Account
         protected override async Task OnInitializedAsync()
         {
             currentUserState = (await AuthenticationState).User;
-            var userEmail = currentUserState.Claims.ToList().Single(claim => claim.Type == ClaimTypes.Email).Value;
+            var userEmail = currentUserState.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
             currentUser = await Db.Users
                 .Include(user => user.Cart.Products)
                     .ThenInclude(cartProducts => cartProducts.ProductArticle.Model)
@@ -42,7 +42,7 @@ namespace WebStore.Pages.Account
             return Db.SaveChangesAsync();
 
         }
-        public Task RemoveProductInCartAsync(FavoritesListProduct favoriteProduct)
+        public Task RemoveProductFromCartAsync(FavoritesListProduct favoriteProduct)
         {
             var removedCartProduct = currentUser.Cart.Products
                     .SingleOrDefault(cartProductList => cartProductList.ProductArticle.Id == favoriteProduct.ProductArticle.Id);
@@ -51,7 +51,7 @@ namespace WebStore.Pages.Account
             currentUser.Cart.Products.Remove(removedCartProduct);
             return Db.SaveChangesAsync();
         }
-        public Task RemoveProductInFavoritesAsync(FavoritesListProduct favoriteProduct)
+        public Task RemoveProductFromFavoritesAsync(FavoritesListProduct favoriteProduct)
         {
             if (!currentUser.ListFavourites.Products.Contains(favoriteProduct))
                 return Task.CompletedTask;

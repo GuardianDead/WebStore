@@ -29,7 +29,8 @@
     font-size: 30px;
     position: absolute;
     top: 40%;
-    right: 31%; }
+    right: 31%;
+    color: black; }
   .carousel ::deep .slick-prev {
     margin-left: 50px;
     padding: 40px 37px;
@@ -49,7 +50,8 @@
     font-size: 30px;
     position: absolute;
     top: 40%;
-    left: 31%; }
+    left: 31%;
+    color: black; }
   .carousel ::deep .slick-next {
     margin-right: 50px;
     padding: 40px 37px;

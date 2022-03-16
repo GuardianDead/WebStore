@@ -27,13 +27,15 @@ namespace WebStore.Pages.Account
         protected override async Task OnInitializedAsync()
         {
             currentUserState = (await AuthenticationState).User;
-            var userEmail = currentUserState.Claims.ToList().Single(claim => claim.Type == ClaimTypes.Email).Value;
+            var userEmail = currentUserState.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
             currentUser = await Db.Users
                 .Include(user => user.Cart.Products)
                     .ThenInclude(cartProducts => cartProducts.ProductArticle.Model)
                 .Include(user => user.ListFavourites.Products)
                     .ThenInclude(favoriteProducts => favoriteProducts.ProductArticle.Model)
                 .SingleAsync(user => user.Email == userEmail);
+            currentUser.Cart.Products.RemoveAll(cartProduct => cartProduct.ProductArticle.Count == 0);
+            await Db.SaveChangesAsync();
             currentUser.Cart.Products.ForEach(cartProduct => cartProduct.IsSelected = true);
             UpdateTotalCurrentCostCart();
         }
@@ -50,14 +52,14 @@ namespace WebStore.Pages.Account
             currentUser.ListFavourites.Products.Add(new FavoritesListProduct(cartProduct.ProductArticle));
             return Db.SaveChangesAsync();
         }
-        public Task RemoveProductInCartAsync(CartProduct cartProduct)
+        public Task RemoveProductFromCartAsync(CartProduct cartProduct)
         {
             if (!currentUser.Cart.Products.Contains(cartProduct))
                 return Task.CompletedTask;
             currentUser.Cart.Products.Remove(cartProduct);
             return Db.SaveChangesAsync();
         }
-        public Task RemoveProductInFavoritesAsync(CartProduct cartProduct)
+        public Task RemoveProductFromFavoritesAsync(CartProduct cartProduct)
         {
             var removedFavoriteProduct = currentUser.ListFavourites.Products
                     .SingleOrDefault(cartProductList => cartProductList.ProductArticle.Id == cartProduct.ProductArticle.Id);
@@ -67,10 +69,9 @@ namespace WebStore.Pages.Account
             return Db.SaveChangesAsync();
         }
 
-        public async Task IncrementAsync(CartProduct cartProduct)
+        public void Increment(CartProduct cartProduct)
         {
-            var currentCountProducts = await Db.ProductArticles.CountAsync(productArticle => productArticle.Id == cartProduct.ProductArticle.Id);
-            if (cartProduct.Count == currentCountProducts)
+            if (cartProduct.Count == cartProduct.ProductArticle.Count)
                 return;
             if (cartProduct.Count == 999)
                 return;
