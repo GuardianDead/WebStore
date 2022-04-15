@@ -11,6 +11,8 @@ namespace WebStore.Data.Validators
                 .NotEmpty().NotNull().WithMessage("Страна не может быть пустым");
             RuleFor(i => i.City)
                 .NotEmpty().NotNull().WithMessage("Город не может быть пустым");
+            RuleFor(i => i.Region)
+                .NotEmpty().NotNull().WithMessage("Город не может быть пустым");
             RuleFor(i => i.Street)
                 .NotEmpty().NotNull().WithMessage("Улица не может быть пустым");
             RuleFor(i => i.HouseNumber)

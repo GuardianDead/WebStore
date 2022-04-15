@@ -49,7 +49,7 @@ namespace WebStore.Data.Entities
         [EmailAddress]
         public string Email { get; set; }
         [Required]
-        [DisplayName("Трек номер")]
+        [DisplayName("ФИО заказчика")]
         public string CustomerFullName { get; set; }
 
         public Order()

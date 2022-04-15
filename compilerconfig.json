@@ -46,9 +46,5 @@
   {
     "outputFile": "Pages/Shared/Loader.razor.css",
     "inputFile": "Pages/Shared/Loader.razor.scss"
-  },
-  {
-    "outputFile": "Pages/OrderRegistration.razor.css",
-    "inputFile": "Pages/OrderRegistration.razor.scss"
   }
 ]

@@ -8,6 +8,15 @@
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+    -webkit-text-fill-color: black !important;
+    -webkit-background-clip: text;
+}
+
 h1{margin: 0;}
 h2{margin: 0;}
 h3{margin: 0;}

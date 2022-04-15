@@ -13,6 +13,9 @@ namespace WebStore.Data.Entities
         [DisplayName("Страна")]
         public string Country { get; set; }
         [Required]
+        [DisplayName("Область/регион")]
+        public string Region { get; set; }
+        [Required]
         [DisplayName("Город")]
         public string City { get; set; }
         [Required]
@@ -29,11 +32,12 @@ namespace WebStore.Data.Entities
         public Address()
         {
         }
-        public Address(string country, string city, string street,
+        public Address(string country, string region, string city, string street,
             string houseNumber, string postalCode)
         {
             Country = country;
             City = city;
+            Region = region;
             Street = street;
             HouseNumber = houseNumber;
             PostalCode = postalCode;

@@ -1,4 +1,6 @@
-﻿namespace WebStore.Data.Mocks.SubcategoryMock
+﻿using WebStore.Data.Mocks.Interfaces;
+
+namespace WebStore.Data.Mocks.SubcategoryMock
 {
     public interface ISubcategoryMock : IMockAsync
     {

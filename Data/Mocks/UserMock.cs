@@ -31,11 +31,15 @@ namespace WebStore.Data.Mocks.UserMock
             if (await db.Users.AnyAsync(cancellationToken))
                 return true;
 
-            List<Order> selectedOrders = await db.Orders.Where(order => order.Address.PostalCode == "602267").ToListAsync(cancellationToken);
-
+            List<Order> selectedOrders = await db.Orders
+                .Include(order => order.Address)
+                .Include(order => order.Delivery)
+                .Include(order => order.Products)
+                    .ThenInclude(product => product.Article.Model.Subcategory.Category)
+                .Where(order => order.Address.PostalCode == "602267").ToListAsync(cancellationToken);
             var admin = new User(
                     userName: "kakawkawww13",
-                    orderHistory: new OrderHistory(selectedOrders.Take(1).ToList()),
+                    orderHistory: new OrderHistory(Enumerable.Empty<Order>().ToList()), /*selectedOrders.Take(1).ToList()*/
                     listFavourites: new FavoritesList(Enumerable.Empty<FavoritesListProduct>().ToList()),
                     cart: new Cart(Enumerable.Empty<CartProduct>().ToList()),
                     email: "kakawkawww13@mail.ru",
@@ -48,19 +52,16 @@ namespace WebStore.Data.Mocks.UserMock
                 Firstname = "Александр",
                 Surname = "Андрианов",
                 Lastname = "Евгеньевич",
-                Address = new Address("Россия", "Муром", "Ленина", "55а", "602267"),
+                Address = new Address("Россия", "Владимирская область", "Муром", "Ленина", "55а", "602267"),
             };
             var user = new User(
                     userName: "kakawkawww17",
-                    orderHistory: new OrderHistory(selectedOrders.Skip(1).Take(2).ToList()),
+                    orderHistory: new OrderHistory(Enumerable.Empty<Order>().ToList()),
                     listFavourites: new FavoritesList(Enumerable.Empty<FavoritesListProduct>().ToList()),
                     cart: new Cart(Enumerable.Empty<CartProduct>().ToList()),
                     email: "kakawkawww17@mail.ru",
                     dateTimeCreation: DateTime.Now
                 );
-
-            await userValidator.ValidateAndThrowAsync(admin, cancellationToken);
-            await userValidator.ValidateAndThrowAsync(user, cancellationToken);
 
             IdentityResult adminIdentityCreateResult = await userManager.CreateAsync(admin, "21081990wwwWWW");
             IdentityResult userIdentityCreateResult = await userManager.CreateAsync(user, "79157734732wwwWWW");
@@ -71,6 +72,14 @@ namespace WebStore.Data.Mocks.UserMock
 
             var receivedAdmin = await userManager.Users.SingleAsync(user => user.Email == "kakawkawww13@mail.ru", cancellationToken);
             var receivedUser = await userManager.Users.SingleAsync(user => user.Email == "kakawkawww17@mail.ru", cancellationToken);
+            receivedAdmin.OrderHistory = new OrderHistory(selectedOrders.Take(1).ToList());
+            receivedUser.OrderHistory = new OrderHistory(selectedOrders.Skip(1).Take(2).ToList());
+            var dbSaveUsersResult = await db.SaveChangesAsync(cancellationToken);
+            if (dbSaveUsersResult == -1)
+                throw new NotImplementedException($"Неудалось установить историю заказов для пользователей {receivedAdmin.Email} и {receivedUser.Email}");
+
+            await userValidator.ValidateAndThrowAsync(admin, cancellationToken);
+            await userValidator.ValidateAndThrowAsync(user, cancellationToken);
 
             IdentityResult adminIdentityAddToRoleResult = await userManager.AddToRoleAsync(receivedAdmin, RoleConst.Admin);
             IdentityResult userIdentityAddToRoleResult = await userManager.AddToRoleAsync(receivedUser, RoleConst.User);

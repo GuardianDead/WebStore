@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace WebStore.Data.Mocks
+namespace WebStore.Data.Mocks.Interfaces
 {
     public interface IMockAsync
     {
