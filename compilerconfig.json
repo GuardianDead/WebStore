@@ -46,5 +46,17 @@
   {
     "outputFile": "Pages/Shared/Loader.razor.css",
     "inputFile": "Pages/Shared/Loader.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Account/OrderRegistration.razor.css",
+    "inputFile": "Pages/Account/OrderRegistration.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Products/ProductCard.razor.css",
+    "inputFile": "Pages/Products/ProductCard.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Products/ProductCatalog.razor.css",
+    "inputFile": "Pages/Products/ProductCatalog.razor.scss"
   }
 ]

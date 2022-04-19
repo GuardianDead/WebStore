@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebStore.Configurations;
+using WebStore.Services;
+using WebStore.Services.Interfaces;
 
 namespace WebStore
 {
@@ -29,6 +31,7 @@ namespace WebStore
             services.AddBlazoredLocalStorage();
             services.AddBlazoredSessionStorage();
 
+            services.AddSingleton<ITrackNumberService, TrackNumberService>();
             services.AddAppAuthenticationAndAuthorization(configuration: Configuration);
             services.AddAppDbContext(configuration: Configuration);
             services.AddAppValidation();

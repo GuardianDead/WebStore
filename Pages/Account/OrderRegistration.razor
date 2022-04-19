@@ -1,0 +1,90 @@
+﻿@page "/account/order-registration"
+@inherits OrderRegistrationBase
+@attribute [Authorize]
+
+<section class="order-registration">
+    <div class="order-registration__container">
+        @if (currentUser is null || AllPaymentMethods is null || allDeliviries is null)
+        {
+            <Loader />
+        }
+        else
+        {
+            if (!currentUser.Cart.Products.Any(cartProduct => cartProduct.IsSelected))
+            {
+                <div class="order-registration__empty-image"><img src="/images/orderRegistration/Корзина товаров.svg" alt="Изображение корзины товаров"></div>
+                <h3 class="order-registration__empty-title">Похоже ваша корзина пуста или же вы не выбрали ни одного товара</h3>
+                <h3 class="order-registration__empty-message">Жмите 🛒 на товаре и добавляйте товары к свою корзину и оформляйте заказ</h3>
+            }
+            else
+            {
+                <h1 class="order-registration__title">Оформление заказа</h1>
+                <EditForm class="order-registration__form-block" Model="OrderRegistrationViewModelValidator" OnSubmit="SubmitAsync" autocomplete="on">
+                    <div class="form-block__inputs-block">
+                        <div class="inputs-block__contact-block">
+                            <span class="contact-block__label label">Контактные данные</span>
+                            <div class="contact-block__contact-inputs-block">
+                                <input class="contact-inputs-block__FIO-input input" @onclick="() => Errors.Clear()" @bind="OrderRegistrationViewModel.FullName" required type="text" placeholder="ФИО">
+                                <input class="contact-inputs-block__phone-input input" @onclick="() => Errors.Clear()" @bind="OrderRegistrationViewModel.PhoneNumber" required type="tel" autocomplete="tel" placeholder="Телефон">
+                                <input class="contact-inputs-block__email-input input" @onclick="() => Errors.Clear()" @bind="OrderRegistrationViewModel.Email" required type="email" autocomplete="email" placeholder="Электронная почта">
+                            </div>
+                        </div>
+                        <div class="inputs-block__address-block">
+                            <span class="address-block__label label">Адрес доставки</span>
+                            <div class="address-block__address-inputs-block">
+                                <input class="address-inputs-block__contry input" @onclick="() => Errors.Clear()" @bind="OrderRegistrationViewModel.Address.Country" required type="text" placeholder="Страна">
+                                <input class="address-inputs-block__city input" @onclick="() => Errors.Clear()" @bind="OrderRegistrationViewModel.Address.City" required type="text" placeholder="Город">
+                                <input class="address-inputs-block__region input" @onclick="() => Errors.Clear()" @bind="OrderRegistrationViewModel.Address.Region" required type="text" placeholder="Область">
+                                <input class="address-inputs-block__address input" @onclick="() => Errors.Clear()" @bind="OrderRegistrationViewModel.Address.Street" required type="text" placeholder="Улица">
+                                <input class="address-inputs-block__postal-code input" @onclick="() => Errors.Clear()" @bind="OrderRegistrationViewModel.Address.PostalCode" required type="text" placeholder="Почтовый индекс">
+                            </div>
+                        </div>
+                        <div class="inputs-block__payment-method-block">
+                            <span class="payment-method-block__label label">Метод оплаты</span>
+                            <div class="payment-method-block__choose-block">
+                                @foreach (var paymentMethod in AllPaymentMethods)
+                                {
+                                    <div class="choose-block__value @(OrderRegistrationViewModel.PaymentMethodType == paymentMethod ? "choose-selected" : "")" @onclick="() => SelectPaymentMethod(paymentMethod)">@PaymentMethodTypeRussianTranslator.GetRussianTranslate(paymentMethod)</div>
+                                }
+                            </div>
+                        </div>
+                        <div class="inputs-block__delivery-block">
+                            <span class="delivery-block__label label">Способ доставки</span>
+                            <div class="delivery-block__choose-block">
+                                @foreach (var deliveryMethod in AllDeliveryMethods)
+                                {
+                                    <div class="choose-block__value @(OrderRegistrationViewModel.DeliveryMethod == deliveryMethod ? "choose-selected" : "")" @onclick="() => SelectDeliveryMethod(deliveryMethod)">@DeliveryMethodTypeRussianTranslator.GetRussianTranslate(deliveryMethod)</div>
+                                }
+                            </div>
+                            @if (selectedDeliveries is not null)
+                            {
+                                <div class="delivery-block__splitter" />
+                                <div class="delivery-block__choose-block">
+                                    @foreach (var delivery in selectedDeliveries)
+                                    {
+                                        <div class="choose-block__value value-block @(OrderRegistrationViewModel.Delivery == delivery ? "choose-selected" : "")" @onclick="() => SelectDelivery(delivery)">
+                                            <span>@delivery.Name</span>
+                                            <span>@(delivery.Cost == 0 ? "0" : delivery.Cost.ToString("### ###")) ₽</span>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                        <div class="inputs-block__error-block error-block">
+                            @foreach (var error in Errors)
+                            {
+                                <span class="error-block__error">&#8226; @error.ErrorMessage</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="form-block__submit-block">
+                        <button class="submit-block__submit-button" type="submit" aria-label="Кнопка оформления заказа">Заказать</button>
+                        <div class="submit-block__info"><span>Товары – @currentUser.Cart.Products.Count(cartProduct => cartProduct.IsSelected) шт.</span><span>@((productsCost).ToString("### ### ###")) ₽</span></div>
+                        <div class="submit-block__info"><span>Стоимость доставки</span><span>@(deliveryCost == 0 ? "0" : deliveryCost.ToString("# ###")) ₽</span></div>
+                        <div class="submit-block__info"><span><strong>Итого</strong></span><span><strong>@((productsCost-deliveryCost).ToString("### ### ###")) ₽</strong></span></div>
+                    </div>
+                </EditForm>
+            }
+        }
+    </div>
+</section>
