@@ -52,7 +52,7 @@
                                     <a href="#"><img class="image-block__image" src="data:image/png;base64,@Convert.ToBase64String(productModel.MainPhoto)"></a>
                                     @if (currentUserState is not null && currentUserState.Identity.IsAuthenticated && currentUser is not null)
                                     {
-                                        if (currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.ProductArticle.Model.Id == productModel.Id))
+                                        if (currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                         {
                                             <span class="image-block__favorites" @onclick="() => RemoveProductFromFavoritesAsync(productModel)"><img src="/icons/header/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></span>
                                         }
@@ -60,7 +60,7 @@
                                         {
                                             <span class="image-block__favorites" @onclick="() => AddProductInFavoritesAsync(productModel)"><img src="/icons/header/Heart.svg" alt="Иконка избранного" title="Добавить в избранное"></span>
                                         }
-                                        if (currentUser.Cart.Products.Any(favoriteProduct => favoriteProduct.ProductArticle.Model.Id == productModel.Id))
+                                        if (currentUser.Cart.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                         {
                                             <span class="image-block__cart" @onclick="() => RemoveProductFromCartAsync(productModel)"><img src="/icons/header/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></span>
                                         }
@@ -110,7 +110,7 @@
                                     <a href="#"><img class="image-block__image" src="data:image/png;base64,@Convert.ToBase64String(productModel.MainPhoto)"></a>
                                     @if (currentUserState is not null && currentUserState.Identity.IsAuthenticated && currentUser is not null)
                                     {
-                                        if (currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.ProductArticle.Model.Id == productModel.Id))
+                                        if (currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                         {
                                             <span class="image-block__favorites" @onclick="() => RemoveProductFromFavoritesAsync(productModel)"><img src="/icons/header/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></span>
                                         }
@@ -118,7 +118,7 @@
                                         {
                                             <span class="image-block__favorites" @onclick="() => AddProductInFavoritesAsync(productModel)"><img src="/icons/header/Heart.svg" alt="Иконка избранного" title="Добавить в избранное"></span>
                                         }
-                                        if (currentUser.Cart.Products.Any(favoriteProduct => favoriteProduct.ProductArticle.Model.Id == productModel.Id))
+                                        if (currentUser.Cart.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                         {
                                             <span class="image-block__cart" @onclick="() => RemoveProductFromCartAsync(productModel)"><img src="/icons/header/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></span>
                                         }
@@ -176,7 +176,7 @@
                                     <a href="#"><img class="image-block__image" src="data:image/png;base64,@Convert.ToBase64String(productModel.MainPhoto)"></a>
                                     @if (currentUserState is not null && currentUserState.Identity.IsAuthenticated && currentUser is not null)
                                     {
-                                        if (currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.ProductArticle.Model.Id == productModel.Id))
+                                        if (currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                         {
                                             <span class="image-block__favorites" @onclick="() => RemoveProductFromFavoritesAsync(productModel)"><img src="/icons/header/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></span>
                                         }
@@ -184,7 +184,7 @@
                                         {
                                             <span class="image-block__favorites" @onclick="() => AddProductInFavoritesAsync(productModel)"><img src="/icons/header/Heart.svg" alt="Иконка избранного" title="Добавить в избранное"></span>
                                         }
-                                        if (currentUser.Cart.Products.Any(favoriteProduct => favoriteProduct.ProductArticle.Model.Id == productModel.Id))
+                                        if (currentUser.Cart.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                         {
                                             <span class="image-block__cart" @onclick="() => RemoveProductFromCartAsync(productModel)"><img src="/icons/header/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></span>
                                         }

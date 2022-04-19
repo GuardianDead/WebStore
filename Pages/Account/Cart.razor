@@ -26,19 +26,19 @@
                             @foreach (var cartProduct in currentUser.Cart.Products)
                             {
                                 <div class="products-cards__product-card">
-                                    <a class="product-card__image" href="#" aria-label="Перейти в личную карточку товара @cartProduct.ProductArticle.Model.Name"><img src="data:image/png;base64,@Convert.ToBase64String(cartProduct.ProductArticle.Model.MainPhoto)" alt="Картинка @cartProduct.ProductArticle.Model.Name" title="@cartProduct.ProductArticle.Model.Name"></a>
+                                    <a class="product-card__image" href="#" aria-label="Перейти в личную карточку товара @cartProduct.Article.Model.Name"><img src="data:image/png;base64,@Convert.ToBase64String(cartProduct.Article.Model.MainPhoto)" alt="Картинка @cartProduct.Article.Model.Name" title="@cartProduct.Article.Model.Name"></a>
                                     <div class="product-card__product-info">
-                                        <h3 class="product-info__name"><a href="#" aria-label="Перейти в личную карточку товара @cartProduct.ProductArticle.Model.Name">@cartProduct.ProductArticle.Model.Name</a></h3>
-                                        <span class="product-info__color">Цвет: @cartProduct.ProductArticle.Color</span>
-                                        <span class="product-info__size">Размер: @cartProduct.ProductArticle.Size</span>
+                                        <h3 class="product-info__name"><a href="#" aria-label="Перейти в личную карточку товара @cartProduct.Article.Model.Name">@cartProduct.Article.Model.Name</a></h3>
+                                        <span class="product-info__color">Цвет: @cartProduct.Article.Color</span>
+                                        <span class="product-info__size">Размер: @cartProduct.Article.Size</span>
                                     </div>
                                     <div class="product-card__counter-block">
                                         <div class="counter-block__counter">
                                             <div class="counter__minus" @onclick="() => Decrement(cartProduct)" />
                                             <input class="counter-input" disabled type="text" maxlength="3" @bind="cartProduct.Count" aria-label="Место ввода количества желаемого товара">
-                                            <div class="counter__plus" @onclick="() => Increment(cartProduct)" />
+                                            <div class="counter__plus" @onclick="() => IncrementAsync(cartProduct)" />
                                         </div>
-                                        <span class="counter-block__price">@((cartProduct.ProductArticle.Model.Price*cartProduct.Count).ToString("### ### ###")) ₽</span>
+                                        <span class="counter-block__price">@((cartProduct.Article.Model.Price*cartProduct.Count).ToString("### ### ###")) ₽</span>
                                     </div>
                                     @*<div class="product-card__block-price hasDiscount">
                                  hasDiscount
@@ -46,15 +46,15 @@
                                 <span class="block-price__discount-price">22 400 ₽</span>
                                 </div>*@
                                 <div class="product-card__icons-block">
-                                    <a class="icons-block__cart-icon" @onclick="async () => await RemoveProductFromCartAsync(cartProduct)" aria-label="Удалить товар @cartProduct.ProductArticle.Model.Name из корзины"><img src="/icons/cart/Slash-cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины"></a>
+                                    <a class="icons-block__cart-icon" @onclick="async () => await RemoveProductFromCartAsync(cartProduct)" aria-label="Удалить товар @cartProduct.Article.Model.Name из корзины"><img src="/icons/cart/Slash-cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины"></a>
                                     <label class="cart-icon__select-checkbox select-checkbox"><input name="login-remember-me-checkbox" @bind="cartProduct.IsSelected" @onclick="() => ProductSelecterToggle(cartProduct)" type="checkbox" aria-label="Чек-бокс для выборки всех товаров в корзине"><span></span></label>
-                                    @if (currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.ProductArticle.Id == cartProduct.ProductArticle.Id))
+                                    @if (currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Id == cartProduct.Article.Id))
                                     {
-                                        <a class="icons-block__favorites-icon" @onclick="async () => await RemoveProductFromFavoritesAsync(cartProduct)" aria-label="Удалить товар @cartProduct.ProductArticle.Model.Name из избранного"><img src="/icons/cart/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
+                                        <a class="icons-block__favorites-icon" @onclick="async () => await RemoveProductFromFavoritesAsync(cartProduct)" aria-label="Удалить товар @cartProduct.Article.Model.Name из избранного"><img src="/icons/cart/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
                                     }
                                     else
                                     {
-                                        <a class="icons-block__favorites-icon" @onclick="async () => await AddProductInFavoritesAsync(cartProduct)" aria-label="Добавить товар @cartProduct.ProductArticle.Model.Name в избранное"><img src="/icons/cart/Heart.svg" alt="Иконка избранного" title="Добавить в избранное"></a>
+                                        <a class="icons-block__favorites-icon" @onclick="async () => await AddProductInFavoritesAsync(cartProduct)" aria-label="Добавить товар @cartProduct.Article.Model.Name в избранное"><img src="/icons/cart/Heart.svg" alt="Иконка избранного" title="Добавить в избранное"></a>
                                     }
                                 </div>
                                 </div>
@@ -64,16 +64,16 @@
                             @if (totalCost != 0)
                             {
                                 <div class="information-block__info"><span>Товары – @currentUser.Cart.Products.Count(cartProduct => cartProduct.IsSelected) шт.</span><span>@totalCost.ToString("### ### ###") ₽</span></div>
-                                <div class="information-block__info"><span>Скидка</span><span>300 ₽</span></div>
+                                @*<div class="information-block__info"><span>Скидка</span><span>300 ₽</span></div>*@
                                 <div class="information-block__info"><span><strong>Итого</strong></span><span><strong>@totalCost.ToString("### ### ###") ₽</strong></span></div>
                             }
                             else
                             {
                                 <div class="information-block__info"><span>Товары – 0 шт.</span><span>0 ₽</span></div>
-                                <div class="information-block__info"><span>Скидка</span><span>300 ₽</span></div>
+                                @*<div class="information-block__info"><span>Скидка</span><span>300 ₽</span></div>*@
                                 <div class="information-block__info"><span><strong>Итого</strong></span><span><strong>0 ₽</strong></span></div>
                             }
-                            <a class="information-block__button" href="#" type="submit" aria-label="Кнопка для перехода на страницу Оформления заказа">Оформить заказ</a>
+                            <a class="information-block__button" @onclick="NavigateToOrderRegistrationAsync" type="submit" aria-label="Кнопка для перехода на страницу Оформления заказа">Оформить заказ</a>
                         </div>
                     </div>
                 }

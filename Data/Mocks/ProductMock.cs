@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using WebStore.Data.Entities;
@@ -28,10 +29,9 @@ namespace WebStore.Data.Mocks.ProductMock
             List<ProductArticle> productArticles = await db.ProductArticles
                 .Include(productArticle => productArticle.Model.Subcategory.Category)
                 .ToListAsync();
-            List<Product> products = new List<Product>();
-            foreach (var productArticle in productArticles)
-                for (int i = 0; i < random.Next(11, 22); i++)
-                    products.Add(new Product(productArticle));
+            IEnumerable<Product> products = productArticles
+                .SelectMany(productArticle => Enumerable.Range(0, random.Next(11, 22))
+                    .Select(i => new Product(productArticle)));
 
             foreach (Product product in products)
                 await productValidator.ValidateAndThrowAsync(product, cancellationToken);

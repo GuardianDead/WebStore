@@ -26,32 +26,32 @@ namespace WebStore.Pages.Account
             var userEmail = currentUserState.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
             currentUser = await Db.Users
                 .Include(user => user.Cart.Products)
-                    .ThenInclude(cartProducts => cartProducts.ProductArticle.Model)
+                    .ThenInclude(cartProducts => cartProducts.Article.Model)
                 .Include(user => user.ListFavourites.Products)
-                    .ThenInclude(favoriteProducts => favoriteProducts.ProductArticle.Model)
+                    .ThenInclude(favoriteProducts => favoriteProducts.Article.Model)
                 .SingleAsync(user => user.Email == userEmail);
         }
 
-        public Task AddProductInCartAsync(FavoritesListProduct favoriteProduct)
+        public Task AddProductInCartAsync(FavoriteProduct favoriteProduct)
         {
             var addedCartProduct = currentUser.Cart.Products
-                .SingleOrDefault(cartProduct => cartProduct.ProductArticle.Id == favoriteProduct.ProductArticle.Id);
+                .SingleOrDefault(cartProduct => cartProduct.Article.Id == favoriteProduct.Article.Id);
             if (currentUser.Cart.Products.Contains(addedCartProduct))
                 return Task.CompletedTask;
-            currentUser.Cart.Products.Add(new CartProduct(favoriteProduct.ProductArticle, 1));
+            currentUser.Cart.Products.Add(new CartProduct(favoriteProduct.Article, 1));
             return Db.SaveChangesAsync();
 
         }
-        public Task RemoveProductFromCartAsync(FavoritesListProduct favoriteProduct)
+        public Task RemoveProductFromCartAsync(FavoriteProduct favoriteProduct)
         {
             var removedCartProduct = currentUser.Cart.Products
-                    .SingleOrDefault(cartProductList => cartProductList.ProductArticle.Id == favoriteProduct.ProductArticle.Id);
+                    .SingleOrDefault(cartProductList => cartProductList.Article.Id == favoriteProduct.Article.Id);
             if (removedCartProduct is null)
                 return Task.CompletedTask;
             currentUser.Cart.Products.Remove(removedCartProduct);
             return Db.SaveChangesAsync();
         }
-        public Task RemoveProductFromFavoritesAsync(FavoritesListProduct favoriteProduct)
+        public Task RemoveProductFromFavoritesAsync(FavoriteProduct favoriteProduct)
         {
             if (!currentUser.ListFavourites.Products.Contains(favoriteProduct))
                 return Task.CompletedTask;

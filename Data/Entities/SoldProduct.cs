@@ -26,10 +26,10 @@ namespace WebStore.Data.Entities
         public SoldProduct()
         {
         }
-        public SoldProduct(Product product, Order order)
+        public SoldProduct(Product product, DateTime expirationDate, Order order)
         {
             Order = order;
-            ExpirationDate = DateTime.Now.AddDays(product.Article.Model.DaysGuarantee);
+            ExpirationDate = expirationDate;
             Product = product;
         }
     }

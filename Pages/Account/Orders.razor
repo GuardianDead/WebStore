@@ -34,24 +34,24 @@
                                     <div class="main-block__products-block">
                                         <div class="products-block__order">
                                             <div class="order__products-cards">
-                                                @foreach (var product in order.Products)
+                                                @foreach (var productModelGroup in DisctictProductsByProductModel(order.Products))
                                                 {
                                                     <div class="products-cards__product-card">
-                                                        <a class="product-card__image" href="#" aria-label="Ссылка перехода на карточку товара @product.Article.Model.Name"><img src="data:image/png;base64,@Convert.ToBase64String(product.Article.Model.MainPhoto)" alt="@product.Article.Model.Name"></a>
-                                                        <a class="product-card__name" href="#" aria-label="Ссылка перехода на карточку товара @product.Article.Model.Name">@product.Article.Model.Name</a>
+                                                        <a class="product-card__image" href="#" aria-label="Ссылка перехода на карточку товара @productModelGroup.First().Name"><img src="data:image/png;base64,@Convert.ToBase64String(productModelGroup.First().MainPhoto)" alt="@productModelGroup.First().Name"></a>
+                                                        <a class="product-card__name" href="#" aria-label="Ссылка перехода на карточку товара @productModelGroup.First().Name">@productModelGroup.First().Name</a>
                                                         <div class="product-card__price-block">
                                                             <!-- hasDiscount -->
-                                                            <span class="price-block__price">@order.Products.Where(orderProduct => orderProduct.Article.Id == product.Article.Id).Sum(orderProduct => orderProduct.Article.Model.Price).ToString("### ### ###") ₽</span>
+                                                            <span class="price-block__price">@productModelGroup.Sum(productModel => productModel.Price).ToString("### ### ###") ₽</span>
                                                             <!-- <span class="price-block__discount-price">5000 ₽</span> -->
-                                                            <span class="price-block__count">- @order.Products.Count(orderProduct => orderProduct.Article.Id == product.Article.Id)x</span>
+                                                            <span class="price-block__count">- @productModelGroup.Count()x</span>
                                                         </div>
                                                     </div>
                                                 }
                                             </div>
                                             <div class="main-block__block-info">
-                                                <span class="block-info__payment-method"><strong>Способ оплаты:</strong> @OrderPaymentMethodTypeRussianTranslator.GetRussianTranslate(order.PaymentMethod)</span>
+                                                <span class="block-info__payment-method"><strong>Способ оплаты:</strong> @PaymentMethodTypeRussianTranslator.GetRussianTranslate(order.PaymentMethod)</span>
                                                 <span class="block-info__method-obtaining"><strong>Способ доставки:</strong> @DeliveryMethodTypeRussianTranslator.GetRussianTranslate(order.Delivery.DeliveryMethod) ("@order.Delivery.Name")</span>
-                                                <span class="block-info__delivery-address"><strong>Адрес доставки:</strong> @($"{order.Address.Country}, {order.Address.City}, {order.Address.Street}, {order.Address.HouseNumber}, {order.Address.PostalCode}")</span>
+                                                <span class="block-info__delivery-address"><strong>Адрес доставки:</strong> @($"{order.Address.Country}, {order.Address.City}, {order.Address.Street}, {order.Address.PostalCode}")</span>
                                                 <span class="block-info__recipient"><strong>Заказчик:</strong> @order.CustomerFullName</span>
                                                 <span class="block-info__recipient"><strong>Телефон заказчика:</strong> +@order.PhoneNumber</span>
                                                 <span class="block-info__approximate-delivery-time"><strong>Примерная дата доставки:</strong> @order.DateTimeCreation.AddDays(order.Delivery.ApproximateDays).ToLongDateString()</span>

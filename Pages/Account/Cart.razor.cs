@@ -14,6 +14,7 @@ namespace WebStore.Pages.Account
     {
         [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; }
 
+        [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public AppDbContext Db { get; set; }
 
@@ -30,26 +31,41 @@ namespace WebStore.Pages.Account
             var userEmail = currentUserState.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
             currentUser = await Db.Users
                 .Include(user => user.Cart.Products)
-                    .ThenInclude(cartProducts => cartProducts.ProductArticle.Model)
+                    .ThenInclude(cartProducts => cartProducts.Article.Model)
                 .Include(user => user.ListFavourites.Products)
-                    .ThenInclude(favoriteProducts => favoriteProducts.ProductArticle.Model)
+                    .ThenInclude(favoriteProducts => favoriteProducts.Article.Model)
                 .SingleAsync(user => user.Email == userEmail);
-            currentUser.Cart.Products.RemoveAll(cartProduct => cartProduct.ProductArticle.Count == 0);
-            await Db.SaveChangesAsync();
+            await ClearCartAsync();
             currentUser.Cart.Products.ForEach(cartProduct => cartProduct.IsSelected = true);
+            await Db.SaveChangesAsync();
             UpdateTotalCurrentCostCart();
         }
 
+        public async Task NavigateToOrderRegistrationAsync()
+        {
+            await Db.SaveChangesAsync();
+            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}account/order-registration", true);
+        }
+
+        public async Task ClearCartAsync()
+        {
+            foreach (var cartProduct in currentUser.Cart.Products)
+            {
+                var cartProductCount = await Db.Products.CountAsync(product => product.Article.Id == cartProduct.Article.Id);
+                if (cartProductCount == 0)
+                    currentUser.Cart.Products.Remove(cartProduct);
+            }
+        }
         public void UpdateTotalCurrentCostCart() => totalCost = currentUser.Cart.Products.Where(cartProduct => cartProduct.IsSelected)
-            .Sum(cartProduct => cartProduct.ProductArticle.Model.Price * cartProduct.Count);
+            .Sum(cartProduct => cartProduct.Article.Model.Price * cartProduct.Count);
 
         public Task AddProductInFavoritesAsync(CartProduct cartProduct)
         {
             var addedFavoriteProduct = currentUser.ListFavourites.Products
-                .SingleOrDefault(favoriteProduct => favoriteProduct.ProductArticle.Id == cartProduct.ProductArticle.Id);
+                .SingleOrDefault(favoriteProduct => favoriteProduct.Article.Id == cartProduct.Article.Id);
             if (currentUser.ListFavourites.Products.Contains(addedFavoriteProduct))
                 return Task.CompletedTask;
-            currentUser.ListFavourites.Products.Add(new FavoritesListProduct(cartProduct.ProductArticle));
+            currentUser.ListFavourites.Products.Add(new FavoriteProduct(cartProduct.Article));
             return Db.SaveChangesAsync();
         }
         public Task RemoveProductFromCartAsync(CartProduct cartProduct)
@@ -62,16 +78,17 @@ namespace WebStore.Pages.Account
         public Task RemoveProductFromFavoritesAsync(CartProduct cartProduct)
         {
             var removedFavoriteProduct = currentUser.ListFavourites.Products
-                    .SingleOrDefault(cartProductList => cartProductList.ProductArticle.Id == cartProduct.ProductArticle.Id);
+                    .SingleOrDefault(cartProductList => cartProductList.Article.Id == cartProduct.Article.Id);
             if (!currentUser.ListFavourites.Products.Contains(removedFavoriteProduct))
                 return Task.CompletedTask;
             currentUser.ListFavourites.Products.Remove(removedFavoriteProduct);
             return Db.SaveChangesAsync();
         }
 
-        public void Increment(CartProduct cartProduct)
+        public async Task IncrementAsync(CartProduct cartProduct)
         {
-            if (cartProduct.Count == cartProduct.ProductArticle.Count)
+            var countProduct = await Db.Products.CountAsync(product => product.Article.Id == cartProduct.Article.Id);
+            if (cartProduct.Count == countProduct)
                 return;
             if (cartProduct.Count == 999)
                 return;

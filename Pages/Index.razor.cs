@@ -74,7 +74,7 @@ namespace WebStore.Pages
                 .Where(productModel => Db.ProductArticles
                     .Include(productArticle => productArticle.Model)
                     .Where(productArticle => productArticle.Model.Id == productModel.Id)
-                    .Any(productArticle => productArticle.Count != 0))
+                    .Any(productArticle => Db.Products.Count(product => product.Article.Id == productArticle.Id) != 0))
                 .Take(9).ToListAsync();
             productsModelsSection2 = productsModelsSection1;
             productsModelsSection3 = productsModelsSection1;
@@ -84,45 +84,45 @@ namespace WebStore.Pages
                 var userEmail = currentUserState.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
                 currentUser = await Db.Users
                     .Include(user => user.ListFavourites.Products)
-                        .ThenInclude(favoritesProducts => favoritesProducts.ProductArticle.Model)
+                        .ThenInclude(favoritesProducts => favoritesProducts.Article.Model)
                     .Include(user => user.Cart.Products)
-                        .ThenInclude(favoritesProducts => favoritesProducts.ProductArticle.Model)
+                        .ThenInclude(favoritesProducts => favoritesProducts.Article.Model)
                     .SingleOrDefaultAsync(user => user.Email == userEmail);
             }
         }
 
         public async Task AddProductInCartAsync(ProductModel productModel)
         {
-            if (currentUser.Cart.Products.Any(product => product.ProductArticle.Model.Id == productModel.Id))
+            if (currentUser.Cart.Products.Any(product => product.Article.Model.Id == productModel.Id))
                 return;
             var addedFirstProductArticleOfModel = await Db.ProductArticles
                 .Include(productArticle => productArticle.Model)
-                .FirstAsync(productArticle => productArticle.Model.Id == productModel.Id && productArticle.Count != 0);
+                .FirstAsync(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Count(product => product.Article.Id == productArticle.Id) != 0);
             currentUser.Cart.Products.Add(new CartProduct(addedFirstProductArticleOfModel, 1));
             await Db.SaveChangesAsync();
         }
         public async Task AddProductInFavoritesAsync(ProductModel productModel)
         {
-            if (currentUser.ListFavourites.Products.Any(product => product.ProductArticle.Model.Id == productModel.Id))
+            if (currentUser.ListFavourites.Products.Any(product => product.Article.Model.Id == productModel.Id))
                 return;
             var addedFirstProductArticleOfModel = await Db.ProductArticles
                 .Include(productArticle => productArticle.Model)
-                .FirstAsync(productArticle => productArticle.Model.Id == productModel.Id && productArticle.Count != 0);
-            currentUser.ListFavourites.Products.Add(new FavoritesListProduct(addedFirstProductArticleOfModel));
+                .FirstAsync(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Count(product => product.Article.Id == productArticle.Id) != 0);
+            currentUser.ListFavourites.Products.Add(new FavoriteProduct(addedFirstProductArticleOfModel));
             await Db.SaveChangesAsync();
         }
         public async Task RemoveProductFromCartAsync(ProductModel productModel)
         {
-            if (!currentUser.Cart.Products.Any(product => product.ProductArticle.Model.Id == productModel.Id))
+            if (!currentUser.Cart.Products.Any(product => product.Article.Model.Id == productModel.Id))
                 return;
-            currentUser.Cart.Products.RemoveAll(cartProduct => cartProduct.ProductArticle.Model.Id == productModel.Id);
+            currentUser.Cart.Products.RemoveAll(cartProduct => cartProduct.Article.Model.Id == productModel.Id);
             await Db.SaveChangesAsync();
         }
         public async Task RemoveProductFromFavoritesAsync(ProductModel productModel)
         {
-            if (!currentUser.ListFavourites.Products.Any(product => product.ProductArticle.Model.Id == productModel.Id))
+            if (!currentUser.ListFavourites.Products.Any(product => product.Article.Model.Id == productModel.Id))
                 return;
-            currentUser.ListFavourites.Products.RemoveAll(cartProduct => cartProduct.ProductArticle.Model.Id == productModel.Id);
+            currentUser.ListFavourites.Products.RemoveAll(cartProduct => cartProduct.Article.Model.Id == productModel.Id);
             await Db.SaveChangesAsync();
         }
     }
