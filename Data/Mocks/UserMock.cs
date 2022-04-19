@@ -52,7 +52,7 @@ namespace WebStore.Data.Mocks.UserMock
                 Firstname = "Александр",
                 Surname = "Андрианов",
                 Lastname = "Евгеньевич",
-                Address = new Address("Россия", "Владимирская область", "Муром", "Ленина", "55а", "602267"),
+                Address = new Address(country: "Россия", region: "Владимирская область", city: "Муром", street: "Ленина 55а", postalCode: "602267"),
             };
             var user = new User(
                     userName: "kakawkawww17",

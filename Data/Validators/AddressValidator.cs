@@ -15,8 +15,6 @@ namespace WebStore.Data.Validators
                 .NotEmpty().NotNull().WithMessage("Город не может быть пустым");
             RuleFor(i => i.Street)
                 .NotEmpty().NotNull().WithMessage("Улица не может быть пустым");
-            RuleFor(i => i.HouseNumber)
-                .NotEmpty().NotNull().WithMessage("Номер дома не может быть пустым");
             RuleFor(i => i.PostalCode)
                 .NotEmpty().NotNull().WithMessage("Почтовый индекс не может быть пустым");
         }

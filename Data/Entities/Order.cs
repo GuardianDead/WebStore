@@ -27,8 +27,8 @@ namespace WebStore.Data.Entities
         public string PhoneNumber { get; set; }
         [Required]
         [DisplayName("Способ оплаты")]
-        [EnumDataType(typeof(OrderPaymentMethodType))]
-        public OrderPaymentMethodType PaymentMethod { get; set; }
+        [EnumDataType(typeof(PaymentMethodType))]
+        public PaymentMethodType PaymentMethod { get; set; }
         [Required]
         [DisplayName("Время создания")]
         [DataType(DataType.DateTime)]
@@ -56,7 +56,7 @@ namespace WebStore.Data.Entities
         {
         }
         public Order(List<Product> products, Delivery delivery,
-            OrderPaymentMethodType orderPaymentMethodType, DateTime dateTimeCreation,
+            PaymentMethodType orderPaymentMethodType, DateTime dateTimeCreation,
             OrderStatusType orderStatusType, Address address, decimal totalCost,
             string trackNumber, string email, string customerFullName, string phoneNumber)
         {

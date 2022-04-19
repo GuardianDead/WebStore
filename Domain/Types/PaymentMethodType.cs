@@ -1,6 +1,6 @@
 ﻿namespace WebStore.Domain.Types
 {
-    public enum OrderPaymentMethodType
+    public enum PaymentMethodType
     {
         Cash,
         ElectronicWallet,

@@ -1,16 +1,16 @@
 ﻿namespace WebStore.Domain.Types.Translators
 {
-    public static class OrderPaymentMethodTypeRussianTranslator
+    public static class PaymentMethodTypeRussianTranslator
     {
-        public static string GetRussianTranslate(OrderPaymentMethodType orderPaymentMethodType)
+        public static string GetRussianTranslate(PaymentMethodType paymentMethodType)
         {
-            switch (orderPaymentMethodType)
+            switch (paymentMethodType)
             {
-                case OrderPaymentMethodType.Cash:
+                case PaymentMethodType.Cash:
                     return "Наличкой";
-                case OrderPaymentMethodType.ElectronicWallet:
+                case PaymentMethodType.ElectronicWallet:
                     return "Электронным кошельком";
-                case OrderPaymentMethodType.Card:
+                case PaymentMethodType.Card:
                     return "Картой";
                 default:
                     return "Некорректный перевод типа 'OrderPaymentMethodType' из за неизвестного значения";

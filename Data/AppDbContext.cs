@@ -18,7 +18,7 @@ namespace WebStore.Data
         {
             builder.Entity<User>().Property(o => o.Gender).HasConversion(new EnumToStringConverter<GenderType>());
             builder.Entity<ProductModel>().Property(o => o.Gender).HasConversion(new EnumToStringConverter<GenderType>());
-            builder.Entity<Order>().Property(o => o.PaymentMethod).HasConversion(new EnumToStringConverter<OrderPaymentMethodType>());
+            builder.Entity<Order>().Property(o => o.PaymentMethod).HasConversion(new EnumToStringConverter<PaymentMethodType>());
             builder.Entity<Order>().Property(o => o.Status).HasConversion(new EnumToStringConverter<OrderStatusType>());
             builder.Entity<Delivery>().Property(o => o.DeliveryMethod).HasConversion(new EnumToStringConverter<DeliveryMethodType>());
 

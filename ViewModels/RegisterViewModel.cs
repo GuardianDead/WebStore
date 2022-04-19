@@ -7,6 +7,7 @@ namespace WebStore.ViewModels
     {
         [DisplayName("Электронная почта")]
         [DataType(DataType.EmailAddress)]
+        [EmailAddress]
         public string Email { get; set; }
         [DisplayName("Пароль")]
         [DataType(DataType.Password)]

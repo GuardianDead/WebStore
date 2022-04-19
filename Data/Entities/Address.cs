@@ -22,9 +22,6 @@ namespace WebStore.Data.Entities
         [DisplayName("Улица")]
         public string Street { get; set; }
         [Required]
-        [DisplayName("Номер дома")]
-        public string HouseNumber { get; set; }
-        [Required]
         [DisplayName("Почтовый индекс")]
         [DataType(DataType.PostalCode)]
         public string PostalCode { get; set; }
@@ -32,14 +29,12 @@ namespace WebStore.Data.Entities
         public Address()
         {
         }
-        public Address(string country, string region, string city, string street,
-            string houseNumber, string postalCode)
+        public Address(string country, string region, string city, string street, string postalCode)
         {
             Country = country;
             City = city;
             Region = region;
             Street = street;
-            HouseNumber = houseNumber;
             PostalCode = postalCode;
         }
     }
