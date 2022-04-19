@@ -1,0 +1,90 @@
+﻿@page "/products/product-card/"
+@inherits ProductCardBase
+@attribute [AllowAnonymous]
+
+<section class="product-card">
+    <div class="product-card__container">
+        <h1 class="product-card__title">Кроссовки Addidas Rax Air Dops 2</h1>
+        <div class="product-card__link-category-block">
+            <a class="link-category-block__category" href="#">Обувь</a>
+            <div class="link-category-block__splitter">•</div>
+            <a class="link-category-block__subcategory" href="#">Кроссовки</a>
+        </div>
+        <div class="product-card__product-block">
+            <div class="product-block__images-block">
+                <div class="images-block__main-image">
+                    <img class="main-image__image" src="/orig.jfif" alt="">
+                    <div class="main-image__white-rect"></div>
+                    <div class="main-image__zoomed-main-image"></div>
+                </div>
+                <div class="images-block__secondary-images">
+                    <img class="secondary-images__image selected-image" src="/images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt=""> <!-- selected-image -->
+                    <img class="secondary-images__image" src="/images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
+                    <img class="secondary-images__image" src="/images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
+                    <img class="secondary-images__image" src="/images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
+                    <img class="secondary-images__image" src="/images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
+                    <img class="secondary-images__image" src="/images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
+                </div>
+            </div>
+            <div class="product-block__features-blocks">
+                <div class="features-block__choose-blocks">
+                    <div class="choose-blocks__color-choose-block">
+                        <h2 class="color-choose-block__title">Выберите цвет</h2>
+                        <div class="color-choose-block__colors-block">
+                            <input class="colors-block__color selected-button" type="button" value="Черный"> <!-- selected-button -->
+                            <input class="colors-block__color" type="button" value="Зеленый">
+                            <input class="colors-block__color" type="button" value="Красный">
+                            <input class="colors-block__color" type="button" value="Розовый">
+                            <input class="colors-block__color" type="button" value="Пурпул">
+                            <input class="colors-block__color" type="button" value="Серый">
+                        </div>
+                    </div>
+                    <div class="choose-blocks__size-choose-block">
+                        <h2 class="size-choose-block__title">Выберите размер</h2>
+                        <div class="size-choose-block__sizes-block">
+                            <input class="sizes-block__size selected-button" type="button" value="55"> <!-- selected-button -->
+                            <input class="sizes-block__size" type="button" value="56">
+                            <input class="sizes-block__size" type="button" value="57">
+                            <input class="sizes-block__size" type="button" value="58">
+                            <input class="sizes-block__size" type="button" value="59">
+                            <input class="sizes-block__size" type="button" value="60">
+                        </div>
+                    </div>
+                </div>
+                <div class="features-block__info-block">
+                    <h2 class="info-block__title">Характеристики</h2>
+                    <div class="info-block__blocks-features">
+                        <div class="blocks-features__feature">
+                            <span class="feature__name">Бренд</span>
+                            <span class="feature__splitter"></span>
+                            <span class="feature__value">Adidass</span>
+                        </div>
+                        <div class="blocks-features__feature">
+                            <span class="feature__name">Ткань</span>
+                            <span class="feature__splitter"></span>
+                            <span class="feature__value">Хвоя/плесень</span>
+                        </div>
+                        <div class="blocks-features__feature">
+                            <span class="feature__name">Стиль</span>
+                            <span class="feature__splitter"></span>
+                            <span class="feature__value">Луис</span>
+                        </div>
+                        <div class="blocks-features__feature">
+                            <span class="feature__name">Пошив</span>
+                            <span class="feature__splitter"></span>
+                            <span class="feature__value">Вяжеский</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="product-block__submut-block">
+                <span class="submut-block__product-price">10 000 ₽</span>
+                <span class="submut-block__empty-product-button">Товара нет в наличии</span>
+                <button class="submut-block__add-to-cart-button" type="submit">Добавить в корзину</button>
+                <button class="submut-block__remove-from-cart-button" type="submit">Удалить из корзины</button>
+                <button class="submut-block__add-to-favorites-button" type="submit">Добавить в избранное</button>
+                <button class="submut-block__remove-from-favorites-button" type="submit">Удалить из избранного</button>
+            </div>
+        </div>
+    </div>
+</section>
