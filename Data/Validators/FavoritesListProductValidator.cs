@@ -3,11 +3,11 @@ using WebStore.Data.Entities;
 
 namespace WebStore.Data.Validators
 {
-    public class FavoritesListProductValidator : AbstractValidator<FavoritesListProduct>
+    public class FavoritesListProductValidator : AbstractValidator<FavoriteProduct>
     {
         public FavoritesListProductValidator(IValidator<ProductArticle> productArticleValidator)
         {
-            RuleFor(i => i.ProductArticle)
+            RuleFor(i => i.Article)
                 .NotEmpty().NotNull().WithMessage("Артикул продукта не может быть пустым")
                 .SetValidator(productArticleValidator);
         }

@@ -10,8 +10,8 @@ namespace WebStore.Data.Entities
         [DisplayName("Номер")]
         public int Id { get; private init; }
         [Required]
-        [DisplayName("Товар")]
-        public ProductArticle ProductArticle { get; set; }
+        [DisplayName("Артикул")]
+        public ProductArticle Article { get; set; }
         [Required]
         [DisplayName("Количество")]
         public int Count { get; set; }
@@ -22,9 +22,9 @@ namespace WebStore.Data.Entities
         public CartProduct()
         {
         }
-        public CartProduct(ProductArticle productArticle, int count)
+        public CartProduct(ProductArticle article, int count)
         {
-            ProductArticle = productArticle;
+            Article = article;
             Count = count;
         }
     }

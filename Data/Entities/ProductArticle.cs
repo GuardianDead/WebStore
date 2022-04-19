@@ -19,20 +19,16 @@ namespace WebStore.Data.Entities
         [Required]
         [DisplayName("Цвет")]
         public string Color { get; set; }
-        [Required]
-        [DisplayName("Количество")]
-        public int Count { get; set; }
 
         public ProductArticle()
         {
         }
-        public ProductArticle(ProductModel productModel, int size, string color, int count)
+        public ProductArticle(ProductModel model, int size, string color)
         {
             Id = Guid.NewGuid();
-            Model = productModel;
+            Model = model;
             Size = size;
             Color = color;
-            Count = count;
         }
     }
 }

@@ -40,7 +40,7 @@ namespace WebStore.Data.Mocks.UserMock
             var admin = new User(
                     userName: "kakawkawww13",
                     orderHistory: new OrderHistory(Enumerable.Empty<Order>().ToList()), /*selectedOrders.Take(1).ToList()*/
-                    listFavourites: new FavoritesList(Enumerable.Empty<FavoritesListProduct>().ToList()),
+                    listFavourites: new FavoritesProductsList(Enumerable.Empty<FavoriteProduct>().ToList()),
                     cart: new Cart(Enumerable.Empty<CartProduct>().ToList()),
                     email: "kakawkawww13@mail.ru",
                     dateTimeCreation: DateTime.Now
@@ -57,7 +57,7 @@ namespace WebStore.Data.Mocks.UserMock
             var user = new User(
                     userName: "kakawkawww17",
                     orderHistory: new OrderHistory(Enumerable.Empty<Order>().ToList()),
-                    listFavourites: new FavoritesList(Enumerable.Empty<FavoritesListProduct>().ToList()),
+                    listFavourites: new FavoritesProductsList(Enumerable.Empty<FavoriteProduct>().ToList()),
                     cart: new Cart(Enumerable.Empty<CartProduct>().ToList()),
                     email: "kakawkawww17@mail.ru",
                     dateTimeCreation: DateTime.Now

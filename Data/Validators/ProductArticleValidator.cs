@@ -11,8 +11,6 @@ namespace WebStore.Validators
                 .NotNull().NotEmpty().WithMessage("Номер артикула товара не может быть пустым");
             RuleFor(i => i.Color)
                 .NotNull().NotEmpty().WithMessage("Цвет артикула товара не может быть пустым");
-            RuleFor(i => i.Count)
-                .GreaterThanOrEqualTo(0).WithMessage("Количество артикула товара должна быть больше или равно 0");
             RuleFor(i => i.Model)
                 .NotNull().WithMessage("Модель артикула товара не может быть пустым")
                 .SetValidator(productModelValidator);

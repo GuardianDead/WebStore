@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -10,6 +11,7 @@ namespace WebStore.Data.Mocks.ProductMock
 {
     public class ProductMock : IProductMock
     {
+        private readonly Random random = new Random();
         private readonly AppDbContext db;
         private readonly IValidator<Product> productValidator;
 
@@ -60,7 +62,7 @@ namespace WebStore.Data.Mocks.ProductMock
 
             IEnumerable<Product> products = productArticlesLists
                 .SelectMany(productArticles => productArticles
-                .SelectMany(article => Enumerable.Repeat(new Product(article), article.Count)));
+                .SelectMany(article => Enumerable.Repeat(new Product(article), random.Next(50, 101))));
 
             foreach (Product product in products)
                 await productValidator.ValidateAndThrowAsync(product, cancellationToken);

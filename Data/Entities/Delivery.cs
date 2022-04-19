@@ -14,7 +14,7 @@ namespace WebStore.Data.Entities
         [DisplayName("Название")]
         public string Name { get; set; }
         [Required]
-        [DisplayName("Способ")]
+        [DisplayName("Способ доставки")]
         [EnumDataType(typeof(DeliveryMethodType))]
         public DeliveryMethodType DeliveryMethod { get; set; }
         [Required]
@@ -28,8 +28,7 @@ namespace WebStore.Data.Entities
         public Delivery()
         {
         }
-        public Delivery(string name, DeliveryMethodType deliveryMethod,
-            decimal cost, int approximateDays)
+        public Delivery(string name, DeliveryMethodType deliveryMethod, decimal cost, int approximateDays)
         {
             Name = name;
             DeliveryMethod = deliveryMethod;

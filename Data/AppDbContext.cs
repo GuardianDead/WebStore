@@ -30,7 +30,7 @@ namespace WebStore.Data
                 i.Property(o => o.Materials).HasJsonValueConversion();
                 i.Property(o => o.Photos).HasJsonValueConversion();
             });
-            builder.Entity<ProductSold>(i =>
+            builder.Entity<SoldProduct>(i =>
             {
                 i.Property(o => o.Order).HasJsonValueConversion();
                 i.Property(o => o.Product).HasJsonValueConversion();
@@ -54,11 +54,11 @@ namespace WebStore.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Subcategory> Subcategories { get; set; }
 
-        public DbSet<ProductSold> ProductsSold { get; set; }
+        public DbSet<SoldProduct> ProductsSold { get; set; }
 
         public DbSet<OrderHistory> OrderHistories { get; set; }
-        public DbSet<FavoritesList> FavoritesLists { get; set; }
-        public DbSet<FavoritesListProduct> FavoritesListProducts { get; set; }
+        public DbSet<FavoritesProductsList> FavoritesLists { get; set; }
+        public DbSet<FavoriteProduct> FavoritesListProducts { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
     }

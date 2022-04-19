@@ -7,7 +7,7 @@ namespace WebStore.Validators.Identity
     public class UserValidator : AbstractValidator<User>
     {
         public UserValidator(IValidator<OrderHistory> orderHistoryValidator, IValidator<Cart> cartValidator,
-            IValidator<FavoritesList> listFavouritesValidator, IValidator<Address> addressValidator)
+            IValidator<FavoritesProductsList> listFavouritesValidator, IValidator<Address> addressValidator)
         {
             RuleFor(i => i.Address)
                 .SetValidator(addressValidator);

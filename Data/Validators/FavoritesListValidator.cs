@@ -3,9 +3,9 @@ using WebStore.Data.Entities;
 
 namespace WebStore.Data.Validators
 {
-    public class FavoritesListValidator : AbstractValidator<FavoritesList>
+    public class FavoritesListValidator : AbstractValidator<FavoritesProductsList>
     {
-        public FavoritesListValidator(IValidator<FavoritesListProduct> favoritesListProductValidator)
+        public FavoritesListValidator(IValidator<FavoriteProduct> favoritesListProductValidator)
         {
             RuleFor(i => i.Products)
                 .NotNull().WithMessage("Список продуктов не может быть неопределен")

@@ -50,35 +50,35 @@ namespace WebStore.Data.Mocks.ProductArticleMock
             {
                 #region Товар1 Кроссовки Nike
                 ProductModel { Name: "Кроссовки Nike Air Zoom Pegasus" } => Enumerable.Range(38, 9)
-                    .Select(size => new ProductArticle(productModel, size, "Черный", random.Next(50, 101))),
+                    .Select(size => new ProductArticle(productModel, size, "Черный")),
                 #endregion
                 #region Товар2 Ботинки Adidas
                 ProductModel { Name: "Ботинки Adidas Terrex Trailmaker Mid R.RDY K" } => Enumerable.Range(35, 4)
-                    .Select(size => new ProductArticle(productModel, size, "Бежевый", random.Next(50, 101))),
+                    .Select(size => new ProductArticle(productModel, size, "Бежевый")),
                 #endregion
                 #region Товар3 Джинсы Levi's
                 ProductModel { Name: "Джинсы Levi's 514™ Straight (Big & Tall)" } => Enumerable.Range(30, 7)
-                    .Select(size => new ProductArticle(productModel, size, "Светло-синий", random.Next(50, 101))),
+                    .Select(size => new ProductArticle(productModel, size, "Светло-синий")),
                 #endregion
                 #region Товар4 Брюки KORPO
                 ProductModel { Name: "Брюки KORPO COLLEZIONI" } => Enumerable.Range(42, 1)
-                    .Select(size => new ProductArticle(productModel, size, "Черный", random.Next(50, 101))),
+                    .Select(size => new ProductArticle(productModel, size, "Черный")),
                 #endregion
                 #region Товар5 Куртка SHARK FORCE
                 ProductModel { Name: "Зимняя куртка SHARK FORCE" } => Enumerable.Range(54, 1)
-                    .Select(size => new ProductArticle(productModel, size, "Черный", random.Next(50, 101))),
+                    .Select(size => new ProductArticle(productModel, size, "Черный")),
                 #endregion
                 #region Товар6 Пальто Tom Farr
                 ProductModel { Name: "Пальто Tom Farr" } => Enumerable.Range(42, 3)
-                    .Select(size => new ProductArticle(productModel, size, "Серое", random.Next(50, 101))),
+                    .Select(size => new ProductArticle(productModel, size, "Серое")),
                 #endregion
                 #region Товар7 Кепка Denkor
                 ProductModel { Name: "Кепка Denkor Восьмиклинка-Хулиганка" } => Enumerable.Range(58, 2)
-                    .Select(size => new ProductArticle(productModel, size, "Серое", random.Next(50, 101))),
+                    .Select(size => new ProductArticle(productModel, size, "Серое")),
                 #endregion
                 #region Товар8 Шляпа ARMANI
                 ProductModel { Name: "Шляпа ARMANI" } => Enumerable.Range(56, 1)
-                    .Select(size => new ProductArticle(productModel, size, "Желтый", random.Next(50, 101))),
+                    .Select(size => new ProductArticle(productModel, size, "Желтый")),
                 #endregion
                 _ => throw new NotImplementedException("Данной модели товара не существует")
             });

@@ -52,7 +52,7 @@ namespace WebStore.Data.Entities
         [DisplayName("Фотографии")]
         public List<byte[]> Photos { get; set; }
         [Required]
-        [DisplayName("Время создания (в днях)")]
+        [DisplayName("Дата создания")]
         public DateTime DateTimeCreation { get; set; }
 
         public ProductModel()
