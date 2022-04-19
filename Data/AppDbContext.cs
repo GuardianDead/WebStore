@@ -46,19 +46,15 @@ namespace WebStore.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Delivery> Deliveries { get; set; }
-
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductModel> ProductModels { get; set; }
         public DbSet<ProductArticle> ProductArticles { get; set; }
-
         public DbSet<Category> Categories { get; set; }
         public DbSet<Subcategory> Subcategories { get; set; }
-
-        public DbSet<SoldProduct> ProductsSold { get; set; }
-
+        public DbSet<SoldProduct> SoldProducts { get; set; }
         public DbSet<OrderHistory> OrderHistories { get; set; }
-        public DbSet<FavoritesProductsList> FavoritesLists { get; set; }
-        public DbSet<FavoriteProduct> FavoritesListProducts { get; set; }
+        public DbSet<FavoritesProductsList> FavoriteLists { get; set; }
+        public DbSet<FavoriteProduct> FavoriteProducts { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }
     }
