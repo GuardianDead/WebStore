@@ -9,7 +9,7 @@ namespace WebStore.Data.Entities
         [Key]
         [Required]
         [DisplayName("Номер")]
-        public Guid Id { get; init; }
+        public string Id { get; init; }
         [Required]
         [DisplayName("Артикул")]
         public ProductArticle Article { get; set; }
@@ -19,7 +19,7 @@ namespace WebStore.Data.Entities
         }
         public Product(ProductArticle article)
         {
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid().ToString("N");
             Article = article;
         }
     }

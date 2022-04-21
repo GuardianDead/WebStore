@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -36,7 +35,7 @@ namespace WebStore.Pages.Account
                 .SingleAsync(user => user.Email == userEmail);
         }
 
-        public IEnumerable<IGrouping<Guid, ProductModel>> DisctictProductsByProductModel(List<OrderProduct> orderProducts) =>
+        public IEnumerable<IGrouping<string, ProductModel>> DisctictProductsByProductModel(List<OrderProduct> orderProducts) =>
             orderProducts.GroupBy(orderProduct => orderProduct.Product.Article.Model.Id, orderProduct => orderProduct.Product.Article.Model);
     }
 }

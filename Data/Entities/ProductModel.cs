@@ -12,7 +12,7 @@ namespace WebStore.Data.Entities
         [Key]
         [Required]
         [DisplayName("Номер")]
-        public Guid Id { get; init; }
+        public string Id { get; init; }
         [Required]
         [DisplayName("Подкатегория")]
         public Subcategory Subcategory { get; set; }
@@ -62,7 +62,7 @@ namespace WebStore.Data.Entities
             GenderType userGenderType, string brand, Subcategory productSubcategory, byte[] mainPhoto,
             Dictionary<string, string> features, List<string> materials, List<byte[]> photos, DateTime dateTimeCreation)
         {
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid().ToString("N");
             Name = name;
             Price = price;
             DaysGuarantee = daysGuarantee;

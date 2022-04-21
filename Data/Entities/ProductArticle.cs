@@ -9,7 +9,7 @@ namespace WebStore.Data.Entities
         [Key]
         [Required]
         [DisplayName("Номер")]
-        public Guid Id { get; init; }
+        public string Id { get; init; }
         [Required]
         [DisplayName("Модель")]
         public ProductModel Model { get; set; }
@@ -25,7 +25,7 @@ namespace WebStore.Data.Entities
         }
         public ProductArticle(ProductModel model, int size, string color)
         {
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid().ToString("N");
             Model = model;
             Size = size;
             Color = color;
