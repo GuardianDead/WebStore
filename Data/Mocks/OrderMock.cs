@@ -26,12 +26,15 @@ namespace WebStore.Data.Mocks.OrderMock
             if (await db.Orders.AnyAsync(cancellationToken))
                 return true;
 
-            var products = await db.Products.Include(product => product.Article.Model.Subcategory.Category).ToListAsync(cancellationToken);
-            var selectedProducts = new IEnumerable<Product>[]
+            var products = await db.Products
+                .Take(9)
+                .Include(product => product.Article.Model.Subcategory.Category)
+                .ToListAsync(cancellationToken);
+            var selectedProducts = new List<OrderProduct>[]
             {
-                products.Skip(0).Take(3),
-                products.Skip(3).Take(3),
-                products.Skip(4).Take(3)
+                products.Skip(0).Take(3).Select(product => new OrderProduct(product)).ToList(),
+                products.Skip(3).Take(3).Select(product => new OrderProduct(product)).ToList(),
+                products.Skip(6).Take(3).Select(product => new OrderProduct(product)).ToList()
             };
             var deliveries = new Delivery[]
             {
@@ -42,39 +45,39 @@ namespace WebStore.Data.Mocks.OrderMock
             var orders = new Order[]
             {
                 new Order(
-                    products: selectedProducts[0].ToList(),
+                    products: selectedProducts[0],
                     delivery: deliveries[0],
                     orderPaymentMethodType: PaymentMethodType.Card,
                     dateTimeCreation: DateTime.Now,
                     orderStatusType: OrderStatusType.AwaitingProcessing,
-                    address: new Address(country: "Россия",region: "Владимирская область", city: "Муром",street: "Мечникова 55",postalCode: "602267"),
-                    totalCost: selectedProducts[0].Aggregate(0.0m,(sum,productArticle) => sum + productArticle.Article.Model.Price) + deliveries[0].Cost,
+                    address: new Address(country: "Россия", region: "Владимирская область", city: "Муром", street: "Мечникова 55", postalCode: "602267"),
+                    totalCost: selectedProducts[0].Aggregate(0.0m, (sum, orderProduct) => sum + orderProduct.Product.Article.Model.Price) + deliveries[0].Cost,
                     trackNumber: "ZH4152621324RW",
                     email: "kakawkawww13@mail.ru",
                     phoneNumber: "79157675803",
                     customerFullName: "Андрианов Александр Евгеньевич"
                     ),
                 new Order(
-                    products: selectedProducts[1].ToList(),
+                    products: selectedProducts[1],
                     delivery: deliveries[1],
                     orderPaymentMethodType: PaymentMethodType.Cash,
                     dateTimeCreation: DateTime.Now,
                     orderStatusType: OrderStatusType.Arrived,
-                    address: new Address(country: "Россия",region: "Владимирская область",city: "Муром",street: "Мечникова 55a",postalCode: "602267"),
-                    totalCost: selectedProducts[1].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[1].Cost,
+                    address: new Address(country: "Россия", region: "Владимирская область", city: "Муром", street: "Мечникова 55a", postalCode: "602267"),
+                    totalCost: selectedProducts[1].Aggregate(0.0m, (sum, orderProduct) => sum + orderProduct.Product.Article.Model.Price) + deliveries[1].Cost,
                     trackNumber: "ZH3262363235WF",
                     email: "kakawkawww12@mail.ru",
                     phoneNumber: "79157675803",
                     customerFullName: "Андрианов Александр Евгеньевич"
                     ),
                 new Order(
-                    products: selectedProducts[2].ToList(),
+                    products: selectedProducts[2],
                     delivery: deliveries[0],
                     orderPaymentMethodType: PaymentMethodType.Card,
                     dateTimeCreation: DateTime.Now,
                     orderStatusType: OrderStatusType.Canceled,
-                    address: new Address(country: "Россия",region: "Владимирская область",city: "Муром",street: "Мечникова 55",postalCode: "602267"),
-                    totalCost: selectedProducts[2].Aggregate(0.0m,(sum,productarticle) => sum + productarticle.Article.Model.Price) + deliveries[0].Cost,
+                    address: new Address(country: "Россия", region: "Владимирская область", city: "Муром", street: "Мечникова 55", postalCode: "602267"),
+                    totalCost: selectedProducts[2].Aggregate(0.0m, (sum, orderProduct) => sum + orderProduct.Product.Article.Model.Price) + deliveries[0].Cost,
                     trackNumber: "ZH3262363235WF",
                     email: "kakawkawww17@mail.ru",
                     phoneNumber: "79157672475",
@@ -86,6 +89,7 @@ namespace WebStore.Data.Mocks.OrderMock
                 await orderValidator.ValidateAndThrowAsync(order, cancellationToken);
 
             await db.Orders.AddRangeAsync(orders, cancellationToken);
+            db.Products.RemoveRange(products);
             return await db.SaveChangesAsync(cancellationToken) != -1;
         }
     }

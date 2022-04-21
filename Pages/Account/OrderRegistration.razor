@@ -81,7 +81,7 @@
                         <button class="submit-block__submit-button" type="submit" aria-label="Кнопка оформления заказа">Заказать</button>
                         <div class="submit-block__info"><span>Товары – @currentUser.Cart.Products.Count(cartProduct => cartProduct.IsSelected) шт.</span><span>@((productsCost).ToString("### ### ###")) ₽</span></div>
                         <div class="submit-block__info"><span>Стоимость доставки</span><span>@(deliveryCost == 0 ? "0" : deliveryCost.ToString("# ###")) ₽</span></div>
-                        <div class="submit-block__info"><span><strong>Итого</strong></span><span><strong>@((productsCost-deliveryCost).ToString("### ### ###")) ₽</strong></span></div>
+                        <div class="submit-block__info"><span><strong>Итого</strong></span><span><strong>@((productsCost+deliveryCost).ToString("### ### ###")) ₽</strong></span></div>
                     </div>
                 </EditForm>
             }

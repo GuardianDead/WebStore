@@ -99,16 +99,18 @@ namespace WebStore.Pages.Account
         }
         public async Task CreateOrderAsync()
         {
-            List<Product> selectedProducts = new List<Product>();
+            List<OrderProduct> addedOrderProducts = new List<OrderProduct>();
             List<CartProduct> selectedCartProducts = currentUser.Cart.Products.Where(cartProduct => cartProduct.IsSelected).ToList();
 
             foreach (var cartProduct in selectedCartProducts)
             {
-                var selectedProductsByArticle = await Db.Products
+                var addedProducts = await Db.Products
+                    .Include(product => product.Article.Model.Subcategory.Category)
                     .Where(product => product.Article.Id == cartProduct.Article.Id)
                     .Take(cartProduct.Count)
                     .ToListAsync();
-                selectedProducts.AddRange(selectedProductsByArticle);
+                Db.Products.RemoveRange(addedProducts);
+                addedOrderProducts.AddRange(addedProducts.ConvertAll(product => new OrderProduct(product)));
             }
 
             var order = new Order()
@@ -119,24 +121,22 @@ namespace WebStore.Pages.Account
                 Email = OrderRegistrationViewModel.Email,
                 PaymentMethod = OrderRegistrationViewModel.PaymentMethodType.Value,
                 PhoneNumber = OrderRegistrationViewModel.PhoneNumber,
-                Products = selectedProducts,
+                Products = addedOrderProducts,
                 Status = OrderStatusType.AwaitingProcessing,
-                TotalCost = productsCost - deliveryCost,
+                TotalCost = productsCost + deliveryCost,
                 TrackNumber = TrackNumberService.GenerateTrackNumber(),
                 Delivery = OrderRegistrationViewModel.Delivery
             };
 
             await OrderValidator.ValidateAndThrowAsync(order);
 
-            //TODO : Продукты потом перемещаются в SoldProducts
-            //TODO : Везде где создаешь сущности, чекни валидацию
-
             currentUser.OrderHistory.Orders.Add(order);
             currentUser.Cart.Products.RemoveAll(cartProduct => cartProduct.IsSelected);
-            if (await Db.SaveChangesAsync() == -1)
-                Errors.Add(new ValidationFailure("DB", "Неудалось создать заказ по неизвестной ошибке"));
 
-            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}account/orders", true);
+            if (await Db.SaveChangesAsync() != -1)
+                NavigationManager.NavigateTo($"{NavigationManager.BaseUri}account/orders", true);
+            else
+                Errors.Add(new ValidationFailure("DB", "Неудалось создать заказ по неизвестной ошибке"));
         }
     }
 }

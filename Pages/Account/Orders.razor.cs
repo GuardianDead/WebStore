@@ -33,11 +33,10 @@ namespace WebStore.Pages.Account
                     .ThenInclude(orders => orders.Address)
                 .Include(user => user.OrderHistory.Orders)
                     .ThenInclude(orders => orders.Products)
-                        .ThenInclude(ordersProducts => ordersProducts.Article.Model)
                 .SingleAsync(user => user.Email == userEmail);
         }
 
-        public IEnumerable<IGrouping<Guid, ProductModel>> DisctictProductsByProductModel(List<Product> products) =>
-            products.GroupBy(product => product.Article.Model.Id, product => product.Article.Model);
+        public IEnumerable<IGrouping<Guid, ProductModel>> DisctictProductsByProductModel(List<OrderProduct> orderProducts) =>
+            orderProducts.GroupBy(orderProduct => orderProduct.Product.Article.Model.Id, orderProduct => orderProduct.Product.Article.Model);
     }
 }

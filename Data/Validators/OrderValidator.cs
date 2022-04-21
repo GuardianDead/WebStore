@@ -7,7 +7,7 @@ namespace WebStore.Validators
     public class OrderValidator : AbstractValidator<Order>
     {
         public OrderValidator(IValidator<Delivery> deliveryValidator, IValidator<Address> addressValidator,
-            IValidator<Product> productValidator)
+            IValidator<OrderProduct> orderProductValidator)
         {
             RuleFor(i => i.Address)
                 .NotNull().NotEmpty().WithMessage("Адрес заказа не может быть пустым")
@@ -27,7 +27,7 @@ namespace WebStore.Validators
                 .IsInEnum().WithMessage("Статус заказа обязан быть типа 'OrderStatusType'");
             RuleFor(i => i.Products)
                 .NotNull().WithMessage("Список артикулов товаров не может быть пустым")
-                .ForEach(i => i.SetValidator(productValidator));
+                .ForEach(i => i.SetValidator(orderProductValidator));
             RuleFor(i => i.TotalCost)
                 .NotNull().WithMessage("Общая стоимость не может быть пустым")
                 .GreaterThanOrEqualTo(0).WithMessage("Общая стоимость заказа должна быть больше или равна 0");

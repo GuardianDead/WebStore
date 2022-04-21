@@ -14,7 +14,7 @@ namespace WebStore.Data.Entities
         public int Id { get; private init; }
         [Required]
         [DisplayName("Товары")]
-        public List<Product> Products { get; set; }
+        public List<OrderProduct> Products { get; set; }
         [Required]
         [DisplayName("Адрес")]
         public Address Address { get; set; }
@@ -55,7 +55,7 @@ namespace WebStore.Data.Entities
         public Order()
         {
         }
-        public Order(List<Product> products, Delivery delivery,
+        public Order(List<OrderProduct> products, Delivery delivery,
             PaymentMethodType orderPaymentMethodType, DateTime dateTimeCreation,
             OrderStatusType orderStatusType, Address address, decimal totalCost,
             string trackNumber, string email, string customerFullName, string phoneNumber)

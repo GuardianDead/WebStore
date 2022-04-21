@@ -9,7 +9,7 @@ namespace WebStore.Data.Entities
         [Key]
         [Required]
         [DisplayName("Номер")]
-        public Guid Id { get; private init; }
+        public Guid Id { get; init; }
         [Required]
         [DisplayName("Модель")]
         public ProductModel Model { get; set; }
