@@ -1,0 +1,59 @@
+﻿.access-denied {
+    position: relative;
+    top: 17vh;
+
+    &__container {
+        margin: 0em auto;
+        max-width: 100%;
+    }
+
+    &__block {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        font-size: 1.5em;
+        padding: 2em 1em;
+        border-top: 4px solid black;
+        border-bottom: 4px solid black;
+        margin: 0em 2em;
+    }
+
+    &__image {
+        height: 7.5em;
+        width: 7.5em;
+        margin-bottom: 1em;
+    }
+
+    &__disclaimer {
+        text-align: center;
+        line-height: 1.5em;
+    }
+}
+
+@media (max-width: 850px) {
+    .access-denied {
+        top: 10vh;
+    }
+}
+@media (max-width: 500px) {
+    .access-denied {
+        top: 5vh;
+        padding: 1em 0em;
+
+        &__block {
+            font-size: 1.4em;
+            margin: 0em 1em;
+            padding: 1em;
+        }
+
+        &__image {
+            height: 6em;
+            width: 6em;
+        }
+
+        &__disclaimer {
+            line-height: 2em;
+        }
+    }
+}

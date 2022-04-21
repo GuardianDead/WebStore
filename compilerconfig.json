@@ -58,5 +58,9 @@
   {
     "outputFile": "Pages/Products/ProductCatalog.razor.css",
     "inputFile": "Pages/Products/ProductCatalog.razor.scss"
+  },
+  {
+    "outputFile": "Pages/Shared/AccessDenied.razor.css",
+    "inputFile": "Pages/Shared/AccessDenied.razor.scss"
   }
 ]
