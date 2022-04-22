@@ -39,8 +39,8 @@ namespace WebStore.Pages.Shared.Layout
             await JSRuntime.InvokeVoidAsync("SetMainLayouteDotnetReference", DotNetObjectReference.Create(this)).AsTask();
         }
 
-        [JSInvokable]
-        public void CancelCategorySideNavigationIsScroling()
+        [JSInvokable("СancelCategorySideNavigationIsScroling")]
+        public void СancelCategorySideNavigationIsScroling()
         {
             CategorySideNavigationIsScroling = false;
             StateHasChanged();
@@ -51,8 +51,8 @@ namespace WebStore.Pages.Shared.Layout
             CategorySideNavigationIsScroling = true;
             StateHasChanged();
         }
-        [JSInvokable]
-        public void CancelReturnButtonScroling()
+        [JSInvokable("СancelReturnButtonScroling")]
+        public void СancelReturnButtonScroling()
         {
             ReturnButtonIsScroling = false;
             StateHasChanged();

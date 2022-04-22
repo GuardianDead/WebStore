@@ -19,9 +19,9 @@
             <div class="product-card__product-block">
                 <div class="product-block__images-block">
                     <div class="images-block__main-image">
-                        <img class="main-image__image" src="data:image/png;base64,@Convert.ToBase64String(SelectedImage)" alt="Главное фото модели товара">
+                        <img class="main-image__image" src="data:image/png;base64,@Convert.ToBase64String(SelectedImage)" @onmouseover="MouseEnterMainImageAsync" @onmouseout="MouseLeaveMainImageAsync" alt="Главное фото модели товара">
                         <div class="main-image__white-rect"></div>
-                        <div class="main-image__zoomed-main-image"></div>
+                        <div style="background-image: url(data:image/png;base64,@Convert.ToBase64String(SelectedImage));" class="main-image__zoomed-main-image"></div>
                     </div>
                     <div class="images-block__secondary-images">
                         @foreach (var photo in productModel.Photos)

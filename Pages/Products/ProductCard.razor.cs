@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.JSInterop;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -15,6 +16,7 @@ namespace WebStore.Pages.Products
         [CascadingParameter] public Task<AuthenticationState> AuthenticationStateTask { get; set; }
         [Parameter] public string ProductModelId { get; set; }
 
+        [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public AppDbContext Db { get; set; }
         [Inject] public NavigationManager NavigationManager { get; set; }
 
@@ -32,6 +34,7 @@ namespace WebStore.Pages.Products
 
         protected override async Task OnInitializedAsync()
         {
+            await JSRuntime.InvokeVoidAsync("SetPageDotnetReference", DotNetObjectReference.Create(this));
             productModel = await Db.ProductModels
                 .Include(productModel => productModel.Subcategory.Category)
                 .SingleOrDefaultAsync(productModel => productModel.Id == ProductModelId);
@@ -81,6 +84,19 @@ namespace WebStore.Pages.Products
             SelectedColor = color;
             ChangeSelectedProductArtucle();
         }
+        public async Task MouseEnterMainImageAsync()
+        {
+            var currentWindowInnerWidth = await JSRuntime.InvokeAsync<int>("getCurrentWindowInnerWidth");
+            if (currentWindowInnerWidth > 1090)
+                await JSRuntime.InvokeVoidAsync("openZoomedMainImage");
+        }
+        public async Task MouseLeaveMainImageAsync()
+        {
+            var currentWindowInnerWidth = await JSRuntime.InvokeAsync<int>("getCurrentWindowInnerWidth");
+            if (currentWindowInnerWidth > 1090)
+                await JSRuntime.InvokeVoidAsync("closeZoomedMainImage");
+        }
+
         public void ChangeSelectedProductArtucle() => SelectedProductArticle = allProductArticles.Single(productArticle => productArticle.Color == SelectedColor && productArticle.Size == SelectedSize);
 
         public void AddProductInCart()

@@ -62,6 +62,7 @@ $(window).resize((e) => {
     }
     if ($(".panel__search__lupa").hasClass("active") && $(".panel__search__input").hasClass("active")) {
         GLOBAL.DotNetReference.invokeMethodAsync('HideSearchPanel');
+        closeZoomedMainImage()
     }
 })
 
@@ -151,37 +152,50 @@ function getScorePassword(password) {
     return parseInt(score);
 }
 
-$('.counter__plus').click(e => {
-    const counterInput = $(e.target).prev()[0];
-    counterInput.value++;
-    if(counterInput.value > 1) $($(e.target).parent().next()[0]).slideDown(100);
-    sum = (27999 * counterInput.value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    sumDiscount = (Math.round((27999 * counterInput.value) * 0.9)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    $($($($(e.target).parent()).parent()).parent().find('.block-price__price')  [0]).html(sum + ' ₽')
-    $($($($(e.target).parent()).parent()).parent().find('.block-price__discount-price')[0]).html(sumDiscount + ' ₽')
-})
-$('.counter__minus').click(e => {
-    const counterInput = $(e.target).next()[0]
-    if(counterInput.value > 1) counterInput.value--;
-    if(counterInput.value == 1) $($(e.target).parent().next()[0]).css('transform', 'translateY(-10px)').slideUp(100);
-    sum = (27999 * counterInput.value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    sumDiscount = (Math.round((27999 * counterInput.value) * 0.9)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    $($($($(e.target).parent()).parent()).parent().find('.block-price__price')[0]).html(sum + ' ₽')
-    $($($($(e.target).parent()).parent()).parent().find('.block-price__discount-price')[0]).html(sumDiscount + ' ₽')
-})
-$('.counter-input').on('input', function () {
-    $(this).val($(this).val().replace(/[A-Za-zА-Яа-яЁё]/, ''))
-});
-
-$('.counter-input').on('input', e => {
-    e.target.value = e.target.value.replace(/[^0-9]/g, '');
-    if(e.target.value <= 1) {
-        $($(e.target).parent().next()[0]).css('transform', 'translateY(-10px)').slideUp(100);
-        e.target.value = 1;
-    }
-    if(e.target.value > 1) $($(e.target).parent().next()[0]).slideDown(100); 
-    sum = (27999 * e.target.value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    sumDiscount = (Math.round((27999 * counterInput.value) * 0.9)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
-    $($($($(e.target).parent()).parent()).parent().find('.block-price__price')[0]).html(sum + ' ₽')
-    $($($($(e.target).parent()).parent()).parent().find('.block-price__discount-price')[0]).html(sumDiscount + ' ₽')
-})
+//Product-Card
+function openZoomedMainImage() {
+    let imageBlock = $(".images-block__main-image");
+    let whiteReact = $('.main-image__white-rect');
+    let zoomedImage = $('.main-image__zoomed-main-image');
+    let mainImage = $(".main-image__image");
+    zoomedImage.css('background-size', `${mainImage.width() * 3}px ${mainImage.height() * 3}px`);
+    $(".main-image__image").on('mousemove', image => {
+        let imageX = image.pageX - imageBlock[0].offsetLeft;
+        let imageY = image.pageY - imageBlock[0].offsetTop;
+        if (imageX + whiteReact[0].offsetWidth / 2 > imageBlock[0].offsetWidth) {
+            imageX = imageBlock[0].offsetWidth - whiteReact[0].offsetWidth / 2;
+        }
+        if (imageY + whiteReact[0].offsetHeight / 2 > imageBlock[0].offsetHeight) {
+            imageY = imageBlock[0].offsetHeight - whiteReact[0].offsetHeight / 2;
+        }
+        if (imageX - whiteReact[0].offsetWidth / 2 < 0) {
+            imageX = whiteReact[0].offsetWidth / 2;
+        }
+        if (imageY - whiteReact[0].offsetHeight / 2 < 0) {
+            imageY = whiteReact[0].offsetHeight / 2;
+        }
+        whiteReact.css('left', imageX - whiteReact[0].offsetWidth / 2);
+        whiteReact.css('top', imageY - whiteReact[0].offsetHeight / 2);
+        imageX = image.pageX - imageBlock[0].offsetLeft - whiteReact[0].offsetWidth / 2;
+        imageY = image.pageY - imageBlock[0].offsetTop - whiteReact[0].offsetHeight / 2;
+        if (imageX + whiteReact[0].offsetWidth > image.target.offsetWidth) {
+            imageX = imageBlock[0].offsetWidth - whiteReact[0].offsetWidth;
+        }
+        if (imageY + whiteReact[0].offsetHeight > imageBlock[0].offsetHeight) {
+            imageY = imageBlock[0].offsetHeight - whiteReact[0].offsetHeight;
+        }
+        if (imageX < 0) {
+            imageX = 0;
+        }
+        if (imageY < 0) {
+            imageY = 0;
+        }
+        zoomedImage.css('background-position', `-${imageX * 3}px -${imageY * 3}px`);
+    })
+    whiteReact.css('display', 'block');
+    zoomedImage.css('display', 'block');
+}
+function closeZoomedMainImage() {
+    $('.main-image__white-rect').css('display', 'none');
+    $('.main-image__zoomed-main-image').css('display', 'none');
+}
