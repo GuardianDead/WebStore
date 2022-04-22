@@ -1,90 +1,103 @@
-﻿@page "/products/product-card/"
+﻿@page "/products/product-card/{productModelId}"
 @inherits ProductCardBase
 @attribute [AllowAnonymous]
 
 <section class="product-card">
     <div class="product-card__container">
-        <h1 class="product-card__title">Кроссовки Addidas Rax Air Dops 2</h1>
-        <div class="product-card__link-category-block">
-            <a class="link-category-block__category" href="#">Обувь</a>
-            <div class="link-category-block__splitter">•</div>
-            <a class="link-category-block__subcategory" href="#">Кроссовки</a>
-        </div>
-        <div class="product-card__product-block">
-            <div class="product-block__images-block">
-                <div class="images-block__main-image">
-                    <img class="main-image__image" src="/orig.jfif" alt="">
-                    <div class="main-image__white-rect"></div>
-                    <div class="main-image__zoomed-main-image"></div>
-                </div>
-                <div class="images-block__secondary-images">
-                    <img class="secondary-images__image selected-image" src="/images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt=""> <!-- selected-image -->
-                    <img class="secondary-images__image" src="/images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
-                    <img class="secondary-images__image" src="/images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
-                    <img class="secondary-images__image" src="/images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
-                    <img class="secondary-images__image" src="/images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
-                    <img class="secondary-images__image" src="/images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
-                </div>
+        @if (productModel is null || user is null || userState is null)
+        {
+            <Loader />
+        }
+        else
+        {
+            <h1 class="product-card__title">@productModel.Name</h1>
+            <div class="product-card__link-category-block">
+                <a class="link-category-block__category" href="#">@productModel.Subcategory.Category.Name</a>
+                <div class="link-category-block__splitter">•</div>
+                <a class="link-category-block__subcategory" href="#">@productModel.Subcategory.Name</a>
             </div>
-            <div class="product-block__features-blocks">
-                <div class="features-block__choose-blocks">
-                    <div class="choose-blocks__color-choose-block">
-                        <h2 class="color-choose-block__title">Выберите цвет</h2>
-                        <div class="color-choose-block__colors-block">
-                            <input class="colors-block__color selected-button" type="button" value="Черный"> <!-- selected-button -->
-                            <input class="colors-block__color" type="button" value="Зеленый">
-                            <input class="colors-block__color" type="button" value="Красный">
-                            <input class="colors-block__color" type="button" value="Розовый">
-                            <input class="colors-block__color" type="button" value="Пурпул">
-                            <input class="colors-block__color" type="button" value="Серый">
-                        </div>
+            <div class="product-card__product-block">
+                <div class="product-block__images-block">
+                    <div class="images-block__main-image">
+                        <img class="main-image__image" src="data:image/png;base64,@Convert.ToBase64String(SelectedImage)" alt="Главное фото модели товара">
+                        <div class="main-image__white-rect"></div>
+                        <div class="main-image__zoomed-main-image"></div>
                     </div>
-                    <div class="choose-blocks__size-choose-block">
-                        <h2 class="size-choose-block__title">Выберите размер</h2>
-                        <div class="size-choose-block__sizes-block">
-                            <input class="sizes-block__size selected-button" type="button" value="55"> <!-- selected-button -->
-                            <input class="sizes-block__size" type="button" value="56">
-                            <input class="sizes-block__size" type="button" value="57">
-                            <input class="sizes-block__size" type="button" value="58">
-                            <input class="sizes-block__size" type="button" value="59">
-                            <input class="sizes-block__size" type="button" value="60">
-                        </div>
+                    <div class="images-block__secondary-images">
+                        @foreach (var photo in productModel.Photos)
+                        {
+                            <img class="secondary-images__image @(photo == SelectedImage ? "selected-image" : string.Empty)" src="data:image/png;base64,@Convert.ToBase64String(photo)" @onclick="() => SelectedImage = photo" alt="Фото модели товара">
+                        }
                     </div>
                 </div>
-                <div class="features-block__info-block">
-                    <h2 class="info-block__title">Характеристики</h2>
-                    <div class="info-block__blocks-features">
-                        <div class="blocks-features__feature">
-                            <span class="feature__name">Бренд</span>
-                            <span class="feature__splitter"></span>
-                            <span class="feature__value">Adidass</span>
+                <div class="product-block__features-blocks">
+                    @if (userState.Identity.IsAuthenticated)
+                    {
+                        <div class="features-block__choose-blocks">
+                            <div class="choose-blocks__color-choose-block">
+                                <h2 class="color-choose-block__title">Выберите цвет</h2>
+                                <div class="color-choose-block__colors-block">
+                                    @foreach (var color in allCollors)
+                                    {
+                                        <input class="colors-block__color @(SelectedColor == color ? "selected-button" : string.Empty)" @onclick="() => ClickOnColor(color)" type="button" value="@color">
+                                    }
+                                </div>
+                            </div>
+                            <div class="choose-blocks__size-choose-block">
+                                <h2 class="size-choose-block__title">Выберите размер</h2>
+                                <div class="size-choose-block__sizes-block">
+                                    @foreach (var size in allSizes)
+                                    {
+                                        <input class="sizes-block__size @(SelectedSize == size ? "selected-button" : string.Empty)" @onclick="() => ClickOnSize(size)" type="button" value="@size">
+                                    }
+                                </div>
+                            </div>
                         </div>
-                        <div class="blocks-features__feature">
-                            <span class="feature__name">Ткань</span>
-                            <span class="feature__splitter"></span>
-                            <span class="feature__value">Хвоя/плесень</span>
-                        </div>
-                        <div class="blocks-features__feature">
-                            <span class="feature__name">Стиль</span>
-                            <span class="feature__splitter"></span>
-                            <span class="feature__value">Луис</span>
-                        </div>
-                        <div class="blocks-features__feature">
-                            <span class="feature__name">Пошив</span>
-                            <span class="feature__splitter"></span>
-                            <span class="feature__value">Вяжеский</span>
+                    }
+                    <div class="features-block__info-block">
+                        <h2 class="info-block__title">Характеристики</h2>
+                        <div class="info-block__blocks-features">
+                            @foreach (var feature in productModel.Features)
+                            {
+                                <div class="blocks-features__feature">
+                                    <span class="feature__name">@feature.Key</span>
+                                    <span class="feature__splitter"></span>
+                                    <span class="feature__value">@feature.Value</span>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>
+                <div class="product-block__submut-block">
+                    <span class="submut-block__product-price">@productModel.Price.ToString("### ### ###") ₽</span>
+                    @if (userState.Identity.IsAuthenticated)
+                    {
+                        if (!Db.Products.Any(product => product.Article.Model.Id == productModel.Id || product.Article.Id == SelectedProductArticle.Id))
+                        {
+                            <button class="submut-block__empty-product-button" type="button" disabled>Товара нет в наличии</button>
+                        }
+                        else
+                        {
+                            if (user.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Id == SelectedProductArticle.Id))
+                            {
+                                <button class="submut-block__remove-from-favorites-button" @onclick="RemoveProductFromFavorites" type="submit">Удалить из избранного</button>
+                            }
+                            else
+                            {
+                                <button class="submut-block__add-to-favorites-button" @onclick="AddProductInFavorites" type="submit">Добавить в избранное</button>
+                            }
+                            if (user.Cart.Products.Any(favoriteProduct => favoriteProduct.Article.Id == SelectedProductArticle.Id))
+                            {
+                                <button class="submut-block__remove-from-cart-button" @onclick="RemoveProductFromCart" type="submit">Удалить из корзины</button>
+                            }
+                            else
+                            {
+                                <button class="submut-block__add-to-cart-button" @onclick="AddProductInCart" type="submit">Добавить в корзину</button>
+                            }
+                        }
+                    }
+                </div>
             </div>
-            <div class="product-block__submut-block">
-                <span class="submut-block__product-price">10 000 ₽</span>
-                <span class="submut-block__empty-product-button">Товара нет в наличии</span>
-                <button class="submut-block__add-to-cart-button" type="submit">Добавить в корзину</button>
-                <button class="submut-block__remove-from-cart-button" type="submit">Удалить из корзины</button>
-                <button class="submut-block__add-to-favorites-button" type="submit">Добавить в избранное</button>
-                <button class="submut-block__remove-from-favorites-button" type="submit">Удалить из избранного</button>
-            </div>
-        </div>
+        }
     </div>
 </section>

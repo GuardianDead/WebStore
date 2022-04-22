@@ -16,6 +16,8 @@ namespace WebStore.Pages
 
         [Inject] public AppDbContext Db { get; set; }
 
+        public int CurrentCountProductsOfModel { get; set; }
+
         public WMBSCInitialSettings configurations = new WMBSCInitialSettings()
         {
             dotsClass = "carousel__dots",
@@ -58,14 +60,11 @@ namespace WebStore.Pages
                 }
             }
         };
-
         public List<ProductModel> productsModelsSection1;
         public List<ProductModel> productsModelsSection2;
         public List<ProductModel> productsModelsSection3;
         public ClaimsPrincipal currentUserState;
         public User currentUser;
-
-        public int CurrentCountProductsOfModel { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -86,44 +85,44 @@ namespace WebStore.Pages
                     .Include(user => user.ListFavourites.Products)
                         .ThenInclude(favoritesProducts => favoritesProducts.Article.Model)
                     .Include(user => user.Cart.Products)
-                        .ThenInclude(favoritesProducts => favoritesProducts.Article.Model)
+                        .ThenInclude(cartProduct => cartProduct.Article.Model)
                     .SingleOrDefaultAsync(user => user.Email == userEmail);
             }
         }
 
-        public async Task AddProductInCartAsync(ProductModel productModel)
+        public void AddProductInCart(ProductModel productModel)
         {
-            if (currentUser.Cart.Products.Any(product => product.Article.Model.Id == productModel.Id))
+            if (currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Model.Id == productModel.Id))
                 return;
-            var addedFirstProductArticleOfModel = await Db.ProductArticles
+            var addedFirstProductArticleOfModel = Db.ProductArticles
                 .Include(productArticle => productArticle.Model)
-                .FirstAsync(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Count(product => product.Article.Id == productArticle.Id) != 0);
+                .First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Count(product => product.Article.Id == productArticle.Id) != 0);
             currentUser.Cart.Products.Add(new CartProduct(addedFirstProductArticleOfModel, 1));
-            await Db.SaveChangesAsync();
+            Db.SaveChanges();
         }
-        public async Task AddProductInFavoritesAsync(ProductModel productModel)
+        public void AddProductInFavorites(ProductModel productModel)
         {
-            if (currentUser.ListFavourites.Products.Any(product => product.Article.Model.Id == productModel.Id))
+            if (currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                 return;
-            var addedFirstProductArticleOfModel = await Db.ProductArticles
+            var addedFirstProductArticleOfModel = Db.ProductArticles
                 .Include(productArticle => productArticle.Model)
-                .FirstAsync(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Count(product => product.Article.Id == productArticle.Id) != 0);
+                .First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Count(product => product.Article.Id == productArticle.Id) != 0);
             currentUser.ListFavourites.Products.Add(new FavoriteProduct(addedFirstProductArticleOfModel));
-            await Db.SaveChangesAsync();
+            Db.SaveChanges();
         }
-        public async Task RemoveProductFromCartAsync(ProductModel productModel)
+        public void RemoveProductFromCart(ProductModel productModel)
         {
-            if (!currentUser.Cart.Products.Any(product => product.Article.Model.Id == productModel.Id))
+            if (!currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Model.Id == productModel.Id))
                 return;
             currentUser.Cart.Products.RemoveAll(cartProduct => cartProduct.Article.Model.Id == productModel.Id);
-            await Db.SaveChangesAsync();
+            Db.SaveChanges();
         }
-        public async Task RemoveProductFromFavoritesAsync(ProductModel productModel)
+        public void RemoveProductFromFavorites(ProductModel productModel)
         {
-            if (!currentUser.ListFavourites.Products.Any(product => product.Article.Model.Id == productModel.Id))
+            if (!currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                 return;
-            currentUser.ListFavourites.Products.RemoveAll(cartProduct => cartProduct.Article.Model.Id == productModel.Id);
-            await Db.SaveChangesAsync();
+            currentUser.ListFavourites.Products.RemoveAll(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id);
+            Db.SaveChanges();
         }
     }
 }

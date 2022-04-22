@@ -33,7 +33,7 @@
                 <label class="form__check-box"><input class="check-box__input" @bind-value="RegisterViewModel.Remember" type="checkbox" aria-label="Запомнить пользователяы"><span class="check-box__fake-input"></span>Запомнить меня</label>
                 <span class="form__disclaimer">Регистрируясь вы соглашаетесь с <a href="/rules/privacy" aria-label="Перейти на страницу политики конфиденциальности" title="Перейти на страницу политики конфиденциальности">Политикой конфиденциальности</a> и <a href="/rules/use-conditions" aria-label="Перейти на страницу условий использования" title="Перейти на страницу условий использования">Условиями использования</a> Veco</span>
                 <button class="form__button-submut" type="submit" aria-label="Кнопка подтверждения данных">Зарегистрироваться</button>
-                <a class="form__login" @onclick="NavigateToLogin">Войти</a>
+                <a class="form__login" href="/account/authorization/login/@RegisterViewModel.ReturnUrl.Replace('/', '$')">Войти</a>
                 @*<div class="form__external-logins-block external-logins-block">
                         <span class="external-logins-block__title">Зарегистрироваться с помощью</span>
                         <button class="external-logins-block__button-provider" name="register-facebook-button" value="facebook" style="background-color: rgb(63,101,166); color: white;" type="submit" title="Войти с помощью Facebook" aria-label="Войти с помощью Facebook"><img src="./icons/login/Facebook.svg" alt="Иконка  с помощью Facebook" title="Войти с помощью Facebook">Facebook</button>

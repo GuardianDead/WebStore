@@ -52,10 +52,8 @@ namespace WebStore.Pages.Account
             string userEmail = currentUserState.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
             currentUser = await Db.Users
                 .Include(user => user.OrderHistory.Orders)
-                .Include(user => user.ListFavourites.Products)
-                    .ThenInclude(favoritesProducts => favoritesProducts.Article.Model)
                 .Include(user => user.Cart.Products)
-                    .ThenInclude(favoritesProducts => favoritesProducts.Article.Model)
+                    .ThenInclude(cartProduct => cartProduct.Article.Model)
                 .SingleOrDefaultAsync(user => user.Email == userEmail);
             productsCost = currentUser.Cart.Products
                 .Where(cartProduct => cartProduct.IsSelected)

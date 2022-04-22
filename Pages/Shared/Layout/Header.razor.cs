@@ -59,12 +59,6 @@ namespace WebStore.Pages.Shared.Layout
                 .ToListAsync();
         }
 
-        public void NavigateToIndex() => NavigationManager.NavigateTo(NavigationManager.BaseUri, true);
-        public void NavigateToOrderHistory() => NavigationManager.NavigateTo($"{NavigationManager.BaseUri}account/orders", true);
-        public void NavigateToCart() => NavigationManager.NavigateTo($"{NavigationManager.BaseUri}account/cart", true);
-        public void NavigateToFavoritesList() => NavigationManager.NavigateTo($"{NavigationManager.BaseUri}/account/favorites", true);
-        public void NavigateToLogin() => NavigationManager.NavigateTo($"{NavigationManager.BaseUri}account/authorization/login/{returnUrl}", true);
-        public void NavigateToLogout() => NavigationManager.NavigateTo($"{NavigationManager.BaseUri}account/authorization/logout/{returnUrl}", true);
         public int CountFavoriteProducts() => currentUser.ListFavourites.Products.Count();
         public int CountCartProducts() => currentUser.Cart.Products.Count();
 

@@ -21,7 +21,6 @@ namespace WebStore.Pages.Account
         public bool IsSelectedAll { get; set; } = true;
 
         public decimal totalCost;
-
         private ClaimsPrincipal currentUserState;
         public User currentUser;
 
@@ -41,12 +40,6 @@ namespace WebStore.Pages.Account
             UpdateTotalCurrentCostCart();
         }
 
-        public async Task NavigateToOrderRegistrationAsync()
-        {
-            await Db.SaveChangesAsync();
-            NavigationManager.NavigateTo($"{NavigationManager.BaseUri}account/order-registration", true);
-        }
-
         public async Task ClearCartAsync()
         {
             foreach (var cartProduct in currentUser.Cart.Products)
@@ -59,30 +52,30 @@ namespace WebStore.Pages.Account
         public void UpdateTotalCurrentCostCart() => totalCost = currentUser.Cart.Products.Where(cartProduct => cartProduct.IsSelected)
             .Sum(cartProduct => cartProduct.Article.Model.Price * cartProduct.Count);
 
-        public Task AddProductInFavoritesAsync(CartProduct cartProduct)
+        public void AddProductInFavorites(CartProduct cartProduct)
         {
             var addedFavoriteProduct = currentUser.ListFavourites.Products
                 .SingleOrDefault(favoriteProduct => favoriteProduct.Article.Id == cartProduct.Article.Id);
             if (currentUser.ListFavourites.Products.Contains(addedFavoriteProduct))
-                return Task.CompletedTask;
+                return;
             currentUser.ListFavourites.Products.Add(new FavoriteProduct(cartProduct.Article));
-            return Db.SaveChangesAsync();
+            Db.SaveChanges();
         }
-        public Task RemoveProductFromCartAsync(CartProduct cartProduct)
+        public void RemoveProductFromCart(CartProduct cartProduct)
         {
             if (!currentUser.Cart.Products.Contains(cartProduct))
-                return Task.CompletedTask;
+                return;
             currentUser.Cart.Products.Remove(cartProduct);
-            return Db.SaveChangesAsync();
+            Db.SaveChanges();
         }
-        public Task RemoveProductFromFavoritesAsync(CartProduct cartProduct)
+        public void RemoveProductFromFavorites(CartProduct cartProduct)
         {
             var removedFavoriteProduct = currentUser.ListFavourites.Products
-                    .SingleOrDefault(cartProductList => cartProductList.Article.Id == cartProduct.Article.Id);
+                    .SingleOrDefault(favoriteProduct => favoriteProduct.Article.Id == cartProduct.Article.Id);
             if (!currentUser.ListFavourites.Products.Contains(removedFavoriteProduct))
-                return Task.CompletedTask;
+                return;
             currentUser.ListFavourites.Products.Remove(removedFavoriteProduct);
-            return Db.SaveChangesAsync();
+            Db.SaveChanges();
         }
 
         public async Task IncrementAsync(CartProduct cartProduct)

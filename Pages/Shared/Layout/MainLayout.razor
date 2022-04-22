@@ -12,9 +12,7 @@
                 @foreach (var category in categories)
                 {
                     <li class="navbar-mobile__link">
-                        <a href="#" aria-label="Перейти в раздел товаров с категорией @category.Name">
-                            <h3>@category.Name</h3>
-                        </a>
+                        <a href="#" aria-label="Перейти в раздел товаров с категорией @category.Name"><h3>@category.Name</h3></a>
                         <a class="link__arrow" @onclick="() => OpenSubcategorySideNavigationAsync(category)" aria-label="Перейти в раздел подкатегорий категории @category.Name">
                             <img src="/icons/sidebar/White-right-arrow-category.svg" alt="Иконка белой стрелки вправо" title="Перейти в раздел подкатегорий категории @category.Name">
                         </a>
@@ -30,11 +28,7 @@
             {
                 @foreach (var subcategory in selectedSubcaregories)
                 {
-                    <li class="navbar-mobile__link">
-                        <a href="#" aria-label="Перейти в раздел товаров с подкатегорией @subcategory.Name">
-                            <h3>@subcategory.Name</h3>
-                        </a>
-                    </li>
+                    <li class="navbar-mobile__link"><a href="#" aria-label="Перейти в раздел товаров с подкатегорией @subcategory.Name"><h3>@subcategory.Name</h3></a></li>
                 }
             }
         </ul>

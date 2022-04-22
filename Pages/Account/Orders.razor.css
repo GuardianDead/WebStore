@@ -98,6 +98,7 @@
   padding: 50%;
   background-color: #f6f6f6; }
   .product-card__image img {
+    padding: 2%;
     margin: 2%;
     position: absolute;
     top: 50%;

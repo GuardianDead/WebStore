@@ -32,31 +32,31 @@ namespace WebStore.Pages.Account
                 .SingleAsync(user => user.Email == userEmail);
         }
 
-        public Task AddProductInCartAsync(FavoriteProduct favoriteProduct)
+        public void AddProductInCart(FavoriteProduct favoriteProduct)
         {
             var addedCartProduct = currentUser.Cart.Products
                 .SingleOrDefault(cartProduct => cartProduct.Article.Id == favoriteProduct.Article.Id);
             if (currentUser.Cart.Products.Contains(addedCartProduct))
-                return Task.CompletedTask;
+                return;
             currentUser.Cart.Products.Add(new CartProduct(favoriteProduct.Article, 1));
-            return Db.SaveChangesAsync();
+            Db.SaveChanges();
 
         }
-        public Task RemoveProductFromCartAsync(FavoriteProduct favoriteProduct)
+        public void RemoveProductFromCart(FavoriteProduct favoriteProduct)
         {
             var removedCartProduct = currentUser.Cart.Products
                     .SingleOrDefault(cartProductList => cartProductList.Article.Id == favoriteProduct.Article.Id);
             if (removedCartProduct is null)
-                return Task.CompletedTask;
+                return;
             currentUser.Cart.Products.Remove(removedCartProduct);
-            return Db.SaveChangesAsync();
+            Db.SaveChanges();
         }
-        public Task RemoveProductFromFavoritesAsync(FavoriteProduct favoriteProduct)
+        public void RemoveProductFromFavorites(FavoriteProduct favoriteProduct)
         {
             if (!currentUser.ListFavourites.Products.Contains(favoriteProduct))
-                return Task.CompletedTask;
+                return;
             currentUser.ListFavourites.Products.Remove(favoriteProduct);
-            return Db.SaveChangesAsync();
+            Db.SaveChanges();
         }
     }
 }

@@ -4,7 +4,7 @@
 {
     <header class="header @(HeaderIsScroling ? "scroling" : string.Empty)">
         <div class="container header__container">
-            <a class="logo" @onclick="NavigateToIndex" aria-label="Лого"><img src="/icons/header/Logo.svg" alt="Лого" title="Лого"></a>
+            <a class="logo" href="/" aria-label="Лого"><img src="/icons/header/Logo.svg" alt="Лого" title="Лого"></a>
             <nav class="navbar">
                 <ul class="navbar__categories">
                     @if (categories is not null)
@@ -23,14 +23,14 @@
                 </div>
                 @if (currentUserState.Identity.IsAuthenticated)
                 {
-                    <a class="panel__favorites" @onclick="NavigateToFavoritesList" aria-label="Перейти в каталог избранных товаров" title="Иконка избранного">
+                    <a class="panel__favorites" href="/account/favorites" aria-label="Перейти в каталог избранных товаров" title="Иконка избранного">
                         <img src="/icons/header/Heart.svg" alt="Иконка избранного" title="Иконка избранного">
                         @if (CountFavoriteProducts() != 0)
                         {
                             <span class="panel__favorites__count">@CountFavoriteProducts()</span>
                         }
                     </a>
-                    <a class="panel__cart" @onclick="NavigateToCart" aria-label="Перейти в каталог товаров в корзине" title="Иконка корзины">
+                    <a class="panel__cart" href="/account/cart" aria-label="Перейти в каталог товаров в корзине" title="Иконка корзины">
                         <img src="/icons/header/Cart.svg" alt="Иконка корзины" title="Иконка корзины">
                         @if (CountCartProducts() != 0)
                         {
@@ -40,15 +40,15 @@
                     <div class="panel__user-block" @onclick="async () => await ToggleUserPanelAsync()">
                         <div class="panel__user" aria-label="Пользовательское меню"><img src="/icons/header/User.svg" alt="Иконка пользователя" title="Пользовательское меню"></div>
                         <ul class="panel__user-links @(UserPanelIsShow ? "show" : string.Empty)">
-                            <li class="user-menu__link"><a @onclick="NavigateToOrderHistory" aria-label="Перейти в заказы пользователя">Заказы<img src="/icons/header/Orders (cube).svg" alt="Иконка заказов пользователя" title="Заказы"></a></li>
+                            <li class="user-menu__link"><a href="/account/orders" aria-label="Перейти в заказы пользователя">Заказы<img src="/icons/header/Orders (cube).svg" alt="Иконка заказов пользователя" title="Заказы"></a></li>
                             <li class="user-menu__link"><a href="#" aria-label="Перейти в настройки личного кабинета пользователя">Настройки<img src="/icons/header/Settings.svg" alt="Иконка настроек" title="Настройки"></a></li>
-                            <li class="user-menu__link"><a @onclick="NavigateToLogout" aria-label="Выйти из аккаунта">Выйти<img src="/icons/header/Exit.svg" alt="Иконка выхода пользователя из системы" title="Выход"></a></li>
+                            <li class="user-menu__link"><a href="/account/authorization/logout/@returnUrl" aria-label="Выйти из аккаунта">Выйти<img src="/icons/header/Exit.svg" alt="Иконка выхода пользователя из системы" title="Выход"></a></li>
                         </ul>
                     </div>
                 }
                 else
                 {
-                    <a class="panel__login" @onclick="NavigateToLogin" aria-label="Авторизоваться"><img src="/icons/header/Login.svg" alt="Иконка авторизации" title="Войти"></a>
+                    <a class="panel__login" href="/account/authorization/login/@returnUrl" aria-label="Авторизоваться"><img src="/icons/header/Login.svg" alt="Иконка авторизации" title="Войти"></a>
                 }
             </div>
             <a class="burger-menu" @onclick="OpenCategorySideNavigationAsync"><span /></a>

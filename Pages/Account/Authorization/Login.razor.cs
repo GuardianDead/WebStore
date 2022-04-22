@@ -48,8 +48,6 @@ namespace WebStore.Pages.Account.Authorization
             //TODO : Сделать LockOut
         }
 
-        public void NavigateToRegister() => NavigationManager.NavigateTo($"{NavigationManager.BaseUri}account/authorization/register/{LoginViewModel.ReturnUrl.Replace('/', '$')}", true);
-
         public void EmailInputChangeValue(ChangeEventArgs e)
         {
             LoginViewModel.Email = e.Value.ToString();
