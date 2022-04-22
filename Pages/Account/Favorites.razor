@@ -21,21 +21,21 @@
                 else
                 {
                     <div class="favorites__product-cards">
-                        @foreach (var favoriteProduct in currentUser.ListFavourites.Products)
+                        @foreach (var group in GetDistinctProductsByModel())
                         {
                             <div class="favorites__product-card">
                                 <div class="favorites__image-block">
-                                    <a class="favorites__image" href="/products/product-card/@favoriteProduct.Article.Model.Id" aria-label="Перейти в личную карточку товара @favoriteProduct.Article.Model.Subcategory @favoriteProduct.Article.Model.Name"><img src="data:image/png;base64,@Convert.ToBase64String(favoriteProduct.Article.Model.MainPhoto)" alt="Картинка @favoriteProduct.Article.Model.Name" title="@favoriteProduct.Article.Model.Name"></a>
-                                    <a class="favorites__favorites-icon" @onclick="() => RemoveProductFromFavorites(favoriteProduct)" aria-label="Удалить товар @favoriteProduct.Article.Model.Name из избранного"><img src="/icons/favorites/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
-                                    @if (Db.Products.Count(product => product.Article.Id == favoriteProduct.Article.Id) != 0)
+                                    <a class="favorites__image" href="/products/product-card/@group.First().Id" aria-label="Перейти в личную карточку товара @group.First().Subcategory @group.First().Name"><img src="data:image/png;base64,@Convert.ToBase64String(group.First().MainPhoto)" alt="Картинка @group.First().Name" title="@group.First().Name"></a>
+                                    <a class="favorites__favorites-icon" @onclick="() => RemoveProductFromFavorites(group.First())" aria-label="Удалить товар @group.First().Name из избранного"><img src="/icons/favorites/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
+                                    @if (Db.Products.Count(product => product.Article.Model.Id == group.First().Id) != 0)
                                     {
-                                        @if (currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Id == favoriteProduct.Article.Id))
+                                        @if (currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Model.Id == group.First().Id))
                                         {
-                                            <a class="favorites__cart-icon" @onclick="() => RemoveProductFromCart(favoriteProduct)" aria-label="Добавить товар @favoriteProduct.Article.Model.Name в корзину"><img src="/icons/favorites/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a>
+                                            <a class="favorites__cart-icon" @onclick="() => RemoveProductFromCart(group.First())" aria-label="Добавить товар @group.First().Name в корзину"><img src="/icons/favorites/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a>
                                         }
                                         else
                                         {
-                                            <a class="favorites__cart-icon" @onclick="() => AddProductInCart(favoriteProduct)" aria-label="Добавить товар @favoriteProduct.Article.Model.Name в корзину"><img src="/icons/favorites/Cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a>
+                                            <a class="favorites__cart-icon" @onclick="() => AddProductInCart(group.First())" aria-label="Добавить товар @group.First().Name в корзину"><img src="/icons/favorites/Cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a>
                                         }
                                     }
                                     @*<div class="favorites__block-discount hasDiscount"> hasDiscount
@@ -43,7 +43,7 @@
                                     <img class="block-discount__icon" src="/icons/favorites/Discount.svg" alt="Иконка скидки" title="Скидка товара">
                                     </div>*@
                                 </div>
-                                <h3 class="favorites__name"><a href="/products/product-card/@favoriteProduct.Article.Model.Id" aria-label="Перейти в личную карточку товара @favoriteProduct.Article.Model.Name">@favoriteProduct.Article.Model.Name</a></h3>
+                                <h3 class="favorites__name"><a href="/products/product-card/@group.First().Id" aria-label="Перейти в личную карточку товара @group.First().Name">@group.First().Name</a></h3>
                                 @*<div class="favorites__block-price hasDiscount"> hasDiscount
                                 <span class="block-price__price">27 999 ₽</span>
                                 <span class="block-price__discount-price">22 400 ₽</span>

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -32,30 +33,31 @@ namespace WebStore.Pages.Account
                 .SingleAsync(user => user.Email == userEmail);
         }
 
-        public void AddProductInCart(FavoriteProduct favoriteProduct)
+        public IEnumerable<IGrouping<string, ProductModel>> GetDistinctProductsByModel() => currentUser.ListFavourites.Products.GroupBy(product => product.Article.Model.Id, product => product.Article.Model);
+
+        public void AddProductInCart(ProductModel productModel)
         {
-            var addedCartProduct = currentUser.Cart.Products
-                .SingleOrDefault(cartProduct => cartProduct.Article.Id == favoriteProduct.Article.Id);
-            if (currentUser.Cart.Products.Contains(addedCartProduct))
+            if (!currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Model.Id == productModel.Id))
                 return;
-            currentUser.Cart.Products.Add(new CartProduct(favoriteProduct.Article, 1));
+            var addedFirstProductArticleOfModel = Db.ProductArticles
+                .Include(productArticle => productArticle.Model)
+                .First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Count(product => product.Article.Id == productArticle.Id) != 0);
+            currentUser.Cart.Products.Add(new CartProduct(addedFirstProductArticleOfModel, 1));
             Db.SaveChanges();
 
         }
-        public void RemoveProductFromCart(FavoriteProduct favoriteProduct)
+        public void RemoveProductFromCart(ProductModel productModel)
         {
-            var removedCartProduct = currentUser.Cart.Products
-                    .SingleOrDefault(cartProductList => cartProductList.Article.Id == favoriteProduct.Article.Id);
-            if (removedCartProduct is null)
+            if (!currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Model.Id == productModel.Id))
                 return;
-            currentUser.Cart.Products.Remove(removedCartProduct);
+            currentUser.Cart.Products.RemoveAll(cartProduct => cartProduct.Article.Model.Id == productModel.Id);
             Db.SaveChanges();
         }
-        public void RemoveProductFromFavorites(FavoriteProduct favoriteProduct)
+        public void RemoveProductFromFavorites(ProductModel productModel)
         {
-            if (!currentUser.ListFavourites.Products.Contains(favoriteProduct))
+            if (!currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                 return;
-            currentUser.ListFavourites.Products.Remove(favoriteProduct);
+            currentUser.ListFavourites.Products.RemoveAll(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id);
             Db.SaveChanges();
         }
     }
