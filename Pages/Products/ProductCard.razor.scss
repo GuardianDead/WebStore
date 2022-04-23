@@ -303,10 +303,6 @@
         font-size: 16px;
         padding: 20px;
         border-radius: 50px;
-
-        &:hover {
-            outline: 1px solid black;
-        }
     }
 
     &__remove-from-cart-button {
@@ -318,10 +314,6 @@
         font-size: 16px;
         padding: 20px;
         border-radius: 50px;
-
-        &:hover {
-            outline: 1px solid black;
-        }
     }
 
     &__add-to-favorites-button {
@@ -332,10 +324,7 @@
         font-size: 16px;
         padding: 20px;
         border-radius: 50px;
-
-        &:hover {
-            outline: 2px solid black;
-        }
+        color: black;
     }
 
     &__remove-from-favorites-button {
@@ -346,10 +335,7 @@
         font-size: 16px;
         padding: 20px;
         border-radius: 50px;
-
-        &:hover {
-            outline: 2px solid black;
-        }
+        color: black;
     }
 }
 

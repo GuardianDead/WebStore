@@ -231,8 +231,6 @@
   font-size: 16px;
   padding: 20px;
   border-radius: 50px; }
-  .submut-block__add-to-cart-button:hover {
-    outline: 1px solid black; }
 
 .submut-block__remove-from-cart-button {
   white-space: nowrap;
@@ -243,8 +241,6 @@
   font-size: 16px;
   padding: 20px;
   border-radius: 50px; }
-  .submut-block__remove-from-cart-button:hover {
-    outline: 1px solid black; }
 
 .submut-block__add-to-favorites-button {
   white-space: nowrap;
@@ -253,9 +249,8 @@
   outline: 2px solid black;
   font-size: 16px;
   padding: 20px;
-  border-radius: 50px; }
-  .submut-block__add-to-favorites-button:hover {
-    outline: 2px solid black; }
+  border-radius: 50px;
+  color: black; }
 
 .submut-block__remove-from-favorites-button {
   white-space: nowrap;
@@ -264,9 +259,8 @@
   outline: 2px solid black;
   font-size: 16px;
   padding: 20px;
-  border-radius: 50px; }
-  .submut-block__remove-from-favorites-button:hover {
-    outline: 2px solid black; }
+  border-radius: 50px;
+  color: black; }
 
 .selected-image {
   outline: 1px black solid; }
