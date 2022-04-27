@@ -31,7 +31,7 @@ namespace WebStore.Pages.Account
             currentUser = await Db.Users
                 .Include(user => user.Cart.Products)
                     .ThenInclude(cartProducts => cartProducts.Article.Model)
-                .Include(user => user.ListFavourites.Products)
+                .Include(user => user.FavoriteList.Products)
                     .ThenInclude(favoriteProducts => favoriteProducts.Article.Model)
                 .SingleAsync(user => user.Email == userEmail);
             await ClearCartAsync();
@@ -54,11 +54,10 @@ namespace WebStore.Pages.Account
 
         public void AddProductInFavorites(CartProduct cartProduct)
         {
-            var addedFavoriteProduct = currentUser.ListFavourites.Products
-                .SingleOrDefault(favoriteProduct => favoriteProduct.Article.Id == cartProduct.Article.Id);
-            if (currentUser.ListFavourites.Products.Contains(addedFavoriteProduct))
+            var addedFavoriteProduct = currentUser.FavoriteList.Products.SingleOrDefault(favoriteProduct => favoriteProduct.Article.Id == cartProduct.Article.Id);
+            if (currentUser.FavoriteList.Products.Contains(addedFavoriteProduct))
                 return;
-            currentUser.ListFavourites.Products.Add(new FavoriteProduct(cartProduct.Article));
+            currentUser.FavoriteList.Products.Add(new FavoriteProduct(cartProduct.Article));
             Db.SaveChanges();
         }
         public void RemoveProductFromCart(CartProduct cartProduct)
@@ -70,11 +69,10 @@ namespace WebStore.Pages.Account
         }
         public void RemoveProductFromFavorites(CartProduct cartProduct)
         {
-            var removedFavoriteProduct = currentUser.ListFavourites.Products
-                    .SingleOrDefault(favoriteProduct => favoriteProduct.Article.Id == cartProduct.Article.Id);
-            if (!currentUser.ListFavourites.Products.Contains(removedFavoriteProduct))
+            var removedFavoriteProduct = currentUser.FavoriteList.Products.SingleOrDefault(favoriteProduct => favoriteProduct.Article.Id == cartProduct.Article.Id);
+            if (!currentUser.FavoriteList.Products.Contains(removedFavoriteProduct))
                 return;
-            currentUser.ListFavourites.Products.Remove(removedFavoriteProduct);
+            currentUser.FavoriteList.Products.Remove(removedFavoriteProduct);
             Db.SaveChanges();
         }
 

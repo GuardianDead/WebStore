@@ -244,19 +244,19 @@ namespace WebStore.Migrations
                     b.Property<string>("ArticleId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("FavoritesProductsListId")
+                    b.Property<int?>("FavoriteListId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ArticleId");
 
-                    b.HasIndex("FavoritesProductsListId");
+                    b.HasIndex("FavoriteListId");
 
                     b.ToTable("FavoriteProducts");
                 });
 
-            modelBuilder.Entity("WebStore.Data.Entities.FavoritesProductsList", b =>
+            modelBuilder.Entity("WebStore.Data.Entities.FavoriteList", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -547,7 +547,7 @@ namespace WebStore.Migrations
                     b.Property<string>("Lastname")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ListFavouritesId")
+                    b.Property<int?>("FavoriteListId")
                         .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
@@ -596,7 +596,7 @@ namespace WebStore.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.HasIndex("ListFavouritesId");
+                    b.HasIndex("FavoriteListId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -681,9 +681,9 @@ namespace WebStore.Migrations
                         .WithMany()
                         .HasForeignKey("ArticleId");
 
-                    b.HasOne("WebStore.Data.Entities.FavoritesProductsList", null)
+                    b.HasOne("WebStore.Data.Entities.FavoriteList", null)
                         .WithMany("Products")
-                        .HasForeignKey("FavoritesProductsListId");
+                        .HasForeignKey("FavoriteListId");
 
                     b.Navigation("Article");
                 });
@@ -760,9 +760,9 @@ namespace WebStore.Migrations
                         .WithMany()
                         .HasForeignKey("CartId");
 
-                    b.HasOne("WebStore.Data.Entities.FavoritesProductsList", "ListFavourites")
+                    b.HasOne("WebStore.Data.Entities.FavoriteList", "FavoriteList")
                         .WithMany()
-                        .HasForeignKey("ListFavouritesId");
+                        .HasForeignKey("FavoriteListId");
 
                     b.HasOne("WebStore.Data.Entities.OrderHistory", "OrderHistory")
                         .WithMany()
@@ -772,7 +772,7 @@ namespace WebStore.Migrations
 
                     b.Navigation("Cart");
 
-                    b.Navigation("ListFavourites");
+                    b.Navigation("FavoriteList");
 
                     b.Navigation("OrderHistory");
                 });
@@ -782,7 +782,7 @@ namespace WebStore.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("WebStore.Data.Entities.FavoritesProductsList", b =>
+            modelBuilder.Entity("WebStore.Data.Entities.FavoriteList", b =>
                 {
                     b.Navigation("Products");
                 });

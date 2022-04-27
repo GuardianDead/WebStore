@@ -84,7 +84,7 @@
                     }
                     else
                     {
-                        if (user.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Id == SelectedProductArticle.Id))
+                        if (user.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Id == SelectedProductArticle.Id))
                         {
                             <button class="submut-block__remove-from-favorites-button" @onclick="RemoveProductFromFavorites" type="submit">Удалить из избранного</button>
                         }

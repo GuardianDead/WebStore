@@ -1,4 +1,6 @@
-﻿namespace WebStore.Domain.Types.Translators
+﻿using System;
+
+namespace WebStore.Domain.Types.Translators
 {
     public static class DeliveryMethodTypeRussianTranslator
     {
@@ -13,7 +15,7 @@
                 case DeliveryMethodType.Post:
                     return "Почта";
                 default:
-                    return "Некорректный перевод типа 'DeliveryMethodType' из за неизвестного значения";
+                    throw new ArgumentOutOfRangeException($"Неизвестный тип 'DeliveryMethodType' для перевода на русский язык: {deliveryMethodType}");
             }
         }
     }

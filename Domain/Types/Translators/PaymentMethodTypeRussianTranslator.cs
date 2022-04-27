@@ -1,4 +1,6 @@
-﻿namespace WebStore.Domain.Types.Translators
+﻿using System;
+
+namespace WebStore.Domain.Types.Translators
 {
     public static class PaymentMethodTypeRussianTranslator
     {
@@ -13,7 +15,7 @@
                 case PaymentMethodType.Card:
                     return "Картой";
                 default:
-                    return "Некорректный перевод типа 'OrderPaymentMethodType' из за неизвестного значения";
+                    throw new ArgumentOutOfRangeException($"Неизвестный тип 'PaymentMethodType' для перевода на русский язык: {paymentMethodType}");
             }
         }
     }

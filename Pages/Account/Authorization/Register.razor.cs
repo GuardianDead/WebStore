@@ -170,7 +170,7 @@ namespace WebStore.Pages.Account.Authorization
             };
             var createdUser = new User(
                     orderHistory: new OrderHistory(new List<Order>()),
-                    listFavourites: new FavoritesProductsList(new List<FavoriteProduct>()),
+                    favoriteList: new FavoriteList(new List<FavoriteProduct>()),
                     cart: new Data.Entities.Cart(new List<CartProduct>()),
                     email: RegisterViewModel.Email,
                     dateTimeCreation: DateTime.Now,

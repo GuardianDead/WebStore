@@ -5,15 +5,19 @@ namespace WebStore.Pages.ViewModels
 {
     public class LoginViewModel
     {
+        [Required]
         [DisplayName("Электронная почта")]
         [DataType(DataType.EmailAddress)]
         [EmailAddress]
         public string Email { get; set; }
+        [Required]
         [DisplayName("Пароль")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        [Required]
         [DisplayName("Запомнить пользователя?")]
         public bool Remember { get; set; }
+        [Required]
         [DisplayName("Запомнить пользователя?")]
         public string ReturnUrl { get; set; }
 

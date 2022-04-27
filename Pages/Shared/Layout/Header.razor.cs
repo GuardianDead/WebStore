@@ -47,7 +47,7 @@ namespace WebStore.Pages.Shared.Layout
                 currentUser = await Db.Users
                     .AsNoTracking()
                     .Include(user => user.Cart.Products)
-                    .Include(user => user.ListFavourites.Products)
+                    .Include(user => user.FavoriteList.Products)
                     .SingleAsync(user => user.Email == userEmail);
             }
             categories = await Db.Categories
@@ -59,7 +59,7 @@ namespace WebStore.Pages.Shared.Layout
                 .ToListAsync();
         }
 
-        public int CountFavoriteProducts() => currentUser.ListFavourites.Products.Count();
+        public int CountFavoriteProducts() => currentUser.FavoriteList.Products.Count();
         public int CountCartProducts() => currentUser.Cart.Products.Count();
 
         [JSInvokable]

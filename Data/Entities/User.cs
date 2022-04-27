@@ -29,7 +29,7 @@ namespace WebStore.Data.Entities
         public OrderHistory OrderHistory { get; set; }
         [Required]
         [DisplayName("Избранное")]
-        public FavoritesProductsList ListFavourites { get; set; }
+        public FavoriteList FavoriteList { get; set; }
         [Required]
         [DisplayName("Корзина")]
         public Cart Cart { get; set; }
@@ -56,14 +56,13 @@ namespace WebStore.Data.Entities
         {
 
         }
-        public User(OrderHistory orderHistory, FavoritesProductsList listFavourites,
-            Cart cart, string email, DateTime dateTimeCreation, string userName)
+        public User(OrderHistory orderHistory, FavoriteList favoriteList, Cart cart, string email, DateTime dateTimeCreation, string userName)
         {
             UserName = userName;
             Email = email;
             Cart = cart;
             OrderHistory = orderHistory;
-            ListFavourites = listFavourites;
+            FavoriteList = favoriteList;
             DateTimeCreation = dateTimeCreation;
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace WebStore.Domain.Types.Translators
+﻿using System;
+
+namespace WebStore.Domain.Types.Translators
 {
     public static class OrderStatusTypeRussianTranslator
     {
@@ -27,7 +29,7 @@
                 case OrderStatusType.Canceled:
                     return "Отменен";
                 default:
-                    return "Некорректный перевод типа 'OrderStatusType' из за неизвестного значения";
+                    throw new ArgumentOutOfRangeException($"Неизвестный тип 'OrderStatusType' для перевода на русский язык: {orderStatusType}");
             }
         }
     }

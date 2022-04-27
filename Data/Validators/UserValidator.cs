@@ -7,16 +7,16 @@ namespace WebStore.Validators.Identity
     public class UserValidator : AbstractValidator<User>
     {
         public UserValidator(IValidator<OrderHistory> orderHistoryValidator, IValidator<Cart> cartValidator,
-            IValidator<FavoritesProductsList> listFavouritesValidator, IValidator<Address> addressValidator)
+            IValidator<FavoriteList> FavoriteListValidator, IValidator<Address> addressValidator)
         {
             RuleFor(i => i.Address)
                 .SetValidator(addressValidator);
             RuleFor(i => i.OrderHistory)
                 .NotNull().WithMessage("Заказы не могут быть неопределены")
                 .SetValidator(orderHistoryValidator);
-            RuleFor(i => i.ListFavourites)
+            RuleFor(i => i.FavoriteList)
                 .NotNull().WithMessage("Избранные товары не могут быть неопределены")
-                .SetValidator(listFavouritesValidator);
+                .SetValidator(FavoriteListValidator);
             RuleFor(i => i.Cart)
                 .NotNull().WithMessage("Корзина товаров не может быть неопределена")
                 .SetValidator(cartValidator);

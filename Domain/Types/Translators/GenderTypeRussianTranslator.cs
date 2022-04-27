@@ -1,4 +1,6 @@
-﻿namespace WebStore.Domain.Types.Translators
+﻿using System;
+
+namespace WebStore.Domain.Types.Translators
 {
     public static class GenderTypeRussianTranslator
     {
@@ -11,7 +13,7 @@
                 case GenderType.Woman:
                     return "Женщина";
                 default:
-                    return "Некорректный перевод типа 'GenderType' из за неизвестного значения";
+                    throw new ArgumentOutOfRangeException($"Неизвестный тип 'GenderType' для перевода на русский язык: {genderType}");
             }
         }
     }

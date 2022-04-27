@@ -82,7 +82,7 @@ namespace WebStore.Pages
             {
                 var userEmail = currentUserState.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
                 currentUser = await Db.Users
-                    .Include(user => user.ListFavourites.Products)
+                    .Include(user => user.FavoriteList.Products)
                         .ThenInclude(favoritesProducts => favoritesProducts.Article.Model)
                     .Include(user => user.Cart.Products)
                         .ThenInclude(cartProduct => cartProduct.Article.Model)
@@ -102,12 +102,12 @@ namespace WebStore.Pages
         }
         public void AddProductInFavorites(ProductModel productModel)
         {
-            if (currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
+            if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                 return;
             var addedFirstProductArticleOfModel = Db.ProductArticles
                 .Include(productArticle => productArticle.Model)
                 .First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Count(product => product.Article.Id == productArticle.Id) != 0);
-            currentUser.ListFavourites.Products.Add(new FavoriteProduct(addedFirstProductArticleOfModel));
+            currentUser.FavoriteList.Products.Add(new FavoriteProduct(addedFirstProductArticleOfModel));
             Db.SaveChanges();
         }
         public void RemoveProductFromCart(ProductModel productModel)
@@ -119,9 +119,9 @@ namespace WebStore.Pages
         }
         public void RemoveProductFromFavorites(ProductModel productModel)
         {
-            if (!currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
+            if (!currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                 return;
-            currentUser.ListFavourites.Products.RemoveAll(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id);
+            currentUser.FavoriteList.Products.RemoveAll(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id);
             Db.SaveChanges();
         }
     }

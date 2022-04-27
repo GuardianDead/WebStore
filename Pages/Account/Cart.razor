@@ -48,7 +48,7 @@
                                 <div class="product-card__icons-block">
                                     <a class="icons-block__cart-icon" @onclick="() => RemoveProductFromCart(cartProduct)" aria-label="Удалить товар @cartProduct.Article.Model.Name из корзины"><img src="/icons/cart/Slash-cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины"></a>
                                     <label class="cart-icon__select-checkbox select-checkbox"><input name="login-remember-me-checkbox" @bind="cartProduct.IsSelected" @onclick="() => ProductSelecterToggle(cartProduct)" type="checkbox" aria-label="Чек-бокс для выборки всех товаров в корзине"><span></span></label>
-                                    @if (currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Id == cartProduct.Article.Id))
+                                    @if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Id == cartProduct.Article.Id))
                                     {
                                         <a class="icons-block__favorites-icon" @onclick="() => RemoveProductFromFavorites(cartProduct)" aria-label="Удалить товар @cartProduct.Article.Model.Name из избранного"><img src="/icons/cart/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
                                     }

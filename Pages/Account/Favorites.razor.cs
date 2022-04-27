@@ -28,12 +28,12 @@ namespace WebStore.Pages.Account
             currentUser = await Db.Users
                 .Include(user => user.Cart.Products)
                     .ThenInclude(cartProducts => cartProducts.Article.Model)
-                .Include(user => user.ListFavourites.Products)
+                .Include(user => user.FavoriteList.Products)
                     .ThenInclude(favoriteProducts => favoriteProducts.Article.Model)
                 .SingleAsync(user => user.Email == userEmail);
         }
 
-        public IEnumerable<IGrouping<string, ProductModel>> GetDistinctProductsByModel() => currentUser.ListFavourites.Products.GroupBy(product => product.Article.Model.Id, product => product.Article.Model);
+        public IEnumerable<IGrouping<string, ProductModel>> GetDistinctProductsByModel() => currentUser.FavoriteList.Products.GroupBy(product => product.Article.Model.Id, product => product.Article.Model);
 
         public void AddProductInCart(ProductModel productModel)
         {
@@ -55,9 +55,9 @@ namespace WebStore.Pages.Account
         }
         public void RemoveProductFromFavorites(ProductModel productModel)
         {
-            if (!currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
+            if (!currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                 return;
-            currentUser.ListFavourites.Products.RemoveAll(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id);
+            currentUser.FavoriteList.Products.RemoveAll(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id);
             Db.SaveChanges();
         }
     }

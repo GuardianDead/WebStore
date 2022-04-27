@@ -52,7 +52,7 @@ namespace WebStore.Data
         public DbSet<Subcategory> Subcategories { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<OrderHistory> OrderHistories { get; set; }
-        public DbSet<FavoritesProductsList> FavoriteLists { get; set; }
+        public DbSet<FavoriteList> FavoriteLists { get; set; }
         public DbSet<FavoriteProduct> FavoriteProducts { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartProduct> CartProducts { get; set; }

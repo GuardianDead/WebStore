@@ -66,7 +66,7 @@ namespace WebStore.Pages.Products
             {
                 var userEmail = userState.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
                 user = await Db.Users
-                    .Include(user => user.ListFavourites.Products)
+                    .Include(user => user.FavoriteList.Products)
                         .ThenInclude(favoritesProducts => favoritesProducts.Article.Model)
                     .Include(user => user.Cart.Products)
                         .ThenInclude(cartProduct => cartProduct.Article.Model)
@@ -111,10 +111,10 @@ namespace WebStore.Pages.Products
         public void AddProductInFavorites()
         {
             if (SelectedProductArticle is null ||
-                user.ListFavourites.Products.Any(product => product.Article.Id == SelectedProductArticle.Id) ||
+                user.FavoriteList.Products.Any(product => product.Article.Id == SelectedProductArticle.Id) ||
                 Db.Products.Count(product => product.Article.Id == SelectedProductArticle.Id) < 1)
                 return;
-            user.ListFavourites.Products.Add(new FavoriteProduct(SelectedProductArticle));
+            user.FavoriteList.Products.Add(new FavoriteProduct(SelectedProductArticle));
             Db.SaveChanges();
         }
         public void RemoveProductFromCart()
@@ -128,9 +128,9 @@ namespace WebStore.Pages.Products
         public void RemoveProductFromFavorites()
         {
             if (SelectedProductArticle is null ||
-                !user.ListFavourites.Products.Any(product => product.Article.Id == SelectedProductArticle.Id))
+                !user.FavoriteList.Products.Any(product => product.Article.Id == SelectedProductArticle.Id))
                 return;
-            user.ListFavourites.Products.RemoveAll(favoriteProduct => favoriteProduct.Article.Id == SelectedProductArticle.Id);
+            user.FavoriteList.Products.RemoveAll(favoriteProduct => favoriteProduct.Article.Id == SelectedProductArticle.Id);
             Db.SaveChanges();
         }
     }

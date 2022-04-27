@@ -4,22 +4,26 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebStore.Data.Entities
 {
-    public class FavoritesProductsList
+    public class FavoriteList
     {
         [Key]
         [Required]
-        [DisplayName("Номер")]
+        [DisplayName("Индификатор")]
         public int Id { get; init; }
+
         [Required]
         [DisplayName("Товары")]
         public List<FavoriteProduct> Products { get; set; }
+        [DisplayName("Пользователь")]
+        public User User { get; set; }
 
-        public FavoritesProductsList()
+        public FavoriteList()
         {
         }
-        public FavoritesProductsList(List<FavoriteProduct> products)
+        public FavoriteList(List<FavoriteProduct> products, User user = null)
         {
             Products = products;
+            User = user;
         }
     }
 }

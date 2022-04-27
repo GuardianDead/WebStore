@@ -52,7 +52,7 @@
                                     <a href="/products/product-card/@productModel.Id"><img class="image-block__image" src="data:image/png;base64,@Convert.ToBase64String(productModel.MainPhoto)"></a>
                                     @if (currentUserState is not null && currentUserState.Identity.IsAuthenticated && currentUser is not null && Db.Products.Any(product => product.Article.Model.Id == productModel.Id))
                                     {
-                                        if (currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
+                                        if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                         {
                                             <span class="image-block__favorites" @onclick="() => RemoveProductFromFavorites(productModel)"><img src="/icons/header/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></span>
                                         }
@@ -110,7 +110,7 @@
                                     <a href="/products/product-card/@productModel.Id"><img class="image-block__image" src="data:image/png;base64,@Convert.ToBase64String(productModel.MainPhoto)"></a>
                                     @if (currentUserState is not null && currentUserState.Identity.IsAuthenticated && currentUser is not null && Db.Products.Any(product => product.Article.Model.Id == productModel.Id))
                                     {
-                                        if (currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
+                                        if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                         {
                                             <span class="image-block__favorites" @onclick="() => RemoveProductFromFavorites(productModel)"><img src="/icons/header/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></span>
                                         }
@@ -176,7 +176,7 @@
                                     <a href="/products/product-card/@productModel.Id"><img class="image-block__image" src="data:image/png;base64,@Convert.ToBase64String(productModel.MainPhoto)"></a>
                                     @if (currentUserState is not null && currentUserState.Identity.IsAuthenticated && currentUser is not null && Db.Products.Any(product => product.Article.Model.Id == productModel.Id))
                                     {
-                                        if (currentUser.ListFavourites.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
+                                        if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                         {
                                             <span class="image-block__favorites" @onclick="() => RemoveProductFromFavorites(productModel)"><img src="/icons/header/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></span>
                                         }
