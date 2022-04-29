@@ -1,45 +1,54 @@
-﻿@page "/catalog"
+﻿@page "/products/catalog/{categoryName?}/{subcategoryName?}"
 @inherits ProductCatalogBase
 @attribute [AllowAnonymous]
 
-    <section class="catalog">
+<section class="catalog">
+    @if (currentUserState is null)
+    {
+        <Loader />
+    }
+    else
+    {
         <div class="catalog__container">
             <div class="catalog__panel-block">
                 <div class="panel-block__link-category-block">
-                    <a class="link-category-block__category" href="#">Обувь</a>
-                    <div class="link-category-block__splitter">•</div>
-                    <h2 class="link-category-block__subcategory">Кроссовки</h2>
-                    <span class="link-category-block__count">(200052)</span>
+                    @if (currentCategory is not null)
+                    {
+                        <a class="link-category-block__category" href="/products/catalog/@currentCategory.Name">@currentCategory.Name</a>
+                    }
+                    else if (currentSubcategory is not null)
+                    {
+                        <div class="link-category-block__splitter">•</div>
+                        <h2 class="link-category-block__subcategory">@currentSubcategory.Name</h2>
+                    }
+                    else
+                    {
+                        <span class="link-category-block__message">Товаров</span>
+                        <div class="link-category-block__splitter">•</div>
+                    }
+                    <span class="link-category-block__count">(@selectedProductsModels.Count())</span>
                 </div>
                 <div class="panel-block__filter-sort-block">
-                    <span class="filter-sort-block__side-filters" onclick="openSideFilters()">Фильтры</span>
+                    <span class="filter-sort-block__side-filters" @onclick="OpenBottomFilter">Фильтры</span>
                     <div class="filter-sort-block__sort-by-block">
-                        <span class="sort-by-block__label">Сортировать по:</span>
-                        <div class="sort-by-block__choose-block">
-                            <span class="choose-block__sort-value">Новинки</span>
-                            <span class="choose-block__sort-value">Убыванию</span>
-                            <span class="choose-block__sort-value">Возрастанию</span>
-                            <span class="choose-block__sort-value">Популярные</span>
-                            <span class="choose-block__sort-value">Рейтингу</span>
-                            <span class="choose-block__sort-value">Скидке</span>
+                        <span class="sort-by-block__label" @onclick="ToogleFilterAsync">Сортировать по: @SortProductsTypeRussianTranslator.GetRussianTranslate(ProductCatalogViewModel.SortProductsType)</span>
+                        <div class="sort-by-block__choose-block @(FilterIsShow ? "show" : string.Empty)">
+                            @foreach (var sortProdcutsType in allSortProductsType)
+                            {
+                                <span class="choose-block__sort-value" @onclick="() => ChangeSortProductsAsync(sortProdcutsType)">@SortProductsTypeRussianTranslator.GetRussianTranslate(sortProdcutsType)</span>
+                            }
                         </div>
                     </div>
                 </div>
             </div>
             <div class="catalog__main-block">
-                <form class="main-block__filters-form-block" method="post">
+                <EditForm Model="ProductCatalogViewModel" OnSubmit="SubmitFiltersAsync" class="main-block__filters-form-block" method="post">
                     <div class="filters-form-block__price-filter-block filter-block">
                         <h3 class="price-filter-block__label">Цена</h3>
-                        <div class="price-filter__range-min-max-block">
-                            <div class="range-min-max-block__selected-range"></div>
-                            <div class="range-min-max-block__common-range"></div>
-                            <input class="range-min-max-block__min-range-input-value" step="any" min="351" max="350000" type="range">
-                            <input class="range-min-max-block__max-range-input-value" step="any" min="351" max="350000" type="range">
-                        </div>
                         <div class="price-filter__price-min-max-block">
-                            <input class="price-min-max-block__min-price-input" type="number" placeholder="351">
+                            <input class="price-min-max-block__min-price-input" type="number" @bind="ProductCatalogViewModel.MinPrice" placeholder="@minPrice">
                             <div class="price-min-max-block__splitter">—</div>
-                            <input class="price-min-max-block__max-price-input" type="number" placeholder="350000">
+                            <input class="price-min-max-block__max-price-input" type="number" @bind="ProductCatalogViewModel.MaxPrice" placeholder="@maxPrice">
                         </div>
                     </div>
                     <div class="filters-form-block__colors-filter-block filter-block">
@@ -49,14 +58,10 @@
                         </div>
                         <div class="colors-filter-block__colors-filter-spoiler filter-spoiler">
                             <div class="colors-filter-spoiler__colors-filter filter-choose-block">
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Черный</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Белый</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Ораньжевый</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Темно-синий</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Голубой</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Фиолетово-розовый</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Красный</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Зеленый</label>
+                                @foreach (var colorKeyPair in allColorsFilterDictionary)
+                                {
+                                    <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allColorsFilterDictionary[colorKeyPair.Key]" type="checkbox" /><span class="checkbox__fake-input"></span>@colorKeyPair.Key</label>
+                                }
                             </div>
                         </div>
                     </div>
@@ -67,11 +72,10 @@
                         </div>
                         <div class="brands-filter-block__brands-filter-spoiler filter-spoiler">
                             <div class="brands-filter-spoiler__brands-filter filter-choose-block">
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Adiddas</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Lous-Vitons</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Veco</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Nike</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Praga</label>
+                                @foreach (var brandKeyPair in allBrandsFilterDictionary)
+                                {
+                                    <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allBrandsFilterDictionary[brandKeyPair.Key]" type="checkbox" /><span class="checkbox__fake-input"></span>@brandKeyPair.Key</label>
+                                }
                             </div>
                         </div>
                     </div>
@@ -82,189 +86,141 @@
                         </div>
                         <div class="sizes-filter-block__sizes-filter-spoiler filter-spoiler">
                             <div class="sizes-filter-spoiler__sizes-filter filter-choose-block">
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>41</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>43</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>42</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>45</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>56</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>57</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>58</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>90</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>91</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>92</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>93</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>94</label>
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>95</label>
+                                @foreach (var sizeKeyPair in allSizesFilterDictionary)
+                                {
+                                    <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allSizesFilterDictionary[sizeKeyPair.Key]" type="checkbox" /><span class="checkbox__fake-input"></span>@sizeKeyPair.Key</label>
+                                }
                             </div>
                         </div>
                     </div>
-                    <button class="filters-form-block__submut-button" type="submit">Принять</button>
-                </form>
+                    <button class="filters-form-block__submut-button" type="submit" aria-label="Кнопка принятия фильтров">Принять</button>
+                </EditForm>
                 <div class="main-block__products-block">
-                    <div class="products-block__products-cards">
-                        <div class="products-cards__product-card">
-                            <div class="product-card__image-block">
-                                <img class="image-block__image" src="./images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
-                            </div>
-                            <h3 class="product-card__name">Кроссовки NIKE Air Zoom Pegasus</h3>
-                            <span class="product-card__price">350 000 Р</span>
-                        </div>
-                        <div class="products-cards__product-card">
-                            <div class="product-card__image-block">
-                                <img class="image-block__image" src="./images/cart/Ботинки_для_девочек_adidas_Terrex_Trailmaker_Mid_R.RDY_K3-removebg-preview.webp" alt="">
-                            </div>
-                            <h3 class="product-card__name">Кроссовки NIKE Air Zoom Pegasus</h3>
-                            <span class="product-card__price">350 000 Р</span>
-                        </div>
-                        <div class="products-cards__product-card">
-                            <div class="product-card__image-block">
-                                <img class="image-block__image" src="./images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
-                            </div>
-                            <h3 class="product-card__name">Кроссовки NIKE Air Zoom Pegasus</h3>
-                            <span class="product-card__price">350 000 Р</span>
-                        </div>
-                        <div class="products-cards__product-card">
-                            <div class="product-card__image-block">
-                                <img class="image-block__image" src="./images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
-                            </div>
-                            <h3 class="product-card__name">Кроссовки NIKE Air Zoom Pegasus</h3>
-                            <span class="product-card__price">350 000 Р</span>
-                        </div>
-                        <div class="products-cards__product-card">
-                            <div class="product-card__image-block">
-                                <img class="image-block__image" src="./images/cart/Пальто_Tom_Farr-removebg-preview.webp" alt="">
-                            </div>
-                            <h3 class="product-card__name">Кроссовки NIKE Air Zoom Pegasus</h3>
-                            <span class="product-card__price">350 000 Р</span>
-                        </div>
-                        <div class="products-cards__product-card">
-                            <div class="product-card__image-block">
-                                <img class="image-block__image" src="./images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
-                            </div>
-                            <h3 class="product-card__name">Кроссовки NIKE Air Zoom Pegasus</h3>
-                            <span class="product-card__price">350 000 Р</span>
-                        </div>
-                        <div class="products-cards__product-card">
-                            <div class="product-card__image-block">
-                                <img class="image-block__image" src="./images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
-                            </div>
-                            <h3 class="product-card__name">Кроссовки NIKE Air Zoom Pegasus</h3>
-                            <span class="product-card__price">350 000 Р</span>
-                        </div>
-                        <div class="products-cards__product-card">
-                            <div class="product-card__image-block">
-                                <img class="image-block__image" src="./images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
-                            </div>
-                            <h3 class="product-card__name">Кроссовки NIKE Air Zoom Pegasus</h3>
-                            <span class="product-card__price">350 000 Р</span>
-                        </div>
-                        <div class="products-cards__product-card">
-                            <div class="product-card__image-block">
-                                <img class="image-block__image" src="./images/cart/Джинсы_Levi_s_514__Straight__Big___Tall_-removebg-preview.webp" alt="">
-                            </div>
-                            <h3 class="product-card__name">Кроссовки NIKE Air Zoom Pegasus</h3>
-                            <span class="product-card__price">350 000 Р</span>
-                        </div>
-                        <div class="products-cards__product-card">
-                            <div class="product-card__image-block">
-                                <img class="image-block__image" src="./images/cart/NIKE_Air_Zoom_Pegasus1-removebg-preview.webp" alt="">
-                            </div>
-                            <h3 class="product-card__name">Кроссовки NIKE Air Zoom Pegasus</h3>
-                            <span class="product-card__price">350 000 Р</span>
-                        </div>
+                    <div class="products-block__products-cards @(ProductModelsIsLoading || selectedProductsModels.Count() == 0  ? "is-loading-or-empty" : string.Empty)">
+                        @if (ProductModelsIsLoading)
+                        {
+                            <Loader />
+                        }
+                        else
+                        {
+                            if (selectedProductsModels.Count() == 0)
+                            {
+                                <span class="products-cards__empty">По вашему запросу к сожалению нет товаров</span>
+                            }
+                            else
+                            {
+                                foreach (var productModel in selectedProductsModels)
+                                {
+                                    <div class="products-cards__product-card">
+                                        <div class="product-card__image-block">
+                                            <AuthorizeView>
+                                                @if (Db.Products.Any(product => product.Article.Model.Id == productModel.Id))
+                                                {
+                                                    if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
+                                                    {
+                                                        <span class="image-block__favorite" @onclick="() => RemoveProductFromFavorites(productModel)"><img src="/icons/product-catalog/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="image-block__favorite" @onclick="() => AddProductInFavorites(productModel)"><img src="/icons/product-catalog/Heart.svg" alt="Иконка избранного" title="Добавить в избранное"></span>
+                                                    }
+                                                    if (currentUser.Cart.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
+                                                    {
+                                                        <span class="image-block__cart" @onclick="() => RemoveProductFromCart(productModel)"><img src="/icons/product-catalog/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="image-block__cart" @onclick="() => AddProductInCart(productModel)"><img src="/icons/product-catalog/Cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины"></span>
+                                                    }
+                                                }
+                                            </AuthorizeView>
+                                            <a href="/products/product-card/@productModel.Id"><img class="image-block__image" src="data:image/png;base64,@Convert.ToBase64String(productModel.MainPhoto)" alt="Картинка товара"></a>
+                                        </div>
+                                        <a class="product-card__name" href="/products/product-card/@productModel.Id">@productModel.Name</a>
+                                        <span class="product-card__price">@productModel.Price.ToString("### ### ###") Р</span>
+                                    </div>
+                                }
+                            }
+                        }
                     </div>
-                    <div class="products-block__pagination-block">
-                        <div class="pagination-block__pagination-choose-block">
-                            <span class="pagination-choose-block__previous-page">Предыдущая</span>
-                            <span class="pagination-choose-block__page selected-page">1</span>
-                            <span class="pagination-choose-block__page">2</span>
-                            <span class="pagination-choose-block__page">3</span>
-                            <span class="pagination-choose-block__page">4</span>
-                            <span class="pagination-choose-block__page">5</span>
-                            <span class="pagination-choose-block__page">6</span>
-                            <span class="pagination-choose-block__page">7</span>
-                            <span class="pagination-choose-block__next-page">Следующая</span>
+                    @if (MaxPage > 1)
+                    {
+                        <div class="products-block__pagination-block">
+                            <div class="pagination-block__pagination-choose-block">
+                                <span class="pagination-choose-block__previous-page">🡰</span>
+                                <span class="pagination-choose-block__page">1</span>
+                                <span class="pagination-choose-block__etc">...</span>
+                                <span class="pagination-choose-block__page">3</span>
+                                <span class="pagination-choose-block__page selected-page">4</span>
+                                <span class="pagination-choose-block__page">5</span>
+                                <span class="pagination-choose-block__etc">...</span>
+                                <span class="pagination-choose-block__page">110</span>
+                                <span class="pagination-choose-block__next-page">🡲</span>
+                            </div>
+                            <form class="pagination-block__pagination-input-block-form" method="post">
+                                <input class="pagination-input-block-form__input" required type="number">
+                                <button class="pagination-input-block-form__button-submit" type="submit">Перейти</button>
+                            </form>
                         </div>
-                        <form class="pagination-block__pagination-input-block-form" method="post">
-                            <input class="pagination-input-block-form__input" type="number">
-                            <button class="pagination-input-block-form__button-submit" type="submit">Перейти</button>
-                        </form>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
-        <form class="catalog__bottom-filters-form-block" method="post">
-            <span class="bottom-filters-form-block__close-button" onclick="closeSideFilters()" aria-label="Закрыть нижнее меню фильтров">&times;</span>
-            <div class="bottom-filters-form-block__price-filter-block filters-form-block__price-filter-block filter-block">
-                <h3 class="price-filter-block__label">Цена</h3>
-                <div class="price-filter__range-min-max-block">
-                    <div class="range-min-max-block__selected-range"></div>
-                    <div class="range-min-max-block__common-range"></div>
-                    <input class="range-min-max-block__min-range-input-value" step="any" min="351" max="350000" type="range">
-                    <input class="range-min-max-block__max-range-input-value" step="any" min="351" max="350000" type="range">
-                </div>
-                <div class="price-filter__price-min-max-block">
-                    <input class="price-min-max-block__min-price-input" type="number" placeholder="351">
-                    <div class="price-min-max-block__splitter">—</div>
-                    <input class="price-min-max-block__max-price-input" type="number" placeholder="350000">
-                </div>
-            </div>
-            <div class="bottom-filters-form-block__colors-filter-block filters-form-block__colors-filter-block filter-block">
-                <div class="colors-filter-block__label-block label-block">
-                    <h3 class="label-block__label filter-label">Цвета</h3>
-                    <div class="label-block__arrow"></div> <!-- show -->
-                </div>
-                <div class="colors-filter-block__colors-filter-spoiler filter-spoiler">
-                    <div class="colors-filter-spoiler__colors-filter filter-choose-block">
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Черный</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Белый</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Ораньжевый</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Темно-синий</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Голубой</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Фиолетово-розовый</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Красный</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Зеленый</label>
+        <div class="catalog__bottom-filters-form-block @(BottomFilterIsShow ? "show" : string.Empty)">
+            <EditForm Model="ProductCatalogViewModel" OnSubmit="SubmitFiltersAsync" class="catalog__bottom-filters-form" method="post">
+                <span class="bottom-filters-form__close-button" @onclick="CloseBottomFilter" aria-label="Закрыть нижнее меню фильтров">&times;</span>
+                <div class="bottom-filters-form__price-filter-block filters-form-block__price-filter-block filter-block">
+                    <h3 class="price-filter-block__label">Цена</h3>
+                    <div class="price-filter__price-min-max-block">
+                        <input class="price-min-max-block__min-price-input" type="number" @bind="ProductCatalogViewModel.MinPrice" placeholder="@minPrice">
+                        <div class="price-min-max-block__splitter">—</div>
+                        <input class="price-min-max-block__max-price-input" type="number" @bind="ProductCatalogViewModel.MaxPrice" placeholder="@maxPrice">
                     </div>
                 </div>
-            </div>
-            <div class="bottom-filters-form-block__brands-filter-block filters-form-block__brands-filter-block filter-block">
-                <div class="brands-filter-block__label-block label-block">
-                    <h3 class="label-block__label filter-label">Бренды</h3>
-                    <div class="label-block__arrow"></div> <!-- show -->
-                </div>
-                <div class="brands-filter-block__brands-filter-spoiler filter-spoiler">
-                    <div class="brands-filter-spoiler__brands-filter filter-choose-block">
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Adiddas</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Lous-Vitons</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Veco</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Nike</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>Praga</label>
+                <div class="bottom-filters-form__colors-filter-block filters-form-block__colors-filter-block filter-block">
+                    <div class="colors-filter-block__label-block label-block">
+                        <h3 class="label-block__label filter-label">Цвета</h3>
+                        <div class="label-block__arrow"></div> <!-- show -->
+                    </div>
+                    <div class="colors-filter-block__colors-filter-spoiler filter-spoiler">
+                        <div class="colors-filter-spoiler__colors-filter filter-choose-block">
+                            @foreach (var colorKeyPair in allColorsFilterDictionary)
+                            {
+                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allColorsFilterDictionary[colorKeyPair.Key]" type="checkbox" /><span class="checkbox__fake-input"></span>@colorKeyPair.Key</label>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="bottom-filters-form-block__sizes-filter-block filters-form-block__sizes-filter-block filter-block">
-                <div class="sizes-filter-block__label-block label-block">
-                    <h3 class="label-block__label filter-label">Размеры</h3>
-                    <div class="label-block__arrow"></div> <!-- show -->
-                </div>
-                <div class="sizes-filter-block__sizes-filter-spoiler filter-spoiler">
-                    <div class="sizes-filter-spoiler__sizes-filter filter-choose-block">
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>41</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>43</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>42</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>45</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>56</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>57</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>58</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>90</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>91</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>92</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>93</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>94</label>
-                        <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" type="checkbox" /><span class="checkbox__fake-input"></span>95</label>
+                <div class="bottom-filters-form__brands-filter-block filters-form-block__brands-filter-block filter-block">
+                    <div class="brands-filter-block__label-block label-block">
+                        <h3 class="label-block__label filter-label">Бренды</h3>
+                        <div class="label-block__arrow"></div> <!-- show -->
+                    </div>
+                    <div class="brands-filter-block__brands-filter-spoiler filter-spoiler">
+                        <div class="brands-filter-spoiler__brands-filter filter-choose-block">
+                            @foreach (var brandKeyPair in allBrandsFilterDictionary)
+                            {
+                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allBrandsFilterDictionary[brandKeyPair.Key]" type="checkbox" /><span class="checkbox__fake-input"></span>@brandKeyPair.Key</label>
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
-            <button class="bottom-filters-form-block__submut-button filters-form-block__submut-button" type="submit">Принять</button>
-        </form>
-    </section>
+                <div class="bottom-filters-form__sizes-filter-block filters-form-block__sizes-filter-block filter-block">
+                    <div class="sizes-filter-block__label-block label-block">
+                        <h3 class="label-block__label filter-label">Размеры</h3>
+                        <div class="label-block__arrow"></div> <!-- show -->
+                    </div>
+                    <div class="sizes-filter-block__sizes-filter-spoiler filter-spoiler">
+                        <div class="sizes-filter-spoiler__sizes-filter filter-choose-block">
+                            @foreach (var sizeKeyPair in allSizesFilterDictionary)
+                            {
+                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allSizesFilterDictionary[sizeKeyPair.Key]" type="checkbox" /><span class="checkbox__fake-input"></span>@sizeKeyPair.Key</label>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <button class="bottom-filters-form__submut-button filters-form-block__submut-button" type="submit">Принять</button>
+            </EditForm>
+        </div>
+    }
+</section>

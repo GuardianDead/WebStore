@@ -37,8 +37,6 @@ namespace WebStore.Validators
             RuleFor(i => i.Email)
                 .NotNull().NotEmpty().WithMessage("Электронная почта не может быть пуста")
                 .EmailAddress(EmailValidationMode.Net4xRegex).WithMessage("Электронная почта неверного формата");
-            RuleFor(i => i.TrackNumber)
-                .NotEmpty().NotNull().WithMessage("Доставка  не может быть пустым");
             RuleFor(i => i.CustomerFullName)
                 .NotEmpty().NotNull().WithMessage("ФИО покупателя не может быть пустым");
         }

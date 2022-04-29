@@ -14,16 +14,13 @@ namespace WebStore.Data.Entities
         [Required]
         [DisplayName("Товары")]
         public List<FavoriteProduct> Products { get; set; }
-        [DisplayName("Пользователь")]
-        public User User { get; set; }
 
         public FavoriteList()
         {
         }
-        public FavoriteList(List<FavoriteProduct> products, User user = null)
+        public FavoriteList(List<FavoriteProduct> products)
         {
             Products = products;
-            User = user;
         }
     }
 }

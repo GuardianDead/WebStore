@@ -1,4 +1,5 @@
 ﻿using Innofactor.EfCoreJsonValueConverter;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -55,12 +56,14 @@ namespace WebStore.Data.Entities
         [DisplayName("Дата создания")]
         public DateTime DateTimeCreation { get; set; }
 
+        [JsonIgnore]
+        [DisplayName("Подкатегория")]
+        public List<ProductArticle> Articles { get; }
+
         public ProductModel()
         {
         }
-        public ProductModel(string name, decimal price, int daysGuarantee, string countryManufacturer,
-            GenderType userGenderType, string brand, Subcategory productSubcategory, byte[] mainPhoto,
-            Dictionary<string, string> features, List<string> materials, List<byte[]> photos, DateTime dateTimeCreation)
+        public ProductModel(string name, decimal price, int daysGuarantee, string countryManufacturer, GenderType userGenderType, string brand, Subcategory productSubcategory, byte[] mainPhoto, Dictionary<string, string> features, List<string> materials, List<byte[]> photos, DateTime dateTimeCreation)
         {
             Id = Guid.NewGuid().ToString("N");
             Name = name;
