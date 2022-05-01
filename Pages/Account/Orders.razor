@@ -25,10 +25,10 @@
                         {
                             <div class="orders-cards__order-card">
                                 <div class="order-card__title-block">
-                                    <h2 class="order-card__number"><strong>Номер:</strong> @order.Id</h2>
-                                    <h3 class="order-card__status"><strong>Статус:</strong> @OrderStatusTypeRussianTranslator.GetRussianTranslate(order.Status)</h3>
-                                    <h3 class="order-card__date"><strong>Дата и время заказа:</strong> @order.DateTimeCreation.ToLongDateString() @order.DateTimeCreation.ToLongTimeString()</h3>
-                                    <h3 class="order-card__track"><strong>Код отслеживания:</strong> @order.TrackNumber</h3>
+                                    <h2 class="order-card__number" aria-label="Номер заказа"><strong>Номер:</strong> @order.Id</h2>
+                                    <h3 class="order-card__status" aria-label="Статус заказа"><strong>Статус:</strong> @OrderStatusTypeRussianTranslator.GetRussianTranslate(order.Status)</h3>
+                                    <date class="order-card__date" aria-label="Дата и время заказа"><strong>Дата и время заказа:</strong> @order.DateTimeCreation.ToLongDateString() @order.DateTimeCreation.ToLongTimeString()</date>
+                                    <h3 class="order-card__track" aria-label="Трек номер заказа"><strong>Код отслеживания:</strong> @order.TrackNumber</h3>
                                 </div>
                                 <div class="order-card__main-block">
                                     <div class="main-block__products-block">
@@ -39,24 +39,23 @@
                                                     <div class="products-cards__product-card">
                                                         <a class="product-card__image" href="/products/product-card/@productModelGroup.First().Id" aria-label="Ссылка перехода на карточку товара @productModelGroup.First().Name"><img src="data:image/png;base64,@Convert.ToBase64String(productModelGroup.First().MainPhoto)" alt="@productModelGroup.First().Name"></a>
                                                         <a class="product-card__name" href="/products/product-card/@productModelGroup.First().Id" aria-label="Ссылка перехода на карточку товара @productModelGroup.First().Name">@productModelGroup.First().Name</a>
-                                                        <div class="product-card__price-block">
-                                                            <!-- hasDiscount -->
-                                                            <span class="price-block__price">@productModelGroup.Sum(productModel => productModel.Price).ToString("### ### ###") ₽</span>
+                                                        <div class="product-card__price-block"> <!-- hasDiscount -->
+                                                            <span class="price-block__price" aria-label="Стоимость продукта заказа">@productModelGroup.Sum(productModel => productModel.Price).ToString("### ### ###") ₽</span>
                                                             <!-- <span class="price-block__discount-price">5000 ₽</span> -->
-                                                            <span class="price-block__count">- @productModelGroup.Count()x</span>
+                                                            <span class="price-block__count" aria-label="Количество продукта заказа">- @productModelGroup.Count()x</span>
                                                         </div>
                                                     </div>
                                                 }
                                             </div>
                                             <div class="main-block__block-info">
-                                                <span class="block-info__payment-method"><strong>Способ оплаты:</strong> @PaymentMethodTypeRussianTranslator.GetRussianTranslate(order.PaymentMethod)</span>
-                                                <span class="block-info__method-obtaining"><strong>Способ доставки:</strong> @DeliveryMethodTypeRussianTranslator.GetRussianTranslate(order.Delivery.DeliveryMethod) ("@order.Delivery.Name")</span>
-                                                <span class="block-info__delivery-address"><strong>Адрес доставки:</strong> @($"{order.Address.Country}, {order.Address.City}, {order.Address.Street}, {order.Address.PostalCode}")</span>
-                                                <span class="block-info__recipient"><strong>Заказчик:</strong> @order.CustomerFullName</span>
-                                                <span class="block-info__recipient"><strong>Телефон заказчика:</strong> +@order.PhoneNumber</span>
-                                                <span class="block-info__approximate-delivery-time"><strong>Примерная дата доставки:</strong> @order.DateTimeCreation.AddDays(order.Delivery.ApproximateDays).ToLongDateString()</span>
-                                                <span class="block-info__approximate-delivery-time"><strong>Стоимость доставки:</strong> @order.Delivery.Cost.ToString("### ###") ₽</span>
-                                                <span class="block-info__order-cost"><strong>Сумма заказа:</strong> @order.TotalCost.ToString("### ### ###") ₽</span>
+                                                <span class="block-info__info" aria-label="Способ оплаты заказа"><strong>Способ оплаты:</strong> @PaymentMethodTypeRussianTranslator.GetRussianTranslate(order.PaymentMethod)</span>
+                                                <span class="block-info__info" aria-label="Способ доставки заказа"><strong>Способ доставки:</strong> @DeliveryMethodTypeRussianTranslator.GetRussianTranslate(order.Delivery.DeliveryMethod) ("@order.Delivery.Name")</span>
+                                                <span class="block-info__info" aria-label="Адркс доставки заказа"><strong>Адрес доставки:</strong> @($"{order.Address.Country}, {order.Address.City}, {order.Address.Street}, {order.Address.PostalCode}")</span>
+                                                <span class="block-info__info" aria-label="ФИО заказчика"><strong>Заказчик:</strong> @order.CustomerFullName</span>
+                                                <span class="block-info__info" aria-label="Телефон заказчика"><strong>Телефон заказчика:</strong> +@order.PhoneNumber.Replace("+","").Replace("-","").Replace(" ","").Replace("(","").Replace(")","")</span>
+                                                <date class="block-info__info" aria-label="Примерная дата доставки заказа"><strong>Примерная дата доставки:</strong> @order.DateTimeCreation.AddDays(order.Delivery.ApproximateDays).ToLongDateString()</date>
+                                                <span class="block-info__info" aria-label="Стоимость доставки заказа"><strong>Стоимость доставки:</strong> @order.Delivery.Cost.ToString("### ###") ₽</span>
+                                                <span class="block-info__info" aria-label="Итоговая сумма заказа"><strong>Сумма заказа:</strong> @order.TotalCost.ToString("### ### ###") ₽</span>
                                             </div>
                                         </div>
                                     </div>

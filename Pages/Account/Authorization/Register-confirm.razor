@@ -1,17 +1,16 @@
 ﻿<section class="register-confirm">
     <div class="register-confirm__container">
         <div class="register-confirm__block">
-            <img class="register-confirm__image" src="./icons/register-confirm/Mail.svg" alt="Иконка почты">
+            <img class="register-confirm__image" src="/icons/register-confirm/Mail.svg" aria-label="Иконка почты" alt="Иконка почты">
             <div class="register-confirm__block-text block-text">
                 <h1 class="block-text__title">Подтверждение аккаунта через почту</h1>
                 <p class="block-text__text">Мы выслали вам код подтверждения на почту kakawkawww13@mail.ru, введите его ниже для подтверждения аккаунта</p>
             </div>
-            <form class="register-confirm__form register-confirm-form" method="post" name="register-confirm-form">
-                <input class="register-confirm-form__input" name="confirm-code-input" type="text" placeholder="Код подтверждения" autofocus aria-label="Строка для ввода кода потверждения"> <!-- invalid -->
+            <form class="register-confirm__form register-confirm-form" method="post">
+                <input class="register-confirm-form__input" type="text" placeholder="Код подтверждения" autofocus aria-label="Строка для ввода кода потверждения"> <!-- invalid -->
                 <span class="register-confirm-form__input-error">Неверный код</span> <!-- show -->
-                <button class="register-confirm-form__button-submut" name="confirm-code-button-submit" type="submit">Подтвердить</button>
-                <button class="register-confirm-form__button-reset" name="confirm-code-button-reset" type="reset">Повторно отправить код</button>
-                <!-- <button class="register-confirm-form__button-reset disabled" name="confirm-code-button-reset" type="reset">Повторно код можно будет отправить через 15 секунд</button> -->
+                <button class="register-confirm-form__button-submut" type="submit" aria-label="Кнопка подтверждения проверочного кода">Подтвердить</button>
+                <button class="register-confirm-form__button-reset" type="reset" aria-label="Кнопка для отправки повторно нового подтверждающего кода">Повторно отправить код</button>
             </form>
             <div class="register-confirm__block-disclaimer block-disclaimer">
                 <span class="block-disclaimer__title">Если вы не получили письмо, попробуйте сделать следующее:</span>

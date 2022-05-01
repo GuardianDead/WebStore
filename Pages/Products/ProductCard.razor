@@ -10,23 +10,23 @@
         }
         else
         {
-            <h1 class="product-card__title">@productModel.Name</h1>
-            <div class="product-card__link-category-block">
-                <a class="link-category-block__category" href="#">@productModel.Subcategory.Category.Name</a>
+            <h1 class="product-card__title" aria-label="Название товара">@productModel.Name</h1>
+            <nav class="product-card__link-category-block">
+                <a class="link-category-block__category" href="/products/catalog/@productModel.Subcategory.Category.Name" aria-label="Ссылка для перехода в каталог товаров с категорией @productModel.Subcategory.Category.Name">@productModel.Subcategory.Category.Name</a>
                 <div class="link-category-block__splitter">•</div>
-                <a class="link-category-block__subcategory" href="#">@productModel.Subcategory.Name</a>
-            </div>
+                <a class="link-category-block__subcategory" href="/products/catalog/@productModel.Subcategory.Category.Name/@productModel.Subcategory.Name" aria-label="Ссылка для перехода в каталог товаров с подкатегорией @productModel.Subcategory.Name">@productModel.Subcategory.Name</a>
+            </nav>
             <div class="product-card__product-block">
                 <div class="product-block__images-block">
                     <div class="images-block__main-image">
-                        <img class="main-image__image" src="data:image/png;base64,@Convert.ToBase64String(SelectedImage)" @onmouseover="MouseEnterMainImageAsync" @onmouseout="MouseLeaveMainImageAsync" alt="Главное фото модели товара">
+                        <img class="main-image__image" src="data:image/png;base64,@Convert.ToBase64String(SelectedImage)" @onmouseover="MouseEnterMainImageAsync" @onmouseout="MouseLeaveMainImageAsync" aria-label="Главное фото модели товара @productModel.Name" alt="Главное фото @productModel.Name">
                         <div class="main-image__white-rect"></div>
-                        <div style="background-image: url(data:image/png;base64,@Convert.ToBase64String(SelectedImage));" class="main-image__zoomed-main-image"></div>
+                        <div class="main-image__zoomed-main-image" style="background-image: url(data:image/png;base64,@Convert.ToBase64String(SelectedImage));"></div>
                     </div>
                     <div class="images-block__secondary-images">
                         @foreach (var photo in productModel.Photos)
                         {
-                            <img class="secondary-images__image @(photo == SelectedImage ? "selected-image" : string.Empty)" src="data:image/png;base64,@Convert.ToBase64String(photo)" @onclick="() => SelectedImage = photo" alt="Фото модели товара">
+                            <img class="secondary-images__image @(photo == SelectedImage ? "selected-image" : string.Empty)" src="data:image/png;base64,@Convert.ToBase64String(photo)" @onclick="() => SelectedImage = photo" aria-label="Фото модели товара @productModel.Name" alt="Фото @productModel.Name">
                         }
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                                     <div class="color-choose-block__colors-block">
                                         @foreach (var color in allCollors)
                                         {
-                                            <input class="colors-block__color @(SelectedColor == color ? "selected-button" : string.Empty)" @onclick="() => ClickOnColor(color)" type="button" value="@color">
+                                            <input class="colors-block__color @(SelectedColor == color ? "selected-button" : string.Empty)" @onclick="() => ClickOnColor(color)" type="button" value="@color" aria-label="Кнопка для выборки цвета @color" title="Выбрать цвет @color">
                                         }
                                     </div>
                                 </div>
@@ -50,7 +50,7 @@
                                     <div class="size-choose-block__sizes-block">
                                         @foreach (var size in allSizes)
                                         {
-                                            <input class="sizes-block__size @(SelectedSize == size ? "selected-button" : string.Empty)" @onclick="() => ClickOnSize(size)" type="button" value="@size">
+                                            <input class="sizes-block__size @(SelectedSize == size ? "selected-button" : string.Empty)" @onclick="() => ClickOnSize(size)" type="button" value="@size" aria-label="Кнопка для выборки размера @size" title="Выбрать размер @size">
                                         }
                                     </div>
                                 </div>
@@ -64,9 +64,9 @@
                                     @foreach (var feature in productModel.Features)
                                     {
                                         <div class="blocks-features__feature">
-                                            <span class="feature__name">@feature.Key</span>
+                                            <span class="feature__name" aria-label="Название характеристики @feature.Key">@feature.Key</span>
                                             <span class="feature__splitter"></span>
-                                            <span class="feature__value">@feature.Value</span>
+                                            <span class="feature__value" aria-label="Значение характеристики @feature.Key">@feature.Value</span>
                                         </div>
                                     }
                                 </div>
@@ -74,40 +74,40 @@
                         }
                     </div>
                 }
-            <div class="product-block__submut-block">
-                <span class="submut-block__product-price">@productModel.Price.ToString("### ### ###") ₽</span>
-                @if (userState.Identity.IsAuthenticated)
-                {
-                    if (!Db.Products.Any(product => product.Article.Model.Id == productModel.Id || product.Article.Id == SelectedProductArticle.Id))
+                <div class="product-block__submut-block">
+                    <span class="submut-block__product-price" aria-label="Цена модели товара @productModel.Name">@productModel.Price.ToString("### ### ###") ₽</span>
+                    @if (userState.Identity.IsAuthenticated)
                     {
-                        <button class="submut-block__empty-product-button" type="button" disabled>Товара нет в наличии</button>
+                        if (!Db.Products.Any(product => product.Article.Model.Id == productModel.Id || product.Article.Id == SelectedProductArticle.Id))
+                        {
+                            <button class="submut-block__empty-product-button" type="button" disabled aria-label="Неактивная кнопка сообщающая об отсутствии товара на складе">Товара нет в наличии</button>
+                        }
+                        else
+                        {
+                            if (user.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Id == SelectedProductArticle.Id))
+                            {
+                                <button class="submut-block__remove-from-favorites-button" @onclick="RemoveProductFromFavorites" type="submit" aria-label="Кнопка для удаления артикула модели товара @SelectedProductArticle.Model.Name из избранного">Удалить из избранного</button>
+                            }
+                            else
+                            {
+                                <button class="submut-block__add-to-favorites-button" @onclick="AddProductInFavorites" type="submit" aria-label="Кнопка для добавления артикула модели товара @SelectedProductArticle.Model.Name в избранное">Добавить в избранное</button>
+                            }
+                            if (user.Cart.Products.Any(favoriteProduct => favoriteProduct.Article.Id == SelectedProductArticle.Id))
+                            {
+                                <button class="submut-block__remove-from-cart-button" @onclick="RemoveProductFromCart" type="submit" aria-label="Кнопка для удаления артикула модели товара @SelectedProductArticle.Model.Name из крозины">Удалить из корзины</button>
+                            }
+                            else
+                            {
+                                <button class="submut-block__add-to-cart-button" @onclick="AddProductInCart" type="submit" aria-label="Кнопка для добавления артикула модели товара @SelectedProductArticle.Model.Name в корзину">Добавить в корзину</button>
+                            }
+                        }
                     }
                     else
                     {
-                        if (user.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Id == SelectedProductArticle.Id))
-                        {
-                            <button class="submut-block__remove-from-favorites-button" @onclick="RemoveProductFromFavorites" type="submit">Удалить из избранного</button>
-                        }
-                        else
-                        {
-                            <button class="submut-block__add-to-favorites-button" @onclick="AddProductInFavorites" type="submit">Добавить в избранное</button>
-                        }
-                        if (user.Cart.Products.Any(favoriteProduct => favoriteProduct.Article.Id == SelectedProductArticle.Id))
-                        {
-                            <button class="submut-block__remove-from-cart-button" @onclick="RemoveProductFromCart" type="submit">Удалить из корзины</button>
-                        }
-                        else
-                        {
-                            <button class="submut-block__add-to-cart-button" @onclick="AddProductInCart" type="submit">Добавить в корзину</button>
-                        }
+                        <a class="submut-block__add-to-favorites-button" href="/account/authorization/login/@NavigationManager.Uri.Replace('/', '$')" aria-label="Кнопка с переходом на страницу входа">Добавить в избранное</a>
+                        <a class="submut-block__add-to-cart-button" href="/account/authorization/login/@NavigationManager.Uri.Replace('/', '$')" aria-label="Кнопка с переходом на страницу входа">Добавить в корзину</a>
                     }
-                }
-                else
-                {
-                    <a class="submut-block__add-to-favorites-button" href="/account/authorization/login/@NavigationManager.Uri.Replace('/', '$')">Добавить в избранное</a>
-                    <a class="submut-block__add-to-cart-button" href="/account/authorization/login/@NavigationManager.Uri.Replace('/', '$')">Добавить в корзину</a>
-                }
-            </div>
+                </div>
             </div>
         }
     </div>

@@ -222,84 +222,56 @@
             display: flex;
         }
     }
-
-    &__pagination-block {
-        display: flex;
-        gap: 10px;
-    }
 }
-.pagination-block {
-    &__pagination-choose-block {
-        display: flex;
-        align-items: center;
-    }
+::deep .pagination {
+    display: flex;
+    align-items: center;
+    padding: 12px 0px;
 
-    &__pagination-input-block-form {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-    }
-}
-.pagination-choose-block {
-    &__previous-page {
-        cursor: pointer;
-        padding: 10px;
-        text-align: center;
+    .page-item {
+        user-select: none;
 
-        &:hover {
-            color: white;
-            background-color: black;
+        &.active {
+            a {
+                cursor: default;
+                color: white !important;
+                background-color: black;
+            }
         }
-    }
 
-    &__etc {
-        pointer-events: none;
-        cursor: default;
-        padding: 10px 3px;
-    }
-
-    &__page {
-        cursor: pointer;
-        padding: 10px;
-
-        &:hover {
-            color: rgb(161, 161, 161);
+        &.disabled {
+            a {
+                cursor: default;
+                color: rgb(161, 161, 161) !important;
+                pointer-events: none;
+            }
         }
-    }
 
-    &__next-page {
-        cursor: pointer;
-        padding: 10px;
-
-        &:hover {
-            color: white;
-            background-color: black;
+        &.noselect {
         }
     }
 }
-.pagination-input-block-form {
-    &__input {
-        height: 100%;
-        width: 50px;
-        padding: 0px 10px;
-        border: 1px solid black;
+::deep .page-item {
+    .page-link {
+        cursor: pointer;
+        padding: 10px 12px;
+        color: black !important;
+
+        &:hover {
+            color: rgb(161, 161, 161) !important;
+        }
+
+        &:active {
+            color: rgb(161, 161, 161) !important;
+        }
     }
 
-    &__button-submit {
-        color: white;
-        height: 100%;
-        padding: 0 17px;
-        text-align: center;
-        background-color: black;
+    .sort-link {
     }
 }
-.selected-page {
-    cursor: default;
-    color: white;
-    background-color: black;
-
-    &:hover {
-        color: white;
+::deep .page-link {
+    .sr-only {
+        display: none;
     }
 }
 .filters-form-block {
@@ -406,6 +378,7 @@
     }
 
     &__empty {
+        text-align: center;
         font-size: 18px;
         justify-self: center;
         align-self: center;
@@ -609,6 +582,7 @@
             display: flex;
         }
     }
+
     .panel-block {
         &__link-category-block {
             align-self: flex-start;
@@ -618,11 +592,13 @@
             align-self: flex-end;
         }
     }
+
     .main-block {
         ::deep &__filters-form-block {
             display: none;
         }
     }
+
     .filter-sort-block {
         &__side-filters {
             display: flex;
@@ -638,6 +614,7 @@
             }
         }
     }
+
     .sort-by-block {
         &__label {
             &:hover {
@@ -651,54 +628,6 @@
             }
         }
     }
-    .pagination-choose-block {
-        &__previous-page {
-            padding: 8px;
-
-            &:hover {
-                color: black;
-                background-color: white;
-            }
-
-            &:active {
-                color: white;
-                background-color: black;
-            }
-        }
-
-        &__page {
-            padding: 8px;
-
-            &:hover {
-                color: black;
-                background-color: white;
-            }
-
-            &:active {
-                color: white;
-                background-color: black;
-            }
-        }
-
-        &__next-page {
-            padding: 8px;
-
-            &:hover {
-                color: black;
-                background-color: white;
-            }
-
-            &:active {
-                color: white;
-                background-color: black;
-            }
-        }
-    }
-    .pagination-input-block-form {
-        &__input {
-            padding: 5px;
-        }
-    }
 }
 @media (max-width: 640px) {
     .catalog {
@@ -707,10 +636,15 @@
             padding-bottom: 25px;
         }
     }
+
     .panel-block {
         &__link-category-block {
             font-size: 20px;
         }
+    }
+
+    ::deep .pagination {
+        justify-content: center;
     }
 }
 @media (max-width: 540px) {
@@ -720,22 +654,24 @@
             padding-bottom: 20px;
         }
     }
+
     .panel-block {
         &__link-category-block {
             font-size: 20px;
         }
-    }
-    .panel-block {
+
         &__filter-sort-block {
             gap: 3px;
         }
     }
+
     .filter-sort-block {
         &__side-filters {
             padding: 7px;
             font-size: 15px;
         }
     }
+
     .sort-by-block {
         &__label {
             padding: 7px;

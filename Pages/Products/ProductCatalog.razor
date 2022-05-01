@@ -10,45 +10,45 @@
     else
     {
         <div class="catalog__container">
-            <div class="catalog__panel-block">
+            <nav class="catalog__panel-block">
                 <div class="panel-block__link-category-block">
                     @if (currentCategory is not null)
                     {
-                        <a class="link-category-block__category" href="/products/catalog/@currentCategory.Name">@currentCategory.Name</a>
+                        <a class="link-category-block__category" href="/products/catalog/@currentCategory.Name" aria-label="Ссылка на переход в каталог с категорией @currentCategory.Name" title="Перейти в каталог товаров с категорией @currentCategory.Name">@currentCategory.Name</a>
                     }
                     else if (currentSubcategory is not null)
                     {
                         <div class="link-category-block__splitter">•</div>
-                        <h2 class="link-category-block__subcategory">@currentSubcategory.Name</h2>
+                        <h2 class="link-category-block__subcategory" aria-label="Текущая подкатегория">@currentSubcategory.Name</h2>
                     }
                     else
                     {
                         <span class="link-category-block__message">Товаров</span>
                         <div class="link-category-block__splitter">•</div>
                     }
-                    <span class="link-category-block__count">(@selectedProductsModels.Count())</span>
+                    <span class="link-category-block__count" aria-label="Количество найденного товара по запросу">(@selectedProductsModels.Count())</span>
                 </div>
                 <div class="panel-block__filter-sort-block">
-                    <span class="filter-sort-block__side-filters" @onclick="OpenBottomFilter">Фильтры</span>
+                    <span class="filter-sort-block__side-filters" @onclick="OpenBottomFilter" aria-label="Кнопка для открытия нижних фильтров" title="Окрыть нижнии фильтры">Фильтры</span>
                     <div class="filter-sort-block__sort-by-block">
-                        <span class="sort-by-block__label" @onclick="ToogleFilterAsync">Сортировать по: @SortProductsTypeRussianTranslator.GetRussianTranslate(ProductCatalogViewModel.SortProductsType)</span>
+                        <span class="sort-by-block__label" @onclick="ToogleFilterAsync" aria-label="Кнопка для выборки типа сортировки" title="Открыть типы сортировок">Сортировать по: @SortProductsTypeRussianTranslator.GetRussianTranslate(ProductCatalogViewModel.SortProductsType)</span>
                         <div class="sort-by-block__choose-block @(FilterIsShow ? "show" : string.Empty)">
                             @foreach (var sortProdcutsType in allSortProductsType)
                             {
-                                <span class="choose-block__sort-value" @onclick="() => ChangeSortProductsAsync(sortProdcutsType)">@SortProductsTypeRussianTranslator.GetRussianTranslate(sortProdcutsType)</span>
+                                <span class="choose-block__sort-value" @onclick="() => ChangeSortProductsAsync(sortProdcutsType)" aria-label="Тип сортировки" title="Выбрать тип сортировок">@SortProductsTypeRussianTranslator.GetRussianTranslate(sortProdcutsType)</span>
                             }
                         </div>
                     </div>
                 </div>
-            </div>
+            </nav>
             <div class="catalog__main-block">
                 <EditForm Model="ProductCatalogViewModel" OnSubmit="SubmitFiltersAsync" class="main-block__filters-form-block" method="post">
                     <div class="filters-form-block__price-filter-block filter-block">
                         <h3 class="price-filter-block__label">Цена</h3>
                         <div class="price-filter__price-min-max-block">
-                            <input class="price-min-max-block__min-price-input" type="number" @bind="ProductCatalogViewModel.MinPrice" placeholder="@minPrice">
+                            <input class="price-min-max-block__min-price-input" type="number" @bind="ProductCatalogViewModel.MinPrice" placeholder="@minPrice" aria-label="Место для ввода минимальной цены дл товара">
                             <div class="price-min-max-block__splitter">—</div>
-                            <input class="price-min-max-block__max-price-input" type="number" @bind="ProductCatalogViewModel.MaxPrice" placeholder="@maxPrice">
+                            <input class="price-min-max-block__max-price-input" type="number" @bind="ProductCatalogViewModel.MaxPrice" placeholder="@maxPrice" aria-label="Место для ввода максимальной цены дл товара">
                         </div>
                     </div>
                     <div class="filters-form-block__colors-filter-block filter-block">
@@ -60,7 +60,7 @@
                             <div class="colors-filter-spoiler__colors-filter filter-choose-block">
                                 @foreach (var colorKeyPair in allColorsFilterDictionary)
                                 {
-                                    <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allColorsFilterDictionary[colorKeyPair.Key]" type="checkbox" /><span class="checkbox__fake-input"></span>@colorKeyPair.Key</label>
+                                    <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allColorsFilterDictionary[colorKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки цвета @colorKeyPair.Key" title="Выбрать цвет @colorKeyPair.Key"/><span class="checkbox__fake-input"></span>@colorKeyPair.Key</label>
                                 }
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                             <div class="brands-filter-spoiler__brands-filter filter-choose-block">
                                 @foreach (var brandKeyPair in allBrandsFilterDictionary)
                                 {
-                                    <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allBrandsFilterDictionary[brandKeyPair.Key]" type="checkbox" /><span class="checkbox__fake-input"></span>@brandKeyPair.Key</label>
+                                    <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allBrandsFilterDictionary[brandKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки бренда @brandKeyPair.Key" title="Выбрать цвет @brandKeyPair.Key"/><span class="checkbox__fake-input"></span>@brandKeyPair.Key</label>
                                 }
                             </div>
                         </div>
@@ -88,12 +88,12 @@
                             <div class="sizes-filter-spoiler__sizes-filter filter-choose-block">
                                 @foreach (var sizeKeyPair in allSizesFilterDictionary)
                                 {
-                                    <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allSizesFilterDictionary[sizeKeyPair.Key]" type="checkbox" /><span class="checkbox__fake-input"></span>@sizeKeyPair.Key</label>
+                                    <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allSizesFilterDictionary[sizeKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки размера @sizeKeyPair.Key" title="Выбрать размер @sizeKeyPair.Key"/><span class="checkbox__fake-input"></span>@sizeKeyPair.Key</label>
                                 }
                             </div>
                         </div>
                     </div>
-                    <button class="filters-form-block__submut-button" type="submit" aria-label="Кнопка принятия фильтров">Принять</button>
+                    <button class="filters-form-block__submut-button" type="submit" aria-label="Кнопка принятия новых выбранных фильтров">Принять</button>
                 </EditForm>
                 <div class="main-block__products-block">
                     <div class="products-block__products-cards @(ProductModelsIsLoading || selectedProductsModels.Count() == 0  ? "is-loading-or-empty" : string.Empty)">
@@ -118,63 +118,54 @@
                                                 {
                                                     if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                                     {
-                                                        <span class="image-block__favorite" @onclick="() => RemoveProductFromFavorites(productModel)"><img src="/icons/product-catalog/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></span>
+                                                        <span class="image-block__favorite" @onclick="() => RemoveProductFromFavorites(productModel)" aria-label="Иконка для удаления товара @productModel.Name из избранного"><img src="/icons/product-catalog/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного @productModel.Name"></span>
                                                     }
                                                     else
                                                     {
-                                                        <span class="image-block__favorite" @onclick="() => AddProductInFavorites(productModel)"><img src="/icons/product-catalog/Heart.svg" alt="Иконка избранного" title="Добавить в избранное"></span>
+                                                        <span class="image-block__favorite" @onclick="() => AddProductInFavorites(productModel)" aria-label="Иконка для добавления товара @productModel.Name в избранное"><img src="/icons/product-catalog/Heart.svg" alt="Иконка избранного" title="Добавить в избранное @productModel.Name"></span>
                                                     }
                                                     if (currentUser.Cart.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                                     {
-                                                        <span class="image-block__cart" @onclick="() => RemoveProductFromCart(productModel)"><img src="/icons/product-catalog/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></span>
+                                                        <span class="image-block__cart" @onclick="() => RemoveProductFromCart(productModel)" aria-label="Иконка для удаления товара @productModel.Name из корзины"><img src="/icons/product-catalog/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину @productModel.Name"></span>
                                                     }
                                                     else
                                                     {
-                                                        <span class="image-block__cart" @onclick="() => AddProductInCart(productModel)"><img src="/icons/product-catalog/Cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины"></span>
+                                                        <span class="image-block__cart" @onclick="() => AddProductInCart(productModel)" aria-label="Иконка для добавления товара @productModel.Name в корзину"><img src="/icons/product-catalog/Cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины @productModel.Name"></span>
                                                     }
                                                 }
                                             </AuthorizeView>
-                                            <a href="/products/product-card/@productModel.Id"><img class="image-block__image" src="data:image/png;base64,@Convert.ToBase64String(productModel.MainPhoto)" alt="Картинка товара"></a>
+                                            <a href="/products/product-card/@productModel.Id"><img class="image-block__image" src="data:image/png;base64,@Convert.ToBase64String(productModel.MainPhoto)" aria-label="Ссылка в виде картинки для прохода в личную картоку товара @productModel.Name" alt="Картинка товара @productModel.Name"></a>
                                         </div>
-                                        <a class="product-card__name" href="/products/product-card/@productModel.Id">@productModel.Name</a>
-                                        <span class="product-card__price">@productModel.Price.ToString("### ### ###") Р</span>
+                                        <a class="product-card__name" href="/products/product-card/@productModel.Id" aria-label="Ссылка для прохода на личную картоку модели товара @productModel.Name" title="Перейти в карточку товара @productModel.Name">@productModel.Name</a>
+                                        <span class="product-card__price" aria-label="Цена на модели товара @productModel.Name">@productModel.Price.ToString("### ### ###") Р</span>
                                     </div>
                                 }
                             }
                         }
                     </div>
-                    @if (MaxPage > 1)
-                    {
-                        <div class="products-block__pagination-block">
-                            <div class="pagination-block__pagination-choose-block">
-                                <span class="pagination-choose-block__previous-page">🡰</span>
-                                <span class="pagination-choose-block__page">1</span>
-                                <span class="pagination-choose-block__etc">...</span>
-                                <span class="pagination-choose-block__page">3</span>
-                                <span class="pagination-choose-block__page selected-page">4</span>
-                                <span class="pagination-choose-block__page">5</span>
-                                <span class="pagination-choose-block__etc">...</span>
-                                <span class="pagination-choose-block__page">110</span>
-                                <span class="pagination-choose-block__next-page">🡲</span>
-                            </div>
-                            <form class="pagination-block__pagination-input-block-form" method="post">
-                                <input class="pagination-input-block-form__input" required type="number">
-                                <button class="pagination-input-block-form__button-submit" type="submit">Перейти</button>
-                            </form>
-                        </div>
-                    }
+                    <BlazorPager CurrentPage="CurrentPage"
+                                 PageCount="MaxPage"
+                                 OnPageChanged="(async newPage => PageChange(newPage))"
+                                 ShowFirstLast="true"
+                                 ShowPageNumbers="true"
+                                 VisiblePages="wigthWindow <= 640 ? 3 : 5"
+                                 NextText="🡲"
+                                 PreviousText="🡰"
+                                 FirstText="1"
+                                 LastText="@MaxPage.ToString()" 
+                                 />
                 </div>
             </div>
         </div>
         <div class="catalog__bottom-filters-form-block @(BottomFilterIsShow ? "show" : string.Empty)">
             <EditForm Model="ProductCatalogViewModel" OnSubmit="SubmitFiltersAsync" class="catalog__bottom-filters-form" method="post">
-                <span class="bottom-filters-form__close-button" @onclick="CloseBottomFilter" aria-label="Закрыть нижнее меню фильтров">&times;</span>
+                <span class="bottom-filters-form__close-button" @onclick="CloseBottomFilter" aria-label="Кнопка для закрытия нижнего меню фильтров" title="Закрыть">&times;</span>
                 <div class="bottom-filters-form__price-filter-block filters-form-block__price-filter-block filter-block">
                     <h3 class="price-filter-block__label">Цена</h3>
                     <div class="price-filter__price-min-max-block">
-                        <input class="price-min-max-block__min-price-input" type="number" @bind="ProductCatalogViewModel.MinPrice" placeholder="@minPrice">
+                        <input class="price-min-max-block__min-price-input" type="number" @bind="ProductCatalogViewModel.MinPrice" placeholder="@minPrice" aria-label="Место для ввода минимальной цены дл товара">
                         <div class="price-min-max-block__splitter">—</div>
-                        <input class="price-min-max-block__max-price-input" type="number" @bind="ProductCatalogViewModel.MaxPrice" placeholder="@maxPrice">
+                        <input class="price-min-max-block__max-price-input" type="number" @bind="ProductCatalogViewModel.MaxPrice" placeholder="@maxPrice" aria-label="Место для ввода максимальной цены дл товара">
                     </div>
                 </div>
                 <div class="bottom-filters-form__colors-filter-block filters-form-block__colors-filter-block filter-block">
@@ -186,7 +177,7 @@
                         <div class="colors-filter-spoiler__colors-filter filter-choose-block">
                             @foreach (var colorKeyPair in allColorsFilterDictionary)
                             {
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allColorsFilterDictionary[colorKeyPair.Key]" type="checkbox" /><span class="checkbox__fake-input"></span>@colorKeyPair.Key</label>
+                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allColorsFilterDictionary[colorKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки цвета @colorKeyPair.Key" title="Выбрать цвет @colorKeyPair.Key"/><span class="checkbox__fake-input"></span>@colorKeyPair.Key</label>
                             }
                         </div>
                     </div>
@@ -200,7 +191,7 @@
                         <div class="brands-filter-spoiler__brands-filter filter-choose-block">
                             @foreach (var brandKeyPair in allBrandsFilterDictionary)
                             {
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allBrandsFilterDictionary[brandKeyPair.Key]" type="checkbox" /><span class="checkbox__fake-input"></span>@brandKeyPair.Key</label>
+                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allBrandsFilterDictionary[brandKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки бренда @brandKeyPair.Key" title="Выбрать бренд @brandKeyPair.Key"/><span class="checkbox__fake-input"></span>@brandKeyPair.Key</label>
                             }
                         </div>
                     </div>
@@ -214,12 +205,12 @@
                         <div class="sizes-filter-spoiler__sizes-filter filter-choose-block">
                             @foreach (var sizeKeyPair in allSizesFilterDictionary)
                             {
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allSizesFilterDictionary[sizeKeyPair.Key]" type="checkbox" /><span class="checkbox__fake-input"></span>@sizeKeyPair.Key</label>
+                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allSizesFilterDictionary[sizeKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки размера @sizeKeyPair.Key" title="Выбрать размер @sizeKeyPair.Key" /><span class="checkbox__fake-input"></span>@sizeKeyPair.Key</label>
                             }
                         </div>
                     </div>
                 </div>
-                <button class="bottom-filters-form__submut-button filters-form-block__submut-button" type="submit">Принять</button>
+                <button class="bottom-filters-form__submut-button filters-form-block__submut-button" type="submit" aria-label="Кнопка для приминения новых выбранных фильтров">Принять</button>
             </EditForm>
         </div>
     }

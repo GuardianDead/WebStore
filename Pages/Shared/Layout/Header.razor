@@ -11,7 +11,7 @@
                     {
                         @foreach (var category in categories)
                         {
-                            <li class="category__link" @onmouseover="async () => await ShowSubcategoriesAsync(category)"><a href="#" aria-label="Перейти в раздел товаров с категорией @category.Name"><h3>@category.Name</h3></a></li>
+                            <li class="category__link" @onmouseover="async () => await ShowSubcategoriesAsync(category)"><a href="/products/catalog/@category.Name" aria-label="Перейти в раздел товаров с категорией @category.Name"><h3>@category.Name</h3></a></li>
                         }
                     }
                 </ul>
@@ -59,7 +59,7 @@
                 <ul class="subcategories__list">
                     @foreach (var subcategory in selectedSubcaregories)
                     {
-                        <li class="subcategory" @onclick="async () => await HideSubcategoriesAsync()"><a href="#" aria-label="Перейти в каталог товаров с подкатегорией @subcategory.Name"><h3>@subcategory.Name</h3></a></li>
+                        <li class="subcategory" @onclick="async () => await HideSubcategoriesAsync()"><a href="/products/catalog/@subcategory.Category.Name/@subcategory.Name" aria-label="Перейти в каталог товаров с подкатегорией @subcategory.Name"><h3>@subcategory.Name</h3></a></li>
                     }
                 </ul>
             }

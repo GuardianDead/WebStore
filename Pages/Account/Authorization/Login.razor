@@ -6,16 +6,16 @@
     <div class="login__container">
         <div class="login__block">
             <EditForm Model="LoginViewModel" OnSubmit="SubmitAsync" class="login__form" autocomplete="on">
-                <img class="form__logo" src="/icons/logo/SVG/Logo.svg" alt="Лого">
+                <img class="form__logo" src="/icons/logo/SVG/Logo.svg" aria-label="Лого Veco" alt="Лого Veco">
                 <span class="form__title">Вход в личный кабинет Veco</span>
                 <div class="form__errors-block">
                     @foreach (var error in Errors)
                     {
-                        <span class="form__error">&#8226; @error.ErrorMessage</span>
+                        <span class="form__error" aria-label="Ошибка @error.ErrorMessage">&#8226; @error.ErrorMessage</span>
                     }
                 </div>
                 <div class="form__email-block">
-                    <input class="email-block__input @(IsEmailInputValid ? "" : "invalid")" @bind="LoginViewModel.Email" @oninput="((e) => EmailInputChangeValue(e))" autocomplete="on" aria-label="Строка для ввода электронный почты пользователя" />
+                    <input class="email-block__input @(IsEmailInputValid ? "" : "invalid")" @bind="LoginViewModel.Email" @oninput="((e) => EmailInputChangeValue(e))" autofocus autocomplete="on" aria-label="Строка для ввода электронный почты пользователя" />
                     <label class="email-block__label @(IsEmailLabelShift ? "shift" : "")">Электронная почта</label>
                 </div>
                 <div class="form__password-block">
@@ -25,9 +25,9 @@
                 </div>
                 <label class="form__check-box"><input class="check-box__input" @bind-value="LoginViewModel.Remember" type="checkbox" aria-label="Чек-бокс запомнить пользователя или нет" /><span class="check-box__fake-input"></span>Запомнить меня</label>
                 <span class="form__disclaimer">Выполняя вход вы соглашаетесь с <a href="/rules/privacy" aria-label="Перейти на страницу политики конфиденциальности" title="Перейти на страницу политики конфиденциальности">Политикой конфиденциальности</a> и <a href="/rules/use-conditions" aria-label="Перейти на страницу условий использования" title="Перейти на страницу условий использования">Условиями использования</a> Veco</span>
-                <button class="form__button-submut" type="submit" aria-label="Кнопка подтверждения отправки данных">Войти</button>
-                <a class="form__fogot-password" href="#">Забыл пароль</a>
-                <a class="form__register" href="/account/authorization/register/@LoginViewModel.ReturnUrl.Replace('/', '$')">Зарегистрироваться</a>
+                <button class="form__button-submut" type="submit" aria-label="Кнопка войти">Войти</button>
+                <a class="form__fogot-password" href="#" aria-label="Кнопка для восстановления пароля">Забыл пароль</a>
+                <a class="form__register" href="/account/authorization/register/@LoginViewModel.ReturnUrl.Replace('/', '$')" aria-label="Кнопка для регистрации">Зарегистрироваться</a>
                 @*<div class="form__external-logins-block external-logins-block">
                     <span class="external-logins-block__title">Войти с помощью</span>
                     <button class="external-logins-block__button-provider" name="login-facebook-button" value="facebook" style="background-color: rgb(63,101,166); color: white;" type="submit" title="Войти с помощью Facebook" aria-label="Войти с помощью Facebook"><img src="./icons/login/Facebook.svg" alt="Иконка  с помощью Facebook" title="Войти с помощью Facebook">Facebook</button>

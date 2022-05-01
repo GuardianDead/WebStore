@@ -91,7 +91,7 @@
   width: 600px;
   height: 600px;
   position: absolute;
-  top: 0;
+  top: -50%;
   left: 100%;
   pointer-events: none;
   margin-left: 17px;

@@ -52,10 +52,12 @@ namespace WebStore.Pages.Products
         public decimal minPrice;
         public decimal maxPrice;
         private const int chunkProductModels = 27;
+        public int wigthWindow;
 
         protected override async Task OnInitializedAsync()
         {
             await JSRuntime.InvokeVoidAsync("SetPageDotnetReference", DotNetObjectReference.Create(this));
+            wigthWindow = await JSRuntime.InvokeAsync<int>("getCurrentWindowInnerWidth");
 
             сategoryOrSubcategoryPredicateForModel = productModel => true;
             сategoryOrSubcategoryPredicateForArticle = productArticle => true;
@@ -121,6 +123,20 @@ namespace WebStore.Pages.Products
                     .SingleOrDefault(user => user.Email == userEmail);
             }
         }
+
+
+        public void PageChange(int newPage)
+        {
+            CurrentPage = newPage;
+            ProductModelsIsLoading = true;
+            StateHasChanged();
+            selectedProductsModels = currentProductModelsQuery
+                .Skip((CurrentPage - 1) * chunkProductModels)
+                .Take(chunkProductModels)
+                .ToList();
+            ProductModelsIsLoading = false;
+        }
+
 
         [JSInvokable]
         public async Task ToogleFilterAsync()

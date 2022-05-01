@@ -26,16 +26,16 @@
                             <div class="favorites__product-card">
                                 <div class="favorites__image-block">
                                     <a class="favorites__image" href="/products/product-card/@group.First().Id" aria-label="Перейти в личную карточку товара @group.First().Subcategory @group.First().Name"><img src="data:image/png;base64,@Convert.ToBase64String(group.First().MainPhoto)" alt="Картинка @group.First().Name" title="@group.First().Name"></a>
-                                    <a class="favorites__favorites-icon" @onclick="() => RemoveProductFromFavorites(group.First())" aria-label="Удалить товар @group.First().Name из избранного"><img src="/icons/favorites/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></a>
+                                    <span class="favorites__favorites-icon" @onclick="() => RemoveProductFromFavorites(group.First())" aria-label="Удалить товар @group.First().Name из избранного"><img src="/icons/favorites/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></span>
                                     @if (Db.Products.Count(product => product.Article.Model.Id == group.First().Id) != 0)
                                     {
                                         @if (currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Model.Id == group.First().Id))
                                         {
-                                            <a class="favorites__cart-icon" @onclick="() => RemoveProductFromCart(group.First())" aria-label="Добавить товар @group.First().Name в корзину"><img src="/icons/favorites/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a>
+                                            <span class="favorites__cart-icon" @onclick="() => RemoveProductFromCart(group.First())" aria-label="Добавить товар @group.First().Name в корзину"><img src="/icons/favorites/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></span>
                                         }
                                         else
                                         {
-                                            <a class="favorites__cart-icon" @onclick="() => AddProductInCart(group.First())" aria-label="Добавить товар @group.First().Name в корзину"><img src="/icons/favorites/Cart.svg" alt="Иконка корзины" title="Добавить в корзину"></a>
+                                            <span class="favorites__cart-icon" @onclick="() => AddProductInCart(group.First())" aria-label="Добавить товар @group.First().Name в корзину"><img src="/icons/favorites/Cart.svg" alt="Иконка корзины" title="Добавить в корзину"></span>
                                         }
                                     }
                                     @*<div class="favorites__block-discount hasDiscount"> hasDiscount

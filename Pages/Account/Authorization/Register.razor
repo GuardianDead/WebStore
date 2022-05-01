@@ -6,34 +6,34 @@
     <div class="register__container">
         <div class="register__block">
             <EditForm OnSubmit="SubmitAsync" Model="RegisterViewModel" class="register__form" autocomplete="on">
-                <img class="form__logo" src="/icons/logo/SVG/Logo.svg" alt="Лого">
+                <img class="form__logo" src="/icons/logo/SVG/Logo.svg" aria-label="Лого Veco" alt="Лого">
                 <span class="form__title">Создание аккаунта Veco</span>
                 <div class="form__errors-block">
                     @foreach (var error in Errors)
                     {
-                        <span class="form__error">&#8226; @error.ErrorMessage</span>
+                        <span class="form__error" aria-label="Ошибка @error.ErrorMessage">&#8226; @error.ErrorMessage</span>
                     }
                 </div>
                 <div class="form__email-block">
-                    <input class="email-block__input @(IsEmailInputValid ? string.Empty : "invalid")" @bind="RegisterViewModel.Email" @oninput="((e) => EmailInputChangeValue(e))" type="email" autocomplete="on" autofocus aria-label="Строка для ввода электронный почты пользователя" />
+                    <input class="email-block__input @(IsEmailInputValid ? string.Empty : "invalid")" @bind="RegisterViewModel.Email" @oninput="((e) => EmailInputChangeValue(e))" type="email" autocomplete="on" autofocus aria-label="Строка для ввода электронный почты"/>
                     <label class="email-block__label @(IsEmailLabelShift ? "shift" : string.Empty)">Электронная почта</label>
                 </div>
                 <div class="form__password-block">
-                    <input class="password-block__input @(IsPasswordInputValid ? string.Empty : "invalid")" @bind="RegisterViewModel.Password" @oninput="((e) => PasswordInputChangeValueAsync(e))" type="@(IsPasswordShow ? "text" : "password")" autocomplete="on" aria-label="Строка для ввода пароля пользователя" />
+                    <input class="password-block__input @(IsPasswordInputValid ? string.Empty : "invalid")" @bind="RegisterViewModel.Password" @oninput="((e) => PasswordInputChangeValueAsync(e))" type="@(IsPasswordShow ? "text" : "password")" autocomplete="on" aria-label="Строка для ввода пароля" />
                     <span class="password-block__control @(IsPasswordShow ? "view" : string.Empty)" @onclick="@(() => IsPasswordShow = !IsPasswordShow)" />
                     <label class="password-block__label @(IsPasswordLabelShift ? "shift" : string.Empty)">Пароль</label>
                     <div class="password-block__meter @(PasswordMeterIsShow ? "show" : string.Empty) @passwordMeterScoreClassName" />
                     <span class="password-block__meter-label @(PasswordLabelIsShow ? "show" : string.Empty)">@passwordLabelScoreWord</span>
                 </div>
                 <div class="form__password-confirm-block">
-                    <input class="password-block__input @(IsConfirmPasswordInputValid ? string.Empty : "invalid")" @bind="confirmPassword" @oninput="((e) => ConfirmPasswordInputChangeValue(e))" type="@(IsConfirmPasswordShow ? "text" : "password")" aria-label="Строка для ввода пароля пользователя" />
+                    <input class="password-block__input @(IsConfirmPasswordInputValid ? string.Empty : "invalid")" @bind="confirmPassword" @oninput="((e) => ConfirmPasswordInputChangeValue(e))" type="@(IsConfirmPasswordShow ? "text" : "password")" aria-label="Строка для подтверждения пароля" />
                     <span class="password-block__control @(IsConfirmPasswordShow ? "view" : string.Empty)" @onclick="@(() => IsConfirmPasswordShow = !IsConfirmPasswordShow)" />
                     <label class="password-block__label @(IsConfirmPasswordLabelShift ? "shift" : string.Empty)">Подтвердите пароль</label>
                 </div>
-                <label class="form__check-box"><input class="check-box__input" @bind-value="RegisterViewModel.Remember" type="checkbox" aria-label="Запомнить пользователяы"><span class="check-box__fake-input"></span>Запомнить меня</label>
-                <span class="form__disclaimer">Регистрируясь вы соглашаетесь с <a href="/rules/privacy" aria-label="Перейти на страницу политики конфиденциальности" title="Перейти на страницу политики конфиденциальности">Политикой конфиденциальности</a> и <a href="/rules/use-conditions" aria-label="Перейти на страницу условий использования" title="Перейти на страницу условий использования">Условиями использования</a> Veco</span>
-                <button class="form__button-submut" type="submit" aria-label="Кнопка подтверждения данных">Зарегистрироваться</button>
-                <a class="form__login" href="/account/authorization/login/@RegisterViewModel.ReturnUrl.Replace('/', '$')">Войти</a>
+                <label class="form__check-box"><input class="check-box__input" @bind-value="RegisterViewModel.Remember" type="checkbox" aria-label="Кнопка запомнить пользователя или нет"><span class="check-box__fake-input"></span>Запомнить меня</label>
+                <span class="form__disclaimer">Регистрируясь вы соглашаетесь с <a href="/rules/privacy" aria-label="Кнопка перехода на страницу политики конфиденциальности">Политикой конфиденциальности</a> и <a href="/rules/use-conditions" aria-label="Кнопка перехода на страницу условий использования">Условиями использования</a> Veco</span>
+                <button class="form__button-submut" type="submit" aria-label="Кнопка для регистрации нового пользователя">Зарегистрироваться</button>
+                <a class="form__login" href="/account/authorization/login/@RegisterViewModel.ReturnUrl.Replace('/', '$')" aria-label="Кнопка для перехода на страницу входа пользователя">Войти</a>
                 @*<div class="form__external-logins-block external-logins-block">
                         <span class="external-logins-block__title">Зарегистрироваться с помощью</span>
                         <button class="external-logins-block__button-provider" name="register-facebook-button" value="facebook" style="background-color: rgb(63,101,166); color: white;" type="submit" title="Войти с помощью Facebook" aria-label="Войти с помощью Facebook"><img src="./icons/login/Facebook.svg" alt="Иконка  с помощью Facebook" title="Войти с помощью Facebook">Facebook</button>
