@@ -54,10 +54,10 @@
             <a class="burger-menu" @onclick="OpenCategorySideNavigationAsync"><span /></a>
         </div>
         <div class="subcategories @(SubcategoriesIsShow ? "show" : string.Empty)">
-            @if (selectedSubcaregories is not null)
+            @if (selectedCategory is not null)
             {
                 <ul class="subcategories__list">
-                    @foreach (var subcategory in selectedSubcaregories)
+                    @foreach (var subcategory in selectedCategory.Subcategories)
                     {
                         <li class="subcategory" @onclick="async () => await HideSubcategoriesAsync()"><a href="/products/catalog/@subcategory.Category.Name/@subcategory.Name" aria-label="Перейти в каталог товаров с подкатегорией @subcategory.Name"><h3>@subcategory.Name</h3></a></li>
                     }

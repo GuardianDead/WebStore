@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace WebStore.Data.Entities
@@ -12,6 +13,9 @@ namespace WebStore.Data.Entities
         [Required]
         [DisplayName("Название")]
         public string Name { get; set; }
+
+        [DisplayName("Подкатегории")]
+        public List<Subcategory> Subcategories { get; }
 
         public Category()
         {

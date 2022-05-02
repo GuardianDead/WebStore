@@ -43,7 +43,7 @@ namespace WebStore
             services.AddResponseCompression(options => options.EnableForHttps = true);
             services.Configure<BrotliCompressionProviderOptions>(options => options.Level = CompressionLevel.Fastest);
 
-            services.AddWMBSC(true);
+            services.AddWMBSC(false);
             services.AddHttpContextAccessor();
         }
 

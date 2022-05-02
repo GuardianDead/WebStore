@@ -29,12 +29,9 @@ namespace WebStore.Pages.Shared.Layout
 
         public string SerachProductModelsByName { get; set; }
 
-        public static List<Subcategory> subcategories;
-        public static List<Category> categories;
-        public static Category selectedCategory;
-        public static List<Subcategory> selectedSubcaregories;
-
         public string returnUrl;
+        public List<Category> categories;
+        public Category selectedCategory;
         public ClaimsPrincipal currentUserState;
         public User currentUser;
 
@@ -54,10 +51,7 @@ namespace WebStore.Pages.Shared.Layout
             }
             categories = await Db.Categories
                 .AsNoTracking()
-                .ToListAsync();
-            subcategories = await Db.Subcategories
-                .AsNoTracking()
-                .Include(subcategory => subcategory.Category)
+                .Include(category => category.Subcategories)
                 .ToListAsync();
         }
 
@@ -81,7 +75,6 @@ namespace WebStore.Pages.Shared.Layout
         {
             SubcategoriesIsShow = false;
             selectedCategory = null;
-            selectedSubcaregories = null;
             await JSRuntime.InvokeVoidAsync("hideSubcategories");
             StateHasChanged();
         }
@@ -90,9 +83,6 @@ namespace WebStore.Pages.Shared.Layout
         {
             SubcategoriesIsShow = true;
             selectedCategory = category;
-            selectedSubcaregories = subcategories
-                .Where(subcategory => subcategory.Category.Id == category.Id)
-                .ToList();
             await JSRuntime.InvokeVoidAsync("showSubcategories");
             StateHasChanged();
         }
