@@ -38,9 +38,8 @@ namespace WebStore.Pages.Account.Authorization
 
         protected override async Task OnInitializedAsync()
         {
-            LoginViewModel.ReturnUrl = string.IsNullOrEmpty(ReturnUrl) ? NavigationManager.BaseUri.Replace('$', '/') : ReturnUrl.Replace('$', '/'); // Костыль, требуется заменить символы '/' на '$' в возвращаемом URL адресе при его отправке и наоборот
+            LoginViewModel.ReturnUrl = string.IsNullOrEmpty(ReturnUrl) ? NavigationManager.BaseUri : ReturnUrl;
             currentUserState = (await AuthenticationStateTask).User;
-
             if (currentUserState.Identity.IsAuthenticated)
                 NavigationManager.NavigateTo(LoginViewModel.ReturnUrl, true);
 

@@ -41,7 +41,7 @@ namespace WebStore.Pages.Shared.Layout
         protected override async Task OnInitializedAsync()
         {
             await JSRuntime.InvokeVoidAsync("SetHeaderDotnetReference", DotNetObjectReference.Create(this));
-            returnUrl = NavigationManager.Uri.Replace('/', '$');
+            returnUrl = NavigationManager.Uri;
             currentUserState = (await AuthenticationStateTask).User;
             if (currentUserState.Identity.IsAuthenticated)
             {

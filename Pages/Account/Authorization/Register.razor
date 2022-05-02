@@ -1,4 +1,5 @@
-﻿@page "/account/authorization/register/{returnUrl?}"
+﻿@page "/account/authorization/register/{*returnUrl}"
+@page "/account/authorization/register/"
 @inherits RegisterBase
 @attribute [AllowAnonymous]
 
@@ -15,7 +16,7 @@
                     }
                 </div>
                 <div class="form__email-block">
-                    <input class="email-block__input @(IsEmailInputValid ? string.Empty : "invalid")" @bind="RegisterViewModel.Email" @oninput="((e) => EmailInputChangeValue(e))" type="email" autocomplete="on" autofocus aria-label="Строка для ввода электронный почты"/>
+                    <input class="email-block__input @(IsEmailInputValid ? string.Empty : "invalid")" @bind="RegisterViewModel.Email" @oninput="((e) => EmailInputChangeValue(e))" type="email" autocomplete="on" autofocus aria-label="Строка для ввода электронный почты" />
                     <label class="email-block__label @(IsEmailLabelShift ? "shift" : string.Empty)">Электронная почта</label>
                 </div>
                 <div class="form__password-block">
@@ -33,7 +34,7 @@
                 <label class="form__check-box"><input class="check-box__input" @bind-value="RegisterViewModel.Remember" type="checkbox" aria-label="Кнопка запомнить пользователя или нет"><span class="check-box__fake-input"></span>Запомнить меня</label>
                 <span class="form__disclaimer">Регистрируясь вы соглашаетесь с <a href="/rules/privacy" aria-label="Кнопка перехода на страницу политики конфиденциальности">Политикой конфиденциальности</a> и <a href="/rules/use-conditions" aria-label="Кнопка перехода на страницу условий использования">Условиями использования</a> Veco</span>
                 <button class="form__button-submut" type="submit" aria-label="Кнопка для регистрации нового пользователя">Зарегистрироваться</button>
-                <a class="form__login" href="/account/authorization/login/@RegisterViewModel.ReturnUrl.Replace('/', '$')" aria-label="Кнопка для перехода на страницу входа пользователя">Войти</a>
+                <a class="form__login" href="/account/authorization/login/@RegisterViewModel.ReturnUrl" aria-label="Кнопка для перехода на страницу входа пользователя">Войти</a>
                 @*<div class="form__external-logins-block external-logins-block">
                         <span class="external-logins-block__title">Зарегистрироваться с помощью</span>
                         <button class="external-logins-block__button-provider" name="register-facebook-button" value="facebook" style="background-color: rgb(63,101,166); color: white;" type="submit" title="Войти с помощью Facebook" aria-label="Войти с помощью Facebook"><img src="./icons/login/Facebook.svg" alt="Иконка  с помощью Facebook" title="Войти с помощью Facebook">Facebook</button>

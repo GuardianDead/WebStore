@@ -1,4 +1,5 @@
-﻿@page "/account/authorization/login/{returnUrl?}";
+﻿@page "/account/authorization/login/{*returnUrl}"
+@page "/account/authorization/login/"
 @inherits LoginBase
 @attribute [AllowAnonymous]
 
@@ -27,14 +28,14 @@
                 <span class="form__disclaimer">Выполняя вход вы соглашаетесь с <a href="/rules/privacy" aria-label="Перейти на страницу политики конфиденциальности" title="Перейти на страницу политики конфиденциальности">Политикой конфиденциальности</a> и <a href="/rules/use-conditions" aria-label="Перейти на страницу условий использования" title="Перейти на страницу условий использования">Условиями использования</a> Veco</span>
                 <button class="form__button-submut" type="submit" aria-label="Кнопка войти">Войти</button>
                 <a class="form__fogot-password" href="#" aria-label="Кнопка для восстановления пароля">Забыл пароль</a>
-                <a class="form__register" href="/account/authorization/register/@LoginViewModel.ReturnUrl.Replace('/', '$')" aria-label="Кнопка для регистрации">Зарегистрироваться</a>
+                <a class="form__register" href="/account/authorization/register/@LoginViewModel.ReturnUrl" aria-label="Кнопка для регистрации">Зарегистрироваться</a>
                 @*<div class="form__external-logins-block external-logins-block">
-                    <span class="external-logins-block__title">Войти с помощью</span>
-                    <button class="external-logins-block__button-provider" name="login-facebook-button" value="facebook" style="background-color: rgb(63,101,166); color: white;" type="submit" title="Войти с помощью Facebook" aria-label="Войти с помощью Facebook"><img src="./icons/login/Facebook.svg" alt="Иконка  с помощью Facebook" title="Войти с помощью Facebook">Facebook</button>
-                    <button class="external-logins-block__button-provider" name="login-vkontacte-button" value="vkontacte" style="background-color: rgb(76,117,163); color: white;" type="submit" title="Войти с помощью Vkontacte" aria-label="Войти с помощью Vkontacte"><img src="./icons/login/Vkontacte.svg" alt="Иконка  с помощью Vkontacte" title="Войти с помощью Vkontacte">Vkontacte</button>
-                    <button class="external-logins-block__button-provider" name="login-google-button" value="google" style="background-color: white; color: black;" type="submit" title="Войти с помощью Google" aria-label="Войти с помощью Google"><img src="./icons/login/Google.svg" alt="Иконка  с помощью Google" title="Войти с помощью Google">Google</button>
-                    <button class="external-logins-block__button-provider" name="login-twitter-button" value="twitter" style="background-color: rgb(85, 172, 238); color: white;" type="submit" title="Войти с помощью Twitter" aria-label="Войти с помощью Twitter"><img src="./icons/login/Twitter.svg" alt="Иконка  с помощью Twitter" title="Войти с помощью Twitter">Twitter</button>
-                </div>*@
+                        <span class="external-logins-block__title">Войти с помощью</span>
+                        <button class="external-logins-block__button-provider" name="login-facebook-button" value="facebook" style="background-color: rgb(63,101,166); color: white;" type="submit" title="Войти с помощью Facebook" aria-label="Войти с помощью Facebook"><img src="./icons/login/Facebook.svg" alt="Иконка  с помощью Facebook" title="Войти с помощью Facebook">Facebook</button>
+                        <button class="external-logins-block__button-provider" name="login-vkontacte-button" value="vkontacte" style="background-color: rgb(76,117,163); color: white;" type="submit" title="Войти с помощью Vkontacte" aria-label="Войти с помощью Vkontacte"><img src="./icons/login/Vkontacte.svg" alt="Иконка  с помощью Vkontacte" title="Войти с помощью Vkontacte">Vkontacte</button>
+                        <button class="external-logins-block__button-provider" name="login-google-button" value="google" style="background-color: white; color: black;" type="submit" title="Войти с помощью Google" aria-label="Войти с помощью Google"><img src="./icons/login/Google.svg" alt="Иконка  с помощью Google" title="Войти с помощью Google">Google</button>
+                        <button class="external-logins-block__button-provider" name="login-twitter-button" value="twitter" style="background-color: rgb(85, 172, 238); color: white;" type="submit" title="Войти с помощью Twitter" aria-label="Войти с помощью Twitter"><img src="./icons/login/Twitter.svg" alt="Иконка  с помощью Twitter" title="Войти с помощью Twitter">Twitter</button>
+                    </div>*@
             </EditForm>
         </div>
     </div>
