@@ -39,7 +39,7 @@ namespace WebStore.Pages.Products
                 .Include(productModel => productModel.Subcategory.Category)
                 .SingleOrDefaultAsync(productModel => productModel.Id == ProductModelId);
             if (productModel is null)
-                NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}not-found");
+                NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}not-found", true);
 
             allProductArticles = await Db.ProductArticles
                 .Include(productArticle => productArticle.Model)
@@ -97,7 +97,8 @@ namespace WebStore.Pages.Products
                 await JSRuntime.InvokeVoidAsync("closeZoomedMainImage");
         }
 
-        public void ChangeSelectedProductArtucle() => SelectedProductArticle = allProductArticles.Single(productArticle => productArticle.Color == SelectedColor && productArticle.Size == SelectedSize);
+        public void ChangeSelectedProductArtucle() => SelectedProductArticle = allProductArticles
+            .Single(productArticle => productArticle.Color == SelectedColor && productArticle.Size == SelectedSize);
 
         public void AddProductInCart()
         {

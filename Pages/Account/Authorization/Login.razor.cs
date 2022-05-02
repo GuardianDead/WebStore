@@ -42,7 +42,7 @@ namespace WebStore.Pages.Account.Authorization
             currentUserState = (await AuthenticationStateTask).User;
 
             if (currentUserState.Identity.IsAuthenticated)
-                NavigationManager.NavigateTo(LoginViewModel.ReturnUrl);
+                NavigationManager.NavigateTo(LoginViewModel.ReturnUrl, true);
 
             //TODO : Сделать авторизацию через ExternalLoging
             //TODO : Сделать LockOut

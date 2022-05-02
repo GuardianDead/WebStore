@@ -1,4 +1,7 @@
-﻿@page "/products/catalog/{categoryName?}/{subcategoryName?}"
+﻿@page "/products/catalog/search/{productName}"
+@page "/products/catalog/{categoryName}/{subcategoryName}/"
+@page "/products/catalog/{categoryName}/"
+@page "/products/catalog/"
 @inherits ProductCatalogBase
 @attribute [AllowAnonymous]
 
@@ -60,7 +63,7 @@
                             <div class="colors-filter-spoiler__colors-filter filter-choose-block">
                                 @foreach (var colorKeyPair in allColorsFilterDictionary)
                                 {
-                                    <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allColorsFilterDictionary[colorKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки цвета @colorKeyPair.Key" title="Выбрать цвет @colorKeyPair.Key"/><span class="checkbox__fake-input"></span>@colorKeyPair.Key</label>
+                                    <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allColorsFilterDictionary[colorKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки цвета @colorKeyPair.Key" title="Выбрать цвет @colorKeyPair.Key" /><span class="checkbox__fake-input"></span>@colorKeyPair.Key</label>
                                 }
                             </div>
                         </div>
@@ -74,7 +77,7 @@
                             <div class="brands-filter-spoiler__brands-filter filter-choose-block">
                                 @foreach (var brandKeyPair in allBrandsFilterDictionary)
                                 {
-                                    <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allBrandsFilterDictionary[brandKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки бренда @brandKeyPair.Key" title="Выбрать цвет @brandKeyPair.Key"/><span class="checkbox__fake-input"></span>@brandKeyPair.Key</label>
+                                    <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allBrandsFilterDictionary[brandKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки бренда @brandKeyPair.Key" title="Выбрать цвет @brandKeyPair.Key" /><span class="checkbox__fake-input"></span>@brandKeyPair.Key</label>
                                 }
                             </div>
                         </div>
@@ -88,7 +91,7 @@
                             <div class="sizes-filter-spoiler__sizes-filter filter-choose-block">
                                 @foreach (var sizeKeyPair in allSizesFilterDictionary)
                                 {
-                                    <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allSizesFilterDictionary[sizeKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки размера @sizeKeyPair.Key" title="Выбрать размер @sizeKeyPair.Key"/><span class="checkbox__fake-input"></span>@sizeKeyPair.Key</label>
+                                    <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allSizesFilterDictionary[sizeKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки размера @sizeKeyPair.Key" title="Выбрать размер @sizeKeyPair.Key" /><span class="checkbox__fake-input"></span>@sizeKeyPair.Key</label>
                                 }
                             </div>
                         </div>
@@ -152,8 +155,7 @@
                                  NextText="🡲"
                                  PreviousText="🡰"
                                  FirstText="1"
-                                 LastText="@MaxPage.ToString()" 
-                                 />
+                                 LastText="@MaxPage.ToString()" />
                 </div>
             </div>
         </div>
@@ -177,7 +179,7 @@
                         <div class="colors-filter-spoiler__colors-filter filter-choose-block">
                             @foreach (var colorKeyPair in allColorsFilterDictionary)
                             {
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allColorsFilterDictionary[colorKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки цвета @colorKeyPair.Key" title="Выбрать цвет @colorKeyPair.Key"/><span class="checkbox__fake-input"></span>@colorKeyPair.Key</label>
+                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allColorsFilterDictionary[colorKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки цвета @colorKeyPair.Key" title="Выбрать цвет @colorKeyPair.Key" /><span class="checkbox__fake-input"></span>@colorKeyPair.Key</label>
                             }
                         </div>
                     </div>
@@ -191,7 +193,7 @@
                         <div class="brands-filter-spoiler__brands-filter filter-choose-block">
                             @foreach (var brandKeyPair in allBrandsFilterDictionary)
                             {
-                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allBrandsFilterDictionary[brandKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки бренда @brandKeyPair.Key" title="Выбрать бренд @brandKeyPair.Key"/><span class="checkbox__fake-input"></span>@brandKeyPair.Key</label>
+                                <label class="colors-filter__checkbox checkbox"><input class="checkbox__input" @bind-value="allBrandsFilterDictionary[brandKeyPair.Key]" type="checkbox" aria-label="Чек бокс для выборки бренда @brandKeyPair.Key" title="Выбрать бренд @brandKeyPair.Key" /><span class="checkbox__fake-input"></span>@brandKeyPair.Key</label>
                             }
                         </div>
                     </div>

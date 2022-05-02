@@ -44,8 +44,8 @@
     "inputFile": "wwwroot/scss/styles.scss"
   },
   {
-    "outputFile": "Pages/Shared/Loader.razor.css",
-    "inputFile": "Pages/Shared/Loader.razor.scss"
+    "outputFile": "Pages/Shared/Components/Loader.razor.css",
+    "inputFile": "Pages/Shared/Components/Loader.razor.scss"
   },
   {
     "outputFile": "Pages/Account/OrderRegistration.razor.css",

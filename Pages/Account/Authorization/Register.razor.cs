@@ -54,7 +54,7 @@ namespace WebStore.Pages.Account.Authorization
             currentUserState = (await AuthenticationStateTask).User;
 
             if (currentUserState.Identity.IsAuthenticated)
-                NavigationManager.NavigateTo(RegisterViewModel.ReturnUrl);
+                NavigationManager.NavigateTo(RegisterViewModel.ReturnUrl, true);
 
             //TODO : Сделать регистрацию через ExternalLoging
             //TODO : Сделать LockOut

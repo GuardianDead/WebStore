@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
@@ -26,11 +27,12 @@ namespace WebStore.Pages.Shared.Layout
         public bool SearchPanelIsActive { get; set; }
         public bool HeaderIsScroling { get; set; }
 
+        public string SerachProductModelsByName { get; set; }
+
         public static List<Subcategory> subcategories;
         public static List<Category> categories;
         public static Category selectedCategory;
         public static List<Subcategory> selectedSubcaregories;
-        public string searchContent;
 
         public string returnUrl;
         public ClaimsPrincipal currentUserState;
@@ -118,7 +120,7 @@ namespace WebStore.Pages.Shared.Layout
             {
                 if (SearchPanelIsActive)
                 {
-                    //TODO : Ищем имена тех товаров который ввел пользователь
+                    NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}products/catalog/search/{SerachProductModelsByName}", true);
                 }
                 else
                 {
@@ -126,8 +128,7 @@ namespace WebStore.Pages.Shared.Layout
                     StateHasChanged();
                 }
             }
-
-            //TODO : Ищем имена тех товаров который ввел пользователь
+            NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}products/catalog/search/{SerachProductModelsByName}", true);
         }
         [JSInvokable]
         public void HideSearchPanel()
@@ -140,6 +141,12 @@ namespace WebStore.Pages.Shared.Layout
         {
             var currentWindowInnerWidth = await JSRuntime.InvokeAsync<int>("getCurrentWindowInnerWidth");
             await JSRuntime.InvokeVoidAsync("openCategorySideNavigation", currentWindowInnerWidth <= 420 ? "expand100" : "expand75");
+        }
+
+        public void SearchProductModelsByName(KeyboardEventArgs keyboardEventArgs)
+        {
+            if (keyboardEventArgs.Key == "Enter")
+                NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}products/catalog/search/{SerachProductModelsByName}", true);
         }
     }
 }
