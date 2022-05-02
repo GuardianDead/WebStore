@@ -38,11 +38,11 @@ namespace WebStore.Services
         {
             var accessToken = await localStorage.GetItemAsStringAsync("userAccessToken");
             var rememberUser = true;
-            if (string.IsNullOrEmpty(accessToken))
+            if (string.IsNullOrWhiteSpace(accessToken))
             {
                 accessToken = await sessionStorage.GetItemAsStringAsync("userAccessToken");
                 rememberUser = false;
-                if (string.IsNullOrEmpty(accessToken))
+                if (string.IsNullOrWhiteSpace(accessToken))
                     return new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
             }
 

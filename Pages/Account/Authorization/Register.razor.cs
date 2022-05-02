@@ -36,9 +36,9 @@ namespace WebStore.Pages.Account.Authorization
         public string passwordLabelScoreWord;
 
         public bool IsEmailLabelShift
-        { get => !string.IsNullOrEmpty(RegisterViewModel.Email); }
-        public bool IsPasswordLabelShift { get => !string.IsNullOrEmpty(RegisterViewModel.Password); }
-        public bool IsConfirmPasswordLabelShift { get => !string.IsNullOrEmpty(confirmPassword); }
+        { get => !string.IsNullOrWhiteSpace(RegisterViewModel.Email); }
+        public bool IsPasswordLabelShift { get => !string.IsNullOrWhiteSpace(RegisterViewModel.Password); }
+        public bool IsConfirmPasswordLabelShift { get => !string.IsNullOrWhiteSpace(confirmPassword); }
         public bool IsPasswordShow { get; set; }
         public bool IsConfirmPasswordShow { get; set; }
         public List<ValidationFailure> Errors { get; set; } = new List<ValidationFailure>();
@@ -50,7 +50,7 @@ namespace WebStore.Pages.Account.Authorization
 
         protected override async Task OnInitializedAsync()
         {
-            RegisterViewModel.ReturnUrl = string.IsNullOrEmpty(ReturnUrl) ? NavigationManager.BaseUri : ReturnUrl;
+            RegisterViewModel.ReturnUrl = string.IsNullOrWhiteSpace(ReturnUrl) ? NavigationManager.BaseUri : ReturnUrl;
             currentUserState = (await AuthenticationStateTask).User;
 
             if (currentUserState.Identity.IsAuthenticated)
@@ -71,7 +71,7 @@ namespace WebStore.Pages.Account.Authorization
             RegisterViewModel.Password = e.Value.ToString();
             IsPasswordInputValid = true;
             Errors.RemoveAll(error => error.PropertyName == nameof(RegisterViewModel.Password));
-            if (string.IsNullOrEmpty(RegisterViewModel.Password))
+            if (string.IsNullOrWhiteSpace(RegisterViewModel.Password))
             {
                 PasswordMeterIsShow = false;
                 PasswordLabelIsShow = false;
@@ -115,7 +115,7 @@ namespace WebStore.Pages.Account.Authorization
         {
             Errors.Clear();
 
-            if (string.IsNullOrEmpty(confirmPassword))
+            if (string.IsNullOrWhiteSpace(confirmPassword))
             {
                 Errors.Add(new ValidationFailure(nameof(confirmPassword), "Подтвердите пароль"));
                 IsConfirmPasswordInputValid = false;

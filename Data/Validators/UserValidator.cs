@@ -22,7 +22,7 @@ namespace WebStore.Validators.Identity
                 .SetValidator(cartValidator);
             RuleFor(i => i.PhoneNumber)
                 .ChildRules(i => i.RuleFor(i => i.Length)
-                    .ExclusiveBetween(7, 15).When(value => !string.IsNullOrEmpty(value)).WithMessage("Номер телефона должен быть в диапазоне от 7 до 15"));
+                    .ExclusiveBetween(7, 15).When(value => !string.IsNullOrWhiteSpace(value)).WithMessage("Номер телефона должен быть в диапазоне от 7 до 15"));
             RuleFor(i => i.Email)
                 .NotNull().NotEmpty().WithMessage("Электронная почта не может быть пуста")
                 .EmailAddress(EmailValidationMode.Net4xRegex).WithMessage("Электронная почта неверного формата");

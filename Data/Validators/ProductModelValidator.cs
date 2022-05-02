@@ -26,8 +26,8 @@ namespace WebStore.Validators
             RuleFor(i => i.Features)
                 .NotNull().WithMessage("Характеристики модели товара не могут быть пустыми")
                 .ForEach(i =>
-                    i.Must(i => !string.IsNullOrEmpty(i.Key)).WithMessage("Ключ характеристики модели товара не может быть пустым")
-                    .Must(i => !string.IsNullOrEmpty(i.Value)).WithMessage("Значение характеристики модели товара не может быть пустым"));
+                    i.Must(i => !string.IsNullOrWhiteSpace(i.Key)).WithMessage("Ключ характеристики модели товара не может быть пустым")
+                    .Must(i => !string.IsNullOrWhiteSpace(i.Value)).WithMessage("Значение характеристики модели товара не может быть пустым"));
             RuleFor(i => i.MainPhoto)
                 .NotNull().WithMessage("Главное фото модели товара не может быть пустым");
             RuleFor(i => i.Photos)

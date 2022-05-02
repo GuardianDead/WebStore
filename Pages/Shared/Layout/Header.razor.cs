@@ -7,6 +7,7 @@ using Microsoft.JSInterop;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using WebStore.Data;
 using WebStore.Data.Entities;
@@ -27,7 +28,7 @@ namespace WebStore.Pages.Shared.Layout
         public bool SearchPanelIsActive { get; set; }
         public bool HeaderIsScroling { get; set; }
 
-        public string SerachProductModelsByName { get; set; }
+        public string SearchProductModelsName { get; set; }
 
         public string returnUrl;
         public List<Category> categories;
@@ -55,6 +56,7 @@ namespace WebStore.Pages.Shared.Layout
                 .ToListAsync();
         }
 
+        public void NavigateTo(string path) => NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}{path}", true);
         public int CountFavoriteProducts() => currentUser.FavoriteList.Products.Count();
         public int CountCartProducts() => currentUser.Cart.Products.Count();
 
@@ -110,7 +112,7 @@ namespace WebStore.Pages.Shared.Layout
             {
                 if (SearchPanelIsActive)
                 {
-                    NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}products/catalog/search/{SerachProductModelsByName}", true);
+                    NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}products/catalog/search/{SearchProductModelsName}", true);
                 }
                 else
                 {
@@ -118,7 +120,7 @@ namespace WebStore.Pages.Shared.Layout
                     StateHasChanged();
                 }
             }
-            NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}products/catalog/search/{SerachProductModelsByName}", true);
+            NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}products/catalog/search/{SearchProductModelsName}", true);
         }
         [JSInvokable]
         public void HideSearchPanel()
@@ -135,8 +137,11 @@ namespace WebStore.Pages.Shared.Layout
 
         public void SearchProductModelsByName(KeyboardEventArgs keyboardEventArgs)
         {
-            if (keyboardEventArgs.Key == "Enter")
-                NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}products/catalog/search/{SerachProductModelsByName}", true);
+            if (keyboardEventArgs.Key == "Enter" && !string.IsNullOrWhiteSpace(SearchProductModelsName))
+            {
+                var resultProductModelName = new Regex(@"\s\s+").Replace("     we   fwef   qwef       ", " ").Replace(" ", "-").ToLower();
+                NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}products/catalog/search/{resultProductModelName}", true);
+            }
         }
     }
 }

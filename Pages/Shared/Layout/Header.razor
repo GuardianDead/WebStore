@@ -11,15 +11,15 @@
                     {
                         @foreach (var category in categories)
                         {
-                            <li class="category__link" @onmouseover="async () => await ShowSubcategoriesAsync(category)"><a href="/products/catalog/@category.Name" aria-label="Перейти в раздел товаров с категорией @category.Name"><h3>@category.Name</h3></a></li>
+                            <li class="category__link" @onmouseover="async () => await ShowSubcategoriesAsync(category)" @onclick="@(() => NavigateTo(@$"products/catalog/{category.Name}".Replace(" ", "-").ToLower()))" aria-label="Перейти в раздел товаров с категорией @category.Name">@category.Name</li>
                         }
-                    }
+                     }
                 </ul>
             </nav>
             <div class="panel">
                 <div class="panel__search">
                     <span id="searchLupa" class="panel__search__lupa @(SearchPanelIsActive ? "active" : string.Empty)" @onclick="async () => await ToggleSearchPanelAsync()"><img src="/icons/header/Lupa.svg" alt="Поисковая лупа" title="Поиск"></span>
-                    <input id="searchInput" class="panel__search__input @(SearchPanelIsActive ? "active" : string.Empty)" @bind="SerachProductModelsByName" @onblur="HideSearchPanel" @onkeypress="SearchProductModelsByName" placeholder="Поиск товара" type="search" aria-label="Поисковик товара по имени">
+                    <input id="searchInput" class="panel__search__input @(SearchPanelIsActive ? "active" : string.Empty)" @bind="SearchProductModelsName" @onblur="HideSearchPanel" @onkeypress="SearchProductModelsByName" placeholder="Поиск товара" type="search" aria-label="Поисковик товара по имени">
                 </div>
                 @if (currentUserState.Identity.IsAuthenticated)
                 {
@@ -59,7 +59,7 @@
                 <ul class="subcategories__list">
                     @foreach (var subcategory in selectedCategory.Subcategories)
                     {
-                        <li class="subcategory" @onclick="async () => await HideSubcategoriesAsync()"><a href="/products/catalog/@subcategory.Category.Name/@subcategory.Name" aria-label="Перейти в каталог товаров с подкатегорией @subcategory.Name"><h3>@subcategory.Name</h3></a></li>
+                        <li class="subcategory" @onclick="@(async () => { NavigateTo(@$"products/catalog/{subcategory.Category.Name}/{subcategory.Name}".Replace(" ", "-").ToLower()); await HideSubcategoriesAsync(); })" aria-label="Перейти в каталог товаров с подкатегорией @subcategory.Name">@subcategory.Name</li>
                     }
                 </ul>
             }

@@ -26,8 +26,8 @@ namespace WebStore.Pages.Account.Authorization
         [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public TokenAuthenticationStateService TokenAuthenticationStateService { get; set; }
 
-        public bool IsEmailLabelShift { get => !string.IsNullOrEmpty(LoginViewModel.Email); }
-        public bool IsPasswordLabelShift { get => !string.IsNullOrEmpty(LoginViewModel.Password); }
+        public bool IsEmailLabelShift { get => !string.IsNullOrWhiteSpace(LoginViewModel.Email); }
+        public bool IsPasswordLabelShift { get => !string.IsNullOrWhiteSpace(LoginViewModel.Password); }
         public bool IsPasswordShow { get; set; } = false;
         public List<ValidationFailure> Errors { get; set; } = new List<ValidationFailure>();
         public bool IsEmailInputValid { get; set; } = true;
@@ -38,7 +38,7 @@ namespace WebStore.Pages.Account.Authorization
 
         protected override async Task OnInitializedAsync()
         {
-            LoginViewModel.ReturnUrl = string.IsNullOrEmpty(ReturnUrl) ? NavigationManager.BaseUri : ReturnUrl;
+            LoginViewModel.ReturnUrl = string.IsNullOrWhiteSpace(ReturnUrl) ? NavigationManager.BaseUri : ReturnUrl;
             currentUserState = (await AuthenticationStateTask).User;
 
             if (currentUserState.Identity.IsAuthenticated)

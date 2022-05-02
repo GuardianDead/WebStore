@@ -60,26 +60,26 @@ namespace WebStore.Pages.Products
             await JSRuntime.InvokeVoidAsync("SetPageDotnetReference", DotNetObjectReference.Create(this));
             wigthWindow = await JSRuntime.InvokeAsync<int>("getCurrentWindowInnerWidth");
 
-            if (!string.IsNullOrEmpty(ProductName))
+            if (!string.IsNullOrWhiteSpace(ProductName))
             {
-                сategoryOrSubcategoryPredicateForModel = productModel => productModel.Name.Contains(ProductName);
-                сategoryOrSubcategoryPredicateForArticle = productArticle => productArticle.Model.Name.Contains(ProductName);
-                int countProductModelsByName = Db.ProductModels.Count(productModel => productModel.Name.Contains(ProductName));
+                сategoryOrSubcategoryPredicateForModel = productModel => productModel.Name.Replace(" ", "-").ToLower().Contains(ProductName);
+                сategoryOrSubcategoryPredicateForArticle = productArticle => productArticle.Model.Name.Replace(" ", "-").ToLower().Contains(ProductName);
+                int countProductModelsByName = Db.ProductModels.Count(productModel => productModel.Name.Replace(" ", "-").ToLower().Contains(ProductName));
                 if (countProductModelsByName == 0)
                 {
                     сategoryOrSubcategoryPredicateForModel = productModel => false;
                     сategoryOrSubcategoryPredicateForArticle = productArticle => false;
                 }
             }
-            else if (!string.IsNullOrEmpty(SubcategoryName))
+            else if (!string.IsNullOrWhiteSpace(SubcategoryName))
             {
                 currentSubcategory = Db.Subcategories
                     .AsNoTracking()
                     .Include(subcategory => subcategory.Category)
-                    .SingleOrDefault(subcategory => subcategory.Name == SubcategoryName);
+                    .SingleOrDefault(subcategory => subcategory.Name.Replace(" ", "-").ToLower() == SubcategoryName);
                 currentCategory = Db.Categories
                     .AsNoTracking()
-                    .SingleOrDefault(category => category.Name == CategoryName);
+                    .SingleOrDefault(category => category.Name.Replace(" ", "-").ToLower() == CategoryName);
                 сategoryOrSubcategoryPredicateForModel = productModel => productModel.Subcategory.Id == currentSubcategory.Id;
                 сategoryOrSubcategoryPredicateForArticle = productArticle => productArticle.Model.Subcategory.Id == currentSubcategory.Id;
                 if (currentSubcategory is null || currentCategory is null || currentSubcategory.Category.Id != currentCategory.Id)
@@ -88,11 +88,11 @@ namespace WebStore.Pages.Products
                     сategoryOrSubcategoryPredicateForArticle = productArticle => false;
                 }
             }
-            else if (!string.IsNullOrEmpty(CategoryName))
+            else if (!string.IsNullOrWhiteSpace(CategoryName))
             {
                 currentCategory = Db.Categories
                     .AsNoTracking()
-                    .SingleOrDefault(category => category.Name == CategoryName);
+                    .SingleOrDefault(category => category.Name.Replace(" ", "-").ToLower() == CategoryName);
                 сategoryOrSubcategoryPredicateForModel = productModel => productModel.Subcategory.Category.Id == currentCategory.Id;
                 сategoryOrSubcategoryPredicateForArticle = productArticle => productArticle.Model.Subcategory.Category.Id == currentCategory.Id;
                 if (currentCategory is null)

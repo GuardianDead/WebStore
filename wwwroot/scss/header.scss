@@ -77,26 +77,16 @@
 .category {
     &__link {
         display: flex;
-        align-items: stretch;
+        align-items: center;
         justify-content: center;
         cursor: pointer;
+        font-size: 1.2em;
+        border-bottom: 0.15em solid white;
+        text-decoration: none;
 
-        a {
-            display: flex;
-            align-items: center;
-            font-size: 1.2em;
-            color: black;
-            border-bottom: 0.15em solid white;
-            text-decoration: none;
-
-            h3 {
-                margin: 0;
-            }
-
-            &:hover {
-                transition: 0.2s;
-                border-bottom: 0.15em solid black;
-            }
+        &:hover {
+            transition: 0.2s;
+            border-bottom: 0.15em solid black;
         }
     }
 }
@@ -151,6 +141,7 @@
             align-items: center;
             max-width: 10em;
             padding-left: 2.4em;
+            padding-right: 1em;
             min-height: 2.4em;
             font-size: 1.15em;
             background-color: rgb(240, 240, 240);

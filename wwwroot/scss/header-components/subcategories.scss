@@ -29,18 +29,10 @@
    }
 }
 .subcategory {
-   a{
-      color: rgb(133, 133, 133);
-      
-      h3{
-         margin: 0;
-      }
-   }
-   &:hover{
-      a{
-         h3{
-            color: black;
-         }
-      }
-   }
+    color: rgb(133, 133, 133);
+    cursor: pointer;
+
+    &:hover {
+        color: black;
+    }
 }
