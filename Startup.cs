@@ -3,9 +3,11 @@ using Blazored.SessionStorage;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO.Compression;
 using WebStore.Configurations;
 using WebStore.Services;
 using WebStore.Services.Interfaces;
@@ -25,7 +27,7 @@ namespace WebStore
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(optins => optins.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
+            services.AddMvc(optiîns => optiîns.Filters.Add(new AutoValidateAntiforgeryTokenAttribute()));
             services.AddServerSideBlazor();
             services.AddAdvancedDependencyInjection();
             services.AddBlazoredLocalStorage();
@@ -38,7 +40,10 @@ namespace WebStore
             if (Env.IsDevelopment())
                 services.AddAppMockDependencies();
 
-            services.AddWMBSC(false);
+            services.AddResponseCompression(options => options.EnableForHttps = true);
+            services.Configure<BrotliCompressionProviderOptions>(options => options.Level = CompressionLevel.Fastest);
+
+            services.AddWMBSC(true);
             services.AddHttpContextAccessor();
         }
 
@@ -63,6 +68,8 @@ namespace WebStore
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseResponseCompression();
 
             app.UseEndpoints(endpoints =>
             {

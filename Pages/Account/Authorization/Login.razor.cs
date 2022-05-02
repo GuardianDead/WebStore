@@ -40,6 +40,7 @@ namespace WebStore.Pages.Account.Authorization
         {
             LoginViewModel.ReturnUrl = string.IsNullOrEmpty(ReturnUrl) ? NavigationManager.BaseUri : ReturnUrl;
             currentUserState = (await AuthenticationStateTask).User;
+
             if (currentUserState.Identity.IsAuthenticated)
                 NavigationManager.NavigateTo(LoginViewModel.ReturnUrl, true);
 
