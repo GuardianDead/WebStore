@@ -12,10 +12,10 @@
                 @foreach (var category in categories)
                 {
                     <li class="navbar-mobile__link">
-                        <a href="/products/catalog/@category.Name" aria-label="Перейти в раздел товаров с категорией @category.Name"><h3>@category.Name</h3></a>
-                        <a class="link__arrow" @onclick="() => OpenSubcategorySideNavigationAsync(category)" aria-label="Перейти в раздел подкатегорий категории @category.Name">
+                        <h3 @onclick="() => GoToProductCatalog(category.Name)" aria-label="Перейти в раздел товаров с категорией @category.Name">@category.Name</h3>
+                        <span class="link__arrow" @onclick="() => OpenSubcategorySideNavigationAsync(category)" aria-label="Перейти в раздел подкатегорий категории @category.Name">
                             <img src="/icons/sidebar/White-right-arrow-category.svg" alt="Иконка белой стрелки вправо" title="Перейти в раздел подкатегорий категории @category.Name">
-                        </a>
+                        </span>
                     </li>
                 }
             }
@@ -28,7 +28,7 @@
             {
                 @foreach (var subcategory in selectedCategory.Subcategories)
                 {
-                    <li class="navbar-mobile__link"><a href="/products/catalog/@subcategory.Category.Name/@subcategory.Name" aria-label="Перейти в раздел товаров с подкатегорией @subcategory.Name"><h3>@subcategory.Name</h3></a></li>
+                    <h3 class="navbar-mobile__link" @onclick="() => GoToProductCatalog(subcategory.Category.Name, subcategory.Name)" aria-label="Перейти в раздел товаров с подкатегорией @subcategory.Category.Name">@subcategory.Name</h3>
                 }
             }
         </ul>

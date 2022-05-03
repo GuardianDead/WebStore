@@ -10,6 +10,7 @@ namespace WebStore.Pages.Shared.Layout
 {
     public class MainLayoutBase : LayoutComponentBase
     {
+        [Inject] public NavigationManager NavigationManager { get; set; }
         [Inject] public IJSRuntime JSRuntime { get; set; }
         [Inject] public AppDbContext Db { get; set; }
 
@@ -25,12 +26,25 @@ namespace WebStore.Pages.Shared.Layout
 
         protected override async Task OnInitializedAsync()
         {
+            await JSRuntime.InvokeVoidAsync("SetMainLayouteDotnetReference", DotNetObjectReference.Create(this)).AsTask();
+
             categories = await Db.Categories
                 .AsNoTracking()
                 .Include(category => category.Subcategories)
                 .ToListAsync();
+        }
 
-            await JSRuntime.InvokeVoidAsync("SetMainLayouteDotnetReference", DotNetObjectReference.Create(this)).AsTask();
+        public void NavigateTo(string path) => NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}{path}", true);
+        public void GoToProductCatalog(string categoryName)
+        {
+            NavigateTo(@$"/products/catalog/{categoryName}".Replace(" ", "-").ToLower());
+            CloseCategorySideNavigation();
+        }
+        public void GoToProductCatalog(string categoryName, string SubcategoryName)
+        {
+            NavigateTo(@$"/products/catalog/{categoryName}/{SubcategoryName}".Replace(" ", "-").ToLower());
+            CloseCategorySideNavigation();
+            CloseSubcategorySideNavigation();
         }
 
         [JSInvokable("СancelCategorySideNavigationIsScroling")]
