@@ -69,7 +69,7 @@ namespace WebStore.Pages.Account.Authorization
             if (editContextValidateResult)
                 Errors.AddRange(editContext.GetValidationMessages().Select(error => new ValidationFailure("Form", error)));
 
-            ValidationResult validateResult = LoginViewModelValidator.Validate(LoginViewModel);
+            ValidationResult validateResult = await LoginViewModelValidator.ValidateAsync(LoginViewModel);
             if (!validateResult.IsValid)
             {
                 IEnumerable<ValidationFailure> emailErrors = validateResult.Errors.Where(error => error.PropertyName == "Email");

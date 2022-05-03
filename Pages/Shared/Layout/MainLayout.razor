@@ -24,9 +24,9 @@
     <nav id="mySidenav-subcaregories" class="sidenav @(ClassWightSubcategorySideNavigation)">
         <a class="returnbtn @(ReturnButtonIsScroling ? "scroling" : string.Empty)" @onclick="CloseSubcategorySideNavigation" aria-label="Закрыть боковое меню подкатегорий"><img src="/icons/sidebar/White-right-arrow.svg" alt="Иконка белой стрелки вправо" title="Вернутся назад"></a>
         <ul class="sidenav__navbar-mobile">
-            @if (selectedSubcaregories is not null)
+            @if (selectedCategory is not null)
             {
-                @foreach (var subcategory in selectedSubcaregories)
+                @foreach (var subcategory in selectedCategory.Subcategories)
                 {
                     <li class="navbar-mobile__link"><a href="/products/catalog/@subcategory.Category.Name/@subcategory.Name" aria-label="Перейти в раздел товаров с подкатегорией @subcategory.Name"><h3>@subcategory.Name</h3></a></li>
                 }

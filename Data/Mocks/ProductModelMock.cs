@@ -42,14 +42,14 @@ namespace WebStore.Data.Mocks.ProductModelMock
 
             var productModelsMainPhotos = new List<byte[]>()
             {
-                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\NIKE Air Zoom Pegasus.jfif",cancellationToken)),
-                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K.jpg",cancellationToken)),
-                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Джинсы Levi's 514™ Straight (Big & Tall).jfif",cancellationToken)),
-                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Брюки KORPO COLLEZIONI.png",cancellationToken)),
-                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Зимняя куртка мужская SHARK FORCE 21013.jfif",cancellationToken)),
-                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Пальто Tom Farr.jfif",cancellationToken)),
-                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Кепка мужская Denkor Восьмиклинка-Хулиганка.jfif",cancellationToken)),
-                PhotoEditorService.MakeBackgroundTrancparent(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Шляпа ARMANI.jfif",cancellationToken)),
+                await PhotoEditorService.MakeBackgroundTrancparentAsync(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\NIKE Air Zoom Pegasus.jfif",cancellationToken)),
+                await PhotoEditorService.MakeBackgroundTrancparentAsync(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Ботинки для девочек adidas Terrex Trailmaker Mid R.RDY K.jpg",cancellationToken)),
+                await PhotoEditorService.MakeBackgroundTrancparentAsync(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Джинсы Levi's 514™ Straight (Big & Tall).jfif",cancellationToken)),
+                await PhotoEditorService.MakeBackgroundTrancparentAsync(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Брюки KORPO COLLEZIONI.png",cancellationToken)),
+                await PhotoEditorService.MakeBackgroundTrancparentAsync(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Зимняя куртка мужская SHARK FORCE 21013.jfif",cancellationToken)),
+                await PhotoEditorService.MakeBackgroundTrancparentAsync(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Пальто Tom Farr.jfif",cancellationToken)),
+                await PhotoEditorService.MakeBackgroundTrancparentAsync(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Кепка мужская Denkor Восьмиклинка-Хулиганка.jfif",cancellationToken)),
+                await PhotoEditorService.MakeBackgroundTrancparentAsync(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Шляпа ARMANI.jfif",cancellationToken)),
             };
             var productModelsPhotos = new List<List<byte[]>>()
             {

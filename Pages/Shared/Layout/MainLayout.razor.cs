@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Data;
 using WebStore.Data.Entities;
@@ -21,19 +20,14 @@ namespace WebStore.Pages.Shared.Layout
         public bool ReturnButtonIsScroling { get; set; }
         public bool CategorySideNavigationIsScroling { get; set; }
 
-        public static List<Subcategory> subcategories;
-        public static List<Category> categories;
-        public static Category selectedCategory;
-        public static List<Subcategory> selectedSubcaregories;
+        public List<Category> categories;
+        public Category selectedCategory;
 
         protected override async Task OnInitializedAsync()
         {
             categories = await Db.Categories
                 .AsNoTracking()
-                .ToListAsync();
-            subcategories = await Db.Subcategories
-                .AsNoTracking()
-                .Include(x => x.Category)
+                .Include(category => category.Subcategories)
                 .ToListAsync();
 
             await JSRuntime.InvokeVoidAsync("SetMainLayouteDotnetReference", DotNetObjectReference.Create(this)).AsTask();
@@ -97,17 +91,14 @@ namespace WebStore.Pages.Shared.Layout
             var currentWindowInnerWidth = await JSRuntime.InvokeAsync<int>("getCurrentWindowInnerWidth");
             ClassWightSubcategorySideNavigation = currentWindowInnerWidth <= 420 ? "expand100" : "expand75";
             selectedCategory = category;
-            selectedSubcaregories = subcategories.Where(subcategory => subcategory.Category.Id == category.Id).ToList();
             StateHasChanged();
         }
         [JSInvokable]
         public void CloseSubcategorySideNavigation()
         {
             selectedCategory = null;
-            selectedSubcaregories = null;
             ClassWightSubcategorySideNavigation = "close";
             StateHasChanged();
         }
-
     }
 }

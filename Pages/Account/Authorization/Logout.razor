@@ -1,4 +1,4 @@
-﻿@page "/account/authorization/logout/{returnUrl?}"
+﻿@page "/account/authorization/logout/{*returnUrl}"
 @attribute [Authorize]
 @code{
     [Parameter] public string ReturnUrl { get; set; }
@@ -8,7 +8,7 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        ReturnUrl = string.IsNullOrWhiteSpace(ReturnUrl) ? NavigationManager.BaseUri : ReturnUrl.Replace('$', '/'); // Костыль, требуется заменить символы '/' на '$' в возвращаемом URL адресе при его отправке и наоборот
+        ReturnUrl = string.IsNullOrWhiteSpace(ReturnUrl) ? NavigationManager.BaseUri : ReturnUrl;
         await TokenAuthenticationStateService.LogoutAuthenticationStateAsync();
         NavigationManager.NavigateTo(ReturnUrl, true);
     }

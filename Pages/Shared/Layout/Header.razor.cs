@@ -39,7 +39,7 @@ namespace WebStore.Pages.Shared.Layout
         protected override async Task OnInitializedAsync()
         {
             await JSRuntime.InvokeVoidAsync("SetHeaderDotnetReference", DotNetObjectReference.Create(this));
-            returnUrl = NavigationManager.Uri;
+            returnUrl = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "");
             currentUserState = (await AuthenticationStateTask).User;
             if (currentUserState.Identity.IsAuthenticated)
             {
@@ -57,8 +57,8 @@ namespace WebStore.Pages.Shared.Layout
         }
 
         public void NavigateTo(string path) => NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}{path}", true);
-        public int CountFavoriteProducts() => currentUser.FavoriteList.Products.Count();
-        public int CountCartProducts() => currentUser.Cart.Products.Count();
+        public int CountFavoriteProducts() => currentUser.FavoriteList.Products.Count;
+        public int CountCartProducts() => currentUser.Cart.Products.Count;
 
         [JSInvokable]
         public void СancelHeaderScrolling()

@@ -28,7 +28,6 @@ namespace WebStore.Data
                 i.Property(o => o.Photos).HasJsonValueConversion();
                 i.Property(o => o.Features).HasJsonValueConversion();
                 i.Property(o => o.Materials).HasJsonValueConversion();
-                i.Property(o => o.Photos).HasJsonValueConversion();
             });
             builder.Entity<OrderProduct>(i =>
             {

@@ -86,7 +86,7 @@ namespace WebStore.Pages.Account
             Errors.Clear();
 
             bool editContextValidateResult = editContext.Validate();
-            ValidationResult validateResult = OrderRegistrationViewModelValidator.Validate(OrderRegistrationViewModel);
+            ValidationResult validateResult = await OrderRegistrationViewModelValidator.ValidateAsync(OrderRegistrationViewModel);
             if (editContextValidateResult)
                 Errors.AddRange(editContext.GetValidationMessages().Select(error => new ValidationFailure("Form", error)));
             if (!validateResult.IsValid)
@@ -130,6 +130,7 @@ namespace WebStore.Pages.Account
 
             currentUser.OrderHistory.Orders.Add(order);
             currentUser.Cart.Products.RemoveAll(cartProduct => cartProduct.IsSelected);
+            Db.Products.RemoveRange(order.Products.ConvertAll(orderProduct => orderProduct.Product));
 
             if (await Db.SaveChangesAsync() != -1)
                 NavigationManager.NavigateTo($"{NavigationManager.BaseUri}account/orders", true);
