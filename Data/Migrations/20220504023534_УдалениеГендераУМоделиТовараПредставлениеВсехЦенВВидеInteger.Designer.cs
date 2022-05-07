@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebStore.Data;
 
@@ -11,9 +12,10 @@ using WebStore.Data;
 namespace WebStore.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220504023534_УдалениеГендераУМоделиТовараПредставлениеВсехЦенВВидеInteger")]
+    partial class УдалениеГендераУМоделиТовараПредставлениеВсехЦенВВидеInteger
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,7 +157,7 @@ namespace WebStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Addresses", (string)null);
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.Cart", b =>
@@ -168,7 +170,7 @@ namespace WebStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Carts", (string)null);
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.CartProduct", b =>
@@ -198,7 +200,7 @@ namespace WebStore.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.ToTable("CartProducts", (string)null);
+                    b.ToTable("CartProducts");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.Category", b =>
@@ -215,7 +217,7 @@ namespace WebStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.Delivery", b =>
@@ -242,7 +244,7 @@ namespace WebStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Deliveries", (string)null);
+                    b.ToTable("Deliveries");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.FavoriteList", b =>
@@ -255,7 +257,7 @@ namespace WebStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FavoriteLists", (string)null);
+                    b.ToTable("FavoriteLists");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.FavoriteProduct", b =>
@@ -279,7 +281,7 @@ namespace WebStore.Migrations
 
                     b.HasIndex("FavoriteListId");
 
-                    b.ToTable("FavoriteProducts", (string)null);
+                    b.ToTable("FavoriteProducts");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.Order", b =>
@@ -336,7 +338,7 @@ namespace WebStore.Migrations
 
                     b.HasIndex("OrderHistoryId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.OrderHistory", b =>
@@ -349,7 +351,7 @@ namespace WebStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderHistories", (string)null);
+                    b.ToTable("OrderHistories");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.OrderProduct", b =>
@@ -374,7 +376,7 @@ namespace WebStore.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderProducts", (string)null);
+                    b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.Product", b =>
@@ -391,7 +393,7 @@ namespace WebStore.Migrations
 
                     b.HasIndex("ArticleId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.ProductArticle", b =>
@@ -415,7 +417,7 @@ namespace WebStore.Migrations
 
                     b.HasIndex("ModelId");
 
-                    b.ToTable("ProductArticles", (string)null);
+                    b.ToTable("ProductArticles");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.ProductModel", b =>
@@ -468,7 +470,7 @@ namespace WebStore.Migrations
 
                     b.HasIndex("SubcategoryId");
 
-                    b.ToTable("ProductModels", (string)null);
+                    b.ToTable("ProductModels");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.Role", b =>
@@ -521,7 +523,7 @@ namespace WebStore.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Subcategories", (string)null);
+                    b.ToTable("Subcategories");
                 });
 
             modelBuilder.Entity("WebStore.Data.Entities.User", b =>

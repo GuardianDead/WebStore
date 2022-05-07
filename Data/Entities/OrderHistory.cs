@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebStore.Data.Entities
 {
@@ -8,9 +9,12 @@ namespace WebStore.Data.Entities
     {
         [Key]
         [Required]
-        [DisplayName("Номер")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DisplayName("Индификатор")]
         public int Id { get; init; }
+
         [Required]
+        [Display(AutoGenerateField = false)]
         [DisplayName("Заказы")]
         public List<Order> Orders { get; set; }
 
@@ -20,6 +24,11 @@ namespace WebStore.Data.Entities
         public OrderHistory(List<Order> orders)
         {
             Orders = orders;
+        }
+
+        public override string ToString()
+        {
+            return Id.ToString();
         }
     }
 }

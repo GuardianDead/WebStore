@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using WebStore.Domain.Types;
 
 namespace WebStore.Data.Entities
@@ -10,7 +11,8 @@ namespace WebStore.Data.Entities
     {
         [Key]
         [Required]
-        [DisplayName("Индификатор пользователя")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DisplayName("Индификатор")]
         public override int Id { get; set; }
         [DisplayName("Имя")]
         public string Firstname { get; set; }
@@ -19,24 +21,21 @@ namespace WebStore.Data.Entities
         [DisplayName("Отчество")]
         public string Lastname { get; set; }
         [DisplayName("Дата рождения")]
+        [Display(Name = "Дата рождения")]
         [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
-        [DisplayName("Гендер")]
+        [DisplayName("Пол")]
+        [Display(Name = "Пол")]
         [EnumDataType(typeof(GenderType))]
         public GenderType? Gender { get; set; }
         [Required]
-        [DisplayName("История заказов")]
-        public OrderHistory OrderHistory { get; set; }
-        [Required]
-        [DisplayName("Избранное")]
-        public FavoriteList FavoriteList { get; set; }
-        [Required]
-        [DisplayName("Корзина")]
-        public Cart Cart { get; set; }
-        [Required]
         [DisplayName("Время создания")]
+        [Display(Name = "Дата создания")]
         [DataType(DataType.DateTime)]
-        public DateTime DateTimeCreation { get; private init; }
+        public DateTime DateTimeCreation { get; init; }
+        [DisplayName("Окончание блокировки")]
+        [Display(Name = "Окончание блокировки")]
+        public override DateTimeOffset? LockoutEnd { get; set; }
         [DisplayName("Номер телефона")]
         [DataType(DataType.PhoneNumber)]
         [Phone]
@@ -49,8 +48,30 @@ namespace WebStore.Data.Entities
         [Required]
         [DisplayName("Логин")]
         public override string UserName { get; set; }
+
+        [DisplayName("История заказов")]
+        [Display(AutoGenerateField = false)]
+        public int OrderHistoryId { get; set; }
+        [Required]
+        [DisplayName("История заказов")]
+        public OrderHistory OrderHistory { get; set; }
+        [DisplayName("Избранное")]
+        [Display(AutoGenerateField = false)]
+        public int FavoriteListId { get; set; }
+        [Required]
+        [DisplayName("Избранное")]
+        public FavoriteList FavoriteList { get; set; }
+        [DisplayName("Корзины")]
+        [Display(AutoGenerateField = false)]
+        public int CartId { get; set; }
+        [Required]
+        [DisplayName("Корзина")]
+        public Cart Cart { get; set; }
         [DisplayName("Адрес")]
-        public Address Address { get; set; }
+        [Display(AutoGenerateField = false)]
+        public int? AddressId { get; set; }
+        [DisplayName("Адрес")]
+        public Address? Address { get; set; }
 
         public User()
         {

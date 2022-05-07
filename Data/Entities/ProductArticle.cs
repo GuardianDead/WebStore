@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebStore.Data.Entities
 {
@@ -8,17 +9,22 @@ namespace WebStore.Data.Entities
     {
         [Key]
         [Required]
-        [DisplayName("Номер")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DisplayName("Индификатор")]
         public string Id { get; init; }
-        [Required]
-        [DisplayName("Модель")]
-        public ProductModel Model { get; set; }
         [Required]
         [DisplayName("Размер")]
         public int Size { get; set; }
         [Required]
         [DisplayName("Цвет")]
         public string Color { get; set; }
+
+        [DisplayName("Модель")]
+        [Display(AutoGenerateField = false)]
+        public string ModelId { get; set; }
+        [Required]
+        [DisplayName("Модель")]
+        public ProductModel Model { get; set; }
 
         public ProductArticle()
         {
@@ -29,6 +35,11 @@ namespace WebStore.Data.Entities
             Model = model;
             Size = size;
             Color = color;
+        }
+
+        public override string ToString()
+        {
+            return Id;
         }
     }
 }

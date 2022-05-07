@@ -30,8 +30,8 @@ namespace WebStore.Pages.Account
         public bool IsEmailInputValid { get; set; } = true;
         public bool IsPasswordInputValid { get; set; } = true;
 
-        public decimal deliveryCost;
-        public decimal productsCost;
+        public int deliveryCost;
+        public int productsCost;
         public User currentUser;
         public ClaimsPrincipal currentUserState;
         public OrderRegistrationViewModel OrderRegistrationViewModel { get; set; } = new OrderRegistrationViewModel()
@@ -41,7 +41,7 @@ namespace WebStore.Pages.Account
         public List<ValidationFailure> Errors { get; set; } = new List<ValidationFailure>();
 
 
-        public List<Delivery> allDeliviries;
+        public List<Delivery> allDeliveries;
         public List<Delivery> selectedDeliveries;
         public DeliveryMethodType[] AllDeliveryMethods = Enum.GetValues<DeliveryMethodType>();
         public PaymentMethodType[] AllPaymentMethods = Enum.GetValues<PaymentMethodType>();
@@ -58,7 +58,7 @@ namespace WebStore.Pages.Account
             productsCost = currentUser.Cart.Products
                 .Where(cartProduct => cartProduct.IsSelected)
                 .Sum(cartProduct => cartProduct.Article.Model.Price * cartProduct.Count);
-            allDeliviries = await Db.Deliveries.ToListAsync();
+            allDeliveries = await Db.Deliveries.ToListAsync();
         }
 
         public void SelectPaymentMethod(PaymentMethodType paymentMethod)
@@ -70,7 +70,7 @@ namespace WebStore.Pages.Account
         {
             Errors.Clear();
             OrderRegistrationViewModel.DeliveryMethod = deliveryMethod;
-            selectedDeliveries = allDeliviries.Where(delivery => delivery.DeliveryMethod == OrderRegistrationViewModel.DeliveryMethod).ToList();
+            selectedDeliveries = allDeliveries.Where(delivery => delivery.DeliveryMethod == OrderRegistrationViewModel.DeliveryMethod).ToList();
             OrderRegistrationViewModel.Delivery = null;
             deliveryCost = 0;
         }

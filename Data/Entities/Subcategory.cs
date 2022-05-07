@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebStore.Data.Entities
 {
@@ -7,11 +8,16 @@ namespace WebStore.Data.Entities
     {
         [Key]
         [Required]
-        [DisplayName("Номер")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DisplayName("Индификатор")]
         public int Id { get; init; }
         [Required]
         [DisplayName("Название")]
         public string Name { get; set; }
+
+        [DisplayName("Категория")]
+        [Display(AutoGenerateField = false)]
+        public int CategoryId { get; set; }
         [Required]
         [DisplayName("Категория")]
         public Category Category { get; set; }
@@ -23,6 +29,11 @@ namespace WebStore.Data.Entities
         {
             Name = name;
             Category = category;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

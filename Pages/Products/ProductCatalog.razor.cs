@@ -115,10 +115,10 @@ namespace WebStore.Pages.Products
             selectedProductsModels = currentProductModelsQuery.AsNoTracking().Take(chunkProductModels).ToList();
             ProductModelsIsLoading = false;
 
-            if (selectedProductsModels.Count() != 0)
+            if (selectedProductsModels.Any())
             {
-                minPrice = Math.Round(currentProductModelsQuery.AsNoTracking().Min(productModel => productModel.Price));
-                maxPrice = Math.Round(currentProductModelsQuery.AsNoTracking().Max(productModel => productModel.Price));
+                minPrice = currentProductModelsQuery.AsNoTracking().Min(productModel => productModel.Price);
+                maxPrice = currentProductModelsQuery.AsNoTracking().Max(productModel => productModel.Price);
             }
 
             CurrentPage = 1;
@@ -256,12 +256,12 @@ namespace WebStore.Pages.Products
             if (minPrice != 0 && maxPrice != 0)
                 productModelsQuery = productModelsQuery.Where(productModel => productModel.Price >= ProductCatalogViewModel.MinPrice && productModel.Price <= ProductCatalogViewModel.MaxPrice);
 
-            if (ProductCatalogViewModel.SelectedBrands.Count() != 0)
+            if (ProductCatalogViewModel.SelectedBrands.Any())
                 productModelsQuery = productModelsQuery.Where(productModel => ProductCatalogViewModel.SelectedBrands.Contains(productModel.Brand));
-            if (ProductCatalogViewModel.SelectedColors.Count() != 0)
-                productModelsQuery = productModelsQuery.Where(productModel => productModel.Articles.Any(productArticle => ProductCatalogViewModel.SelectedColors.Contains(productArticle.Color)));
-            if (ProductCatalogViewModel.SelectedSizes.Count() != 0)
-                productModelsQuery = productModelsQuery.Where(productModel => productModel.Articles.Any(productArticle => ProductCatalogViewModel.SelectedSizes.Contains(productArticle.Size)));
+            if (ProductCatalogViewModel.SelectedColors.Any())
+                productModelsQuery = productModelsQuery.Where(productModel => productModel.ProductArticles.Any(productArticle => ProductCatalogViewModel.SelectedColors.Contains(productArticle.Color)));
+            if (ProductCatalogViewModel.SelectedSizes.Any())
+                productModelsQuery = productModelsQuery.Where(productModel => productModel.ProductArticles.Any(productArticle => ProductCatalogViewModel.SelectedSizes.Contains(productArticle.Size)));
 
             if (ProductCatalogViewModel.SortProductsType == SortProductsType.AscendingPrices)
                 productModelsQuery = productModelsQuery.OrderBy(productModel => productModel.Price);
@@ -275,7 +275,7 @@ namespace WebStore.Pages.Products
         {
             if (currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Model.Id == productModel.Id))
                 return;
-            var addedFirstProductArticleOfModel = Db.ProductArticles.First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Count(product => product.Article.Id == productArticle.Id) != 0);
+            var addedFirstProductArticleOfModel = Db.ProductArticles.First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Any(product => product.Article.Id == productArticle.Id));
             currentUser.Cart.Products.Add(new CartProduct(addedFirstProductArticleOfModel, 1));
             Db.SaveChanges();
         }
@@ -283,7 +283,7 @@ namespace WebStore.Pages.Products
         {
             if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                 return;
-            var addedFirstProductArticleOfModel = Db.ProductArticles.First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Count(product => product.Article.Id == productArticle.Id) != 0);
+            var addedFirstProductArticleOfModel = Db.ProductArticles.First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Any(product => product.Article.Id == productArticle.Id));
             currentUser.FavoriteList.Products.Add(new FavoriteProduct(addedFirstProductArticleOfModel));
             Db.SaveChanges();
         }
@@ -318,10 +318,10 @@ namespace WebStore.Pages.Products
             StateHasChanged();
             selectedProductsModels = currentProductModelsQuery.AsNoTracking().Take(chunkProductModels).ToList();
             ProductModelsIsLoading = false;
-            if (selectedProductsModels.Count() != 0)
+            if (selectedProductsModels.Any())
             {
-                minPrice = Math.Round(currentProductModelsQuery.AsNoTracking().Min(productModel => productModel.Price));
-                maxPrice = Math.Round(currentProductModelsQuery.AsNoTracking().Max(productModel => productModel.Price));
+                minPrice = currentProductModelsQuery.AsNoTracking().Min(productModel => productModel.Price);
+                maxPrice = currentProductModelsQuery.AsNoTracking().Max(productModel => productModel.Price);
 
                 CurrentPage = 1;
                 MaxPage = selectedProductsModels.Count() / chunkProductModels;
@@ -335,7 +335,7 @@ namespace WebStore.Pages.Products
 
             bool editContextValidateIsValid = editContext.Validate();
             if (!editContextValidateIsValid)
-                new Exception("Валидация формы фильтров закончилась неуспешно, подробнее об ошибках:" + string.Join(" ; ", editContext.GetValidationMessages()));
+                throw new Exception("Валидация формы фильтров закончилась неуспешно, подробнее об ошибках:" + string.Join(" ; ", editContext.GetValidationMessages()));
         }
     }
 }

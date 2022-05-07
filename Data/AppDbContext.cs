@@ -17,7 +17,6 @@ namespace WebStore.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<User>().Property(o => o.Gender).HasConversion(new EnumToStringConverter<GenderType>());
-            builder.Entity<ProductModel>().Property(o => o.Gender).HasConversion(new EnumToStringConverter<GenderType>());
             builder.Entity<Order>().Property(o => o.PaymentMethod).HasConversion(new EnumToStringConverter<PaymentMethodType>());
             builder.Entity<Order>().Property(o => o.Status).HasConversion(new EnumToStringConverter<OrderStatusType>());
             builder.Entity<Delivery>().Property(o => o.DeliveryMethod).HasConversion(new EnumToStringConverter<DeliveryMethodType>());
@@ -33,10 +32,6 @@ namespace WebStore.Data
             {
                 i.Property(o => o.Product).HasJsonValueConversion();
             });
-
-            builder.Entity<Delivery>().Property(p => p.Cost).HasColumnType("decimal(18,4)");
-            builder.Entity<Order>().Property(p => p.TotalCost).HasColumnType("decimal(18,4)");
-            builder.Entity<ProductModel>().Property(p => p.Price).HasColumnType("decimal(18,4)");
 
             base.OnModelCreating(builder);
         }

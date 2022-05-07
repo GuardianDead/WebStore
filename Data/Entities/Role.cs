@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebStore.Data.Entities
 {
@@ -8,7 +9,8 @@ namespace WebStore.Data.Entities
     {
         [Key]
         [Required]
-        [DisplayName("Номер")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DisplayName("Индификатор")]
         public override int Id { get; set; }
         [Required]
         [DisplayName("Название")]
@@ -19,7 +21,12 @@ namespace WebStore.Data.Entities
         }
         public Role(string name)
         {
-            this.Name = name;
+            Name = name;
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

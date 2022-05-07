@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using WebStore.Data.Entities;
-using WebStore.Domain.Types;
 using WebStore.Services;
 
 namespace WebStore.Data.Mocks.ProductModelMock
@@ -115,9 +114,8 @@ namespace WebStore.Data.Mocks.ProductModelMock
                      price: 9990,
                      daysGuarantee: 365,
                      countryManufacturer: "США",
-                     userGenderType: GenderType.Man,
                      brand: "Nike",
-                     productSubcategory: subcategory,
+                     subcategory: subcategory,
                      mainPhoto: productModelsMainPhotos[0],
                      features: new Dictionary<string, string>()
                      {
@@ -137,9 +135,8 @@ namespace WebStore.Data.Mocks.ProductModelMock
                       price: 7399,
                       daysGuarantee: 180,
                       countryManufacturer: "Вьетнам",
-                      userGenderType: GenderType.Woman,
                       brand: "Adidas",
-                      productSubcategory: subcategory,
+                      subcategory: subcategory,
                       mainPhoto: productModelsMainPhotos[1],
                       features: new Dictionary<string, string>()
                       {
@@ -160,9 +157,8 @@ namespace WebStore.Data.Mocks.ProductModelMock
                       price: 5673,
                       daysGuarantee: 300,
                       countryManufacturer: "США",
-                      userGenderType: GenderType.Woman,
                       brand: "Levi's",
-                      productSubcategory: subcategory,
+                      subcategory: subcategory,
                       mainPhoto: productModelsMainPhotos[2],
                       features: new Dictionary<string, string>()
                       {
@@ -186,9 +182,8 @@ namespace WebStore.Data.Mocks.ProductModelMock
                       price: 6560,
                       daysGuarantee: 600,
                       countryManufacturer: "Италия",
-                      userGenderType: GenderType.Woman,
                       brand: "KORPO",
-                      productSubcategory: subcategory,
+                      subcategory: subcategory,
                       mainPhoto: productModelsMainPhotos[3],
                       features: new Dictionary<string, string>()
                       {
@@ -211,9 +206,8 @@ namespace WebStore.Data.Mocks.ProductModelMock
                       price: 19080,
                       daysGuarantee: 365 * 3,
                       countryManufacturer: "Пекин",
-                      userGenderType: GenderType.Man,
                       brand: "SHARK FORCE",
-                      productSubcategory: subcategory,
+                      subcategory: subcategory,
                       mainPhoto: productModelsMainPhotos[4],
                       features: new Dictionary<string, string>(),
                       materials: new List<string>(),
@@ -226,9 +220,8 @@ namespace WebStore.Data.Mocks.ProductModelMock
                       price: 10890,
                       daysGuarantee: 90,
                       countryManufacturer: "Россия",
-                      userGenderType: GenderType.Woman,
                       brand: "Tom Farr",
-                      productSubcategory: subcategory,
+                      subcategory: subcategory,
                       mainPhoto: productModelsMainPhotos[5],
                       features: new Dictionary<string, string>()
                       {
@@ -248,9 +241,8 @@ namespace WebStore.Data.Mocks.ProductModelMock
                       price: 1190,
                       daysGuarantee: 12,
                       countryManufacturer: "Россия",
-                      userGenderType: GenderType.Man,
                       brand: "Denkor",
-                      productSubcategory: subcategory,
+                      subcategory: subcategory,
                       mainPhoto: productModelsMainPhotos[6],
                       features: new Dictionary<string, string>()
                       {
@@ -269,9 +261,8 @@ namespace WebStore.Data.Mocks.ProductModelMock
                       price: 16730,
                       daysGuarantee: 300,
                       countryManufacturer: "Италия",
-                      userGenderType: GenderType.Man,
                       brand: "ARMANI",
-                      productSubcategory: subcategory,
+                      subcategory: subcategory,
                       mainPhoto: productModelsMainPhotos[7],
                       features: new Dictionary<string, string>(),
                       materials: new List<string>(),

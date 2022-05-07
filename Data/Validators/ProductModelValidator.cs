@@ -37,9 +37,6 @@ namespace WebStore.Validators
                 .NotNull().NotEmpty().WithMessage("Id модели товара не может быть пустая");
             RuleFor(i => i.DateTimeCreation)
                 .NotNull().NotEmpty().WithMessage("Время создания модели товара не может быть пустым");
-            RuleFor(i => i.Gender)
-                .NotNull().WithMessage("Пол модели товара не может быть пустым")
-                .IsInEnum().WithMessage("Пол пользователя должен быть типа 'UserGenderType'");
         }
     }
 }

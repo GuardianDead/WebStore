@@ -126,7 +126,7 @@ namespace WebStore.Pages.Account.Authorization
             if (editContextValidateResult)
                 Errors.AddRange(editContext.GetValidationMessages().Select(error => new ValidationFailure("Form", error)));
 
-            ValidationResult validateResult = RegisterViewModelValidator.Validate(RegisterViewModel);
+            ValidationResult validateResult = await RegisterViewModelValidator.ValidateAsync(RegisterViewModel);
             if (!validateResult.IsValid)
             {
                 IEnumerable<ValidationFailure> emailErrors = validateResult.Errors.Where(error => error.PropertyName == "Email");

@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using WebStore.Domain.Types;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebStore.Data.Entities
 {
@@ -12,28 +12,21 @@ namespace WebStore.Data.Entities
     {
         [Key]
         [Required]
-        [DisplayName("Номер")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DisplayName("Индификатор")]
         public string Id { get; init; }
-        [Required]
-        [DisplayName("Подкатегория")]
-        public Subcategory Subcategory { get; set; }
         [Required]
         [DisplayName("Название")]
         public string Name { get; set; }
         [Required]
         [DisplayName("Цена")]
-        [DataType(DataType.Currency)]
-        public decimal Price { get; set; }
+        public int Price { get; set; }
         [Required]
         [DisplayName("Гарантия (в днях)")]
         public int DaysGuarantee { get; set; }
         [Required]
         [DisplayName("Страна производитель")]
         public string СountryManufacturer { get; set; }
-        [Required]
-        [DisplayName("Пол")]
-        [EnumDataType(typeof(GenderType))]
-        public GenderType Gender { get; set; }
         [Required]
         [DisplayName("Бренд")]
         public string Brand { get; set; }
@@ -56,28 +49,40 @@ namespace WebStore.Data.Entities
         [DisplayName("Дата создания")]
         public DateTime DateTimeCreation { get; set; }
 
-        [JsonIgnore]
         [DisplayName("Подкатегория")]
-        public List<ProductArticle> Articles { get; }
+        [Display(AutoGenerateField = false)]
+        public int SubcategoryId { get; set; }
+        [Required]
+        [DisplayName("Подкатегория")]
+        public Subcategory Subcategory { get; set; }
+
+        [JsonIgnore]
+        [Display(AutoGenerateField = false)]
+        [DisplayName("Подкатегория")]
+        public List<ProductArticle> ProductArticles { get; }
 
         public ProductModel()
         {
         }
-        public ProductModel(string name, decimal price, int daysGuarantee, string countryManufacturer, GenderType userGenderType, string brand, Subcategory productSubcategory, byte[] mainPhoto, Dictionary<string, string> features, List<string> materials, List<byte[]> photos, DateTime dateTimeCreation)
+        public ProductModel(string name, int price, int daysGuarantee, string countryManufacturer, string brand, Subcategory subcategory, byte[] mainPhoto, Dictionary<string, string> features, List<string> materials, List<byte[]> photos, DateTime dateTimeCreation)
         {
             Id = Guid.NewGuid().ToString("N");
             Name = name;
             Price = price;
             DaysGuarantee = daysGuarantee;
             СountryManufacturer = countryManufacturer;
-            Gender = userGenderType;
             Brand = brand;
-            Subcategory = productSubcategory;
+            Subcategory = subcategory;
             MainPhoto = mainPhoto;
             Features = features;
             Materials = materials;
             Photos = photos;
             DateTimeCreation = dateTimeCreation;
+        }
+
+        public override string ToString()
+        {
+            return $"{Id} - {Name}";
         }
     }
 }

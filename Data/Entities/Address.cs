@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebStore.Data.Entities
 {
@@ -7,7 +8,8 @@ namespace WebStore.Data.Entities
     {
         [Key]
         [Required]
-        [DisplayName("Номер")]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [DisplayName("Индификатор")]
         public int Id { get; init; }
         [Required]
         [DisplayName("Страна")]
@@ -36,6 +38,11 @@ namespace WebStore.Data.Entities
             Region = region;
             Street = street;
             PostalCode = postalCode;
+        }
+
+        public override string ToString()
+        {
+            return $"{Id} - {string.Join('-', Country, Region, City, Street, PostalCode)}";
         }
     }
 }

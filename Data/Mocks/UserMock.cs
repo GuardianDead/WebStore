@@ -31,12 +31,8 @@ namespace WebStore.Data.Mocks.UserMock
             if (await db.Users.AnyAsync(cancellationToken))
                 return true;
 
-            List<Order> selectedOrders = await db.Orders
-                .Include(order => order.Address)
-                .Include(order => order.Delivery)
-                .Include(order => order.Products)
-                .Where(order => order.Address.PostalCode == "602267")
-                .ToListAsync(cancellationToken);
+            List<Order> selectedOrders = await db.Orders.ToListAsync(cancellationToken);
+
             var admin = new User(
                     userName: "kakawkawww13",
                     orderHistory: new OrderHistory(Enumerable.Empty<Order>().ToList()),
@@ -77,9 +73,6 @@ namespace WebStore.Data.Mocks.UserMock
             var dbSaveUsersResult = await db.SaveChangesAsync(cancellationToken);
             if (dbSaveUsersResult == -1)
                 throw new NotImplementedException($"Неудалось установить историю заказов для пользователей {receivedAdmin.Email} и {receivedUser.Email}");
-
-            await userValidator.ValidateAndThrowAsync(admin, cancellationToken);
-            await userValidator.ValidateAndThrowAsync(user, cancellationToken);
 
             IdentityResult adminIdentityAddToRoleResult = await userManager.AddToRoleAsync(receivedAdmin, RoleConst.Admin);
             IdentityResult userIdentityAddToRoleResult = await userManager.AddToRoleAsync(receivedUser, RoleConst.User);
