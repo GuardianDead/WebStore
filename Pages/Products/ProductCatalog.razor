@@ -127,7 +127,7 @@
                                                     {
                                                         <span class="image-block__favorite" @onclick="() => AddProductInFavorites(productModel)" aria-label="Иконка для добавления товара @productModel.Name в избранное"><img src="/icons/product-catalog/Heart.svg" alt="Иконка избранного" title="Добавить в избранное @productModel.Name"></span>
                                                     }
-                                                    if (currentUser.Cart.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
+                                                    if (currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Model.Id == productModel.Id))
                                                     {
                                                         <span class="image-block__cart" @onclick="() => RemoveProductFromCart(productModel)" aria-label="Иконка для удаления товара @productModel.Name из корзины"><img src="/icons/product-catalog/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину @productModel.Name"></span>
                                                     }

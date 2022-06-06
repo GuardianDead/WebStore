@@ -45,7 +45,6 @@ namespace WebStore.Pages.Shared.Layout
             {
                 var userEmail = currentUserState.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
                 currentUser = await Db.Users
-                    .AsNoTracking()
                     .Include(user => user.Cart.Products)
                     .Include(user => user.FavoriteList.Products)
                     .SingleAsync(user => user.Email == userEmail);

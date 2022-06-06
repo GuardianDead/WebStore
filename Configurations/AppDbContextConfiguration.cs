@@ -22,6 +22,9 @@ namespace WebStore.Configurations
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.User.RequireUniqueEmail = true;
                 options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireDigit = false;
             })
               .AddEntityFrameworkStores<AppDbContext>()
               .AddDefaultTokenProviders()

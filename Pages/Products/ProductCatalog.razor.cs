@@ -141,21 +141,6 @@ namespace WebStore.Pages.Products
             }
         }
 
-
-        public void PageChange(int newPage)
-        {
-            CurrentPage = newPage;
-            ProductModelsIsLoading = true;
-            StateHasChanged();
-            selectedProductsModels = currentProductModelsQuery
-                .AsNoTracking()
-                .Skip((CurrentPage - 1) * chunkProductModels)
-                .Take(chunkProductModels)
-                .ToList();
-            ProductModelsIsLoading = false;
-        }
-
-
         [JSInvokable]
         public async Task ToogleFilterAsync()
         {
@@ -187,6 +172,54 @@ namespace WebStore.Pages.Products
         {
             BottomFilterIsShow = false;
         }
+
+        public void AddProductInCart(ProductModel productModel)
+        {
+            if (currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Model.Id == productModel.Id))
+                return;
+            var addedFirstProductArticleOfModel = Db.ProductArticles
+                .Include(productArticle => productArticle.Model)
+                .First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Any(product => product.Article.Id == productArticle.Id));
+            currentUser.Cart.Products.Add(new CartProduct(addedFirstProductArticleOfModel, 1));
+            Db.SaveChanges();
+        }
+        public void AddProductInFavorites(ProductModel productModel)
+        {
+            if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
+                return;
+            var addedFirstProductArticleOfModel = Db.ProductArticles
+                .Include(productArticle => productArticle.Model)
+                .First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Any(product => product.Article.Id == productArticle.Id));
+            currentUser.FavoriteList.Products.Add(new FavoriteProduct(addedFirstProductArticleOfModel));
+            Db.SaveChanges();
+        }
+        public void RemoveProductFromCart(ProductModel productModel)
+        {
+            if (!currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Model.Id == productModel.Id))
+                return;
+            currentUser.Cart.Products.RemoveAll(cartProduct => cartProduct.Article.Model.Id == productModel.Id);
+            Db.SaveChanges();
+        }
+        public void RemoveProductFromFavorites(ProductModel productModel)
+        {
+            if (!currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
+                return;
+            currentUser.FavoriteList.Products.RemoveAll(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id);
+            Db.SaveChanges();
+        }
+
+        public void PageChange(int newPage)
+        {
+            CurrentPage = newPage;
+            ProductModelsIsLoading = true;
+            StateHasChanged();
+            selectedProductsModels = currentProductModelsQuery
+                .AsNoTracking()
+                .Skip((CurrentPage - 1) * chunkProductModels)
+                .Take(chunkProductModels)
+                .ToList();
+            ProductModelsIsLoading = false;
+        }
         public async Task ChangeSortProductsAsync(SortProductsType sortProductsType)
         {
             if (ProductCatalogViewModel.SortProductsType == sortProductsType)
@@ -205,7 +238,6 @@ namespace WebStore.Pages.Products
             selectedProductsModels = currentProductModelsQuery.Take(chunkProductModels).ToList();
             ProductModelsIsLoading = false;
         }
-
         public void FillFilters()
         {
             allColorsFilterDictionary = Db.ProductArticles
@@ -269,37 +301,6 @@ namespace WebStore.Pages.Products
                 productModelsQuery = productModelsQuery.OrderByDescending(productModel => productModel.Price);
 
             return productModelsQuery;
-        }
-
-        public void AddProductInCart(ProductModel productModel)
-        {
-            if (currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Model.Id == productModel.Id))
-                return;
-            var addedFirstProductArticleOfModel = Db.ProductArticles.First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Any(product => product.Article.Id == productArticle.Id));
-            currentUser.Cart.Products.Add(new CartProduct(addedFirstProductArticleOfModel, 1));
-            Db.SaveChanges();
-        }
-        public void AddProductInFavorites(ProductModel productModel)
-        {
-            if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
-                return;
-            var addedFirstProductArticleOfModel = Db.ProductArticles.First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Any(product => product.Article.Id == productArticle.Id));
-            currentUser.FavoriteList.Products.Add(new FavoriteProduct(addedFirstProductArticleOfModel));
-            Db.SaveChanges();
-        }
-        public void RemoveProductFromCart(ProductModel productModel)
-        {
-            if (!currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Model.Id == productModel.Id))
-                return;
-            currentUser.Cart.Products.RemoveAll(cartProduct => cartProduct.Article.Model.Id == productModel.Id);
-            Db.SaveChanges();
-        }
-        public void RemoveProductFromFavorites(ProductModel productModel)
-        {
-            if (!currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
-                return;
-            currentUser.FavoriteList.Products.RemoveAll(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id);
-            Db.SaveChanges();
         }
 
         public async Task SubmitFiltersAsync(EditContext editContext)

@@ -60,7 +60,7 @@ namespace WebStore.Services
         public async Task SetAuthenticationStateAsync(AuthenticationState authenticationStateTask, bool rememberUser)
         {
             var claimsPrincipal = authenticationStateTask.User;
-            var user = userManager.GetUserAsync(claimsPrincipal).GetAwaiter().GetResult();
+            var user = await userManager.GetUserAsync(claimsPrincipal);
             if (user is null)
                 throw new ArgumentNullException("Данный пользователь не найден");
 
