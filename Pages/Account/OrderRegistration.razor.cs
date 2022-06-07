@@ -54,6 +54,8 @@ namespace WebStore.Pages.Account
                 .Include(user => user.OrderHistory.Orders)
                 .Include(user => user.Cart.Products)
                     .ThenInclude(cartProduct => cartProduct.Article.Model)
+                .Include(user => user.FavoriteList.Products)
+                    .ThenInclude(favoriteProduct => favoriteProduct.Article.Model)
                 .SingleOrDefaultAsync(user => user.Email == userEmail);
             productsCost = currentUser.Cart.Products
                 .Where(cartProduct => cartProduct.IsSelected)
@@ -133,6 +135,7 @@ namespace WebStore.Pages.Account
             await OrderValidator.ValidateAndThrowAsync(order);
 
             currentUser.OrderHistory.Orders.Add(order);
+            currentUser.FavoriteList.Products.RemoveAll(favoriteProduct => currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Model.Id == favoriteProduct.Article.Model.Id && cartProduct.IsSelected && currentUser.Cart.Products.Count(innerCartProduct => innerCartProduct.Article.Model.Id == cartProduct.Article.Model.Id) == 1));
             currentUser.Cart.Products.RemoveAll(cartProduct => cartProduct.IsSelected);
 
             if (await Db.SaveChangesAsync() != -1)
