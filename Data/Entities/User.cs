@@ -86,5 +86,7 @@ namespace WebStore.Data.Entities
             FavoriteList = favoriteList;
             DateTimeCreation = dateTimeCreation;
         }
+
+        public override string ToString() => Email;
     }
 }

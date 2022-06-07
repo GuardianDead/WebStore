@@ -27,8 +27,11 @@ namespace WebStore.Data.Mocks.OrderMock
                 return true;
 
             var products = await db.Products
-                .Take(9)
                 .Include(product => product.Article.Model.Subcategory.Category)
+                .Include(product => product.Article.Model.Features)
+                .Include(product => product.Article.Model.Photos)
+                .Include(product => product.Article.Model.Materials)
+                .Take(9)
                 .ToListAsync(cancellationToken);
             var selectedProducts = new List<OrderProduct>[]
             {
@@ -89,7 +92,8 @@ namespace WebStore.Data.Mocks.OrderMock
                 await orderValidator.ValidateAndThrowAsync(order, cancellationToken);
 
             await db.Orders.AddRangeAsync(orders, cancellationToken);
-            db.Products.RemoveRange(products);
+            products.ForEach(product => product.IsSold = true);
+            db.UpdateRange(products);
             return await db.SaveChangesAsync(cancellationToken) != -1;
         }
     }

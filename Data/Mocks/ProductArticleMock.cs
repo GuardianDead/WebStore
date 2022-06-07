@@ -27,21 +27,53 @@ namespace WebStore.Data.Mocks.ProductArticleMock
 
             var productModels = new ProductModel[]
             {
-                await db.ProductModels.Include(productModel => productModel.Subcategory.Category)
+                await db.ProductModels
+                    .Include(productModel => productModel.Subcategory.Category)
+                    .Include(productModel => productModel.Features)
+                    .Include(productModel => productModel.Photos)
+                    .Include(productModel => productModel.Materials)
                     .SingleAsync(productModel => productModel.Name == "Кроссовки Nike Air Zoom Pegasus", cancellationToken),
-                await db.ProductModels.Include(productModel => productModel.Subcategory.Category)
+                await db.ProductModels
+                    .Include(productModel => productModel.Subcategory.Category).Include(productModel => productModel.Features)
+                    .Include(productModel => productModel.Features)
+                    .Include(productModel => productModel.Photos)
+                    .Include(productModel => productModel.Materials)
                     .SingleAsync(productModel => productModel.Name == "Ботинки Adidas Terrex Trailmaker Mid R.RDY K", cancellationToken),
-                await db.ProductModels.Include(productModel => productModel.Subcategory.Category)
+                await db.ProductModels
+                    .Include(productModel => productModel.Subcategory.Category)
+                    .Include(productModel => productModel.Features)
+                    .Include(productModel => productModel.Photos)
+                    .Include(productModel => productModel.Materials)
                     .SingleAsync(productModel => productModel.Name == "Джинсы Levi's 514™ Straight (Big & Tall)", cancellationToken),
-                await db.ProductModels.Include(productModel => productModel.Subcategory.Category)
+                await db.ProductModels
+                    .Include(productModel => productModel.Subcategory.Category)
+                    .Include(productModel => productModel.Features)
+                    .Include(productModel => productModel.Photos)
+                    .Include(productModel => productModel.Materials)
                     .SingleAsync(productModel => productModel.Name == "Брюки KORPO COLLEZIONI", cancellationToken),
-                await db.ProductModels.Include(productModel => productModel.Subcategory.Category)
+                await db.ProductModels
+                    .Include(productModel => productModel.Subcategory.Category)
+                    .Include(productModel => productModel.Features)
+                    .Include(productModel => productModel.Photos)
+                    .Include(productModel => productModel.Materials)
                     .SingleAsync(productModel => productModel.Name == "Зимняя куртка SHARK FORCE", cancellationToken),
-                await db.ProductModels.Include(productModel => productModel.Subcategory.Category)
+                await db.ProductModels
+                    .Include(productModel => productModel.Subcategory.Category)
+                    .Include(productModel => productModel.Features)
+                    .Include(productModel => productModel.Photos)
+                    .Include(productModel => productModel.Materials)
                     .SingleAsync(productModel => productModel.Name == "Пальто Tom Farr", cancellationToken),
-                await db.ProductModels.Include(productModel => productModel.Subcategory.Category)
+                await db.ProductModels
+                    .Include(productModel => productModel.Subcategory.Category)
+                    .Include(productModel => productModel.Features)
+                    .Include(productModel => productModel.Photos)
+                    .Include(productModel => productModel.Materials)
                     .SingleAsync(productModel => productModel.Name == "Кепка Denkor Восьмиклинка-Хулиганка", cancellationToken),
-                await db.ProductModels.Include(productModel => productModel.Subcategory.Category)
+                await db.ProductModels
+                    .Include(productModel => productModel.Subcategory.Category)
+                    .Include(productModel => productModel.Features)
+                    .Include(productModel => productModel.Photos)
+                    .Include(productModel => productModel.Materials)
                     .SingleAsync(productModel => productModel.Name == "Шляпа ARMANI", cancellationToken)
             };
 

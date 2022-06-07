@@ -12,6 +12,9 @@ namespace WebStore.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DisplayName("Индификатор")]
         public string Id { get; init; }
+        [Required]
+        [DisplayName("Товар продан?")]
+        public bool IsSold { get; set; }
 
         [DisplayName("Артикул")]
         [Display(AutoGenerateField = false)]
@@ -29,9 +32,6 @@ namespace WebStore.Data.Entities
             Article = article;
         }
 
-        public override string ToString()
-        {
-            return $"{Id} - {Article.Model.Id}";
-        }
+        public override string ToString() => Id;
     }
 }

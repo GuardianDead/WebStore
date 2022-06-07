@@ -1,5 +1,4 @@
-﻿using Innofactor.EfCoreJsonValueConverter;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,17 +33,14 @@ namespace WebStore.Data.Entities
         [DisplayName("Главная фотография")]
         public byte[] MainPhoto { get; set; }
         [Required]
-        [JsonField]
         [DisplayName("Характеристики")]
-        public Dictionary<string, string> Features { get; set; }
+        public List<ProductModelFeature> Features { get; set; }
         [Required]
-        [JsonField]
         [DisplayName("Материалы")]
-        public List<string> Materials { get; set; }
+        public List<ProductModelMaterial> Materials { get; set; }
         [Required]
-        [JsonField]
         [DisplayName("Фотографии")]
-        public List<byte[]> Photos { get; set; }
+        public List<ProductModelPhoto> Photos { get; set; }
         [Required]
         [DisplayName("Дата создания")]
         public DateTime DateTimeCreation { get; set; }
@@ -56,7 +52,6 @@ namespace WebStore.Data.Entities
         [DisplayName("Подкатегория")]
         public Subcategory Subcategory { get; set; }
 
-        [JsonIgnore]
         [Display(AutoGenerateField = false)]
         [DisplayName("Подкатегория")]
         public List<ProductArticle> ProductArticles { get; }
@@ -64,7 +59,7 @@ namespace WebStore.Data.Entities
         public ProductModel()
         {
         }
-        public ProductModel(string name, int price, int daysGuarantee, string countryManufacturer, string brand, Subcategory subcategory, byte[] mainPhoto, Dictionary<string, string> features, List<string> materials, List<byte[]> photos, DateTime dateTimeCreation)
+        public ProductModel(string name, int price, int daysGuarantee, string countryManufacturer, string brand, Subcategory subcategory, byte[] mainPhoto, List<ProductModelFeature> features, List<ProductModelMaterial> materials, List<ProductModelPhoto> photos, DateTime dateTimeCreation)
         {
             Id = Guid.NewGuid().ToString("N");
             Name = name;
@@ -80,9 +75,6 @@ namespace WebStore.Data.Entities
             DateTimeCreation = dateTimeCreation;
         }
 
-        public override string ToString()
-        {
-            return $"{Id} - {Name}";
-        }
+        public override string ToString() => $"{Id} - {Name}";
     }
 }

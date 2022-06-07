@@ -73,7 +73,7 @@ namespace WebStore.Pages
                 .Where(productModel => Db.ProductArticles
                     .Include(productArticle => productArticle.Model)
                     .Where(productArticle => productArticle.Model.Id == productModel.Id)
-                    .Any(productArticle => Db.Products.Count(product => product.Article.Id == productArticle.Id) != 0))
+                    .Any(productArticle => Db.Products.Any(product => product.Article.Id == productArticle.Id && !product.IsSold)))
                 .Take(9).ToListAsync();
             productsModelsSection2 = productsModelsSection1;
             productsModelsSection3 = productsModelsSection1;
@@ -96,7 +96,7 @@ namespace WebStore.Pages
                 return;
             var addedFirstProductArticleOfModel = Db.ProductArticles
                 .Include(productArticle => productArticle.Model)
-                .First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Count(product => product.Article.Id == productArticle.Id) != 0);
+                .First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Any(product => product.Article.Id == productArticle.Id && !product.IsSold));
             currentUser.Cart.Products.Add(new CartProduct(addedFirstProductArticleOfModel, 1));
             Db.SaveChanges();
         }
@@ -106,7 +106,7 @@ namespace WebStore.Pages
                 return;
             var addedFirstProductArticleOfModel = Db.ProductArticles
                 .Include(productArticle => productArticle.Model)
-                .First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Count(product => product.Article.Id == productArticle.Id) != 0);
+                .First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Any(product => product.Article.Id == productArticle.Id && !product.IsSold));
             currentUser.FavoriteList.Products.Add(new FavoriteProduct(addedFirstProductArticleOfModel));
             Db.SaveChanges();
         }

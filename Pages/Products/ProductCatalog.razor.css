@@ -53,7 +53,7 @@
 .bottom-filters-form__price-filter-block > .price-filter__price-min-max-block {
   justify-content: center; }
 
-.bottom-filters-form__submut-button {
+.bottom-filters-form__submit-button {
   margin-top: auto; }
 
 .panel-block__link-category-block {
@@ -184,7 +184,7 @@
 ::deep .page-link .sr-only {
   display: none; }
 
-.filters-form-block__submut-button {
+.filters-form-block__submit-button {
   width: 100%;
   padding: 15px;
   background-color: black;

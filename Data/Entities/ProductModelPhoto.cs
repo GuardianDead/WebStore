@@ -1,29 +1,34 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebStore.Data.Entities
 {
-    public class Cart
+    public class ProductModelPhoto
     {
         [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [DisplayName("Индификатор")]
         public int Id { get; init; }
-
         [Required]
-        [Display(AutoGenerateField = false)]
-        [DisplayName("Товары")]
-        public List<CartProduct> Products { get; set; }
+        [DisplayName("Фото")]
+        public byte[] Value { get; set; }
 
-        public Cart()
+        [DisplayName("Модель")]
+        public string ProductModelId { get; set; }
+        [Required]
+        [DisplayName("Модель")]
+        [Display(AutoGenerateField = false)]
+        public ProductModel ProductModel { get; }
+
+        public ProductModelPhoto()
         {
         }
-        public Cart(List<CartProduct> products)
+
+        public ProductModelPhoto(byte[] value)
         {
-            Products = products;
+            Value = value;
         }
 
         public override string ToString() => Id.ToString();

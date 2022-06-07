@@ -27,9 +27,6 @@ namespace WebStore.Data.Entities
             Article = article;
         }
 
-        public override string ToString()
-        {
-            return $"{Id} - {Article.Model.Name}";
-        }
+        public override string ToString() => $"{Id} - {Article.Model.Name}";
     }
 }

@@ -65,7 +65,7 @@
         gap: 20px;
     }
 
-    &__submut-block {
+    &__submit-block {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -74,6 +74,7 @@
         gap: 15px;
         padding: 25px;
         outline: 1px solid black;
+        min-width: 265px;
     }
 }
 .images-block {
@@ -275,7 +276,7 @@
         white-space: nowrap;
     }
 }
-.submut-block {
+.submit-block {
     &__product-price {
         font-size: 27px;
     }
@@ -364,7 +365,7 @@
             max-width: none;
         }
 
-        &__submut-block {
+        &__submit-block {
             width: 100%;
         }
     }
@@ -377,7 +378,7 @@
 }
 @media (max-width: 500px) {
     .product-block {
-        &__submut-block {
+        &__submit-block {
             padding: 20px;
         }
     }

@@ -1,5 +1,4 @@
-﻿using Innofactor.EfCoreJsonValueConverter;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebStore.Data.Entities;
@@ -21,18 +20,6 @@ namespace WebStore.Data
             builder.Entity<Order>().Property(o => o.Status).HasConversion(new EnumToStringConverter<OrderStatusType>());
             builder.Entity<Delivery>().Property(o => o.DeliveryMethod).HasConversion(new EnumToStringConverter<DeliveryMethodType>());
 
-            builder.AddJsonFields();
-            builder.Entity<ProductModel>(i =>
-            {
-                i.Property(o => o.Photos).HasJsonValueConversion();
-                i.Property(o => o.Features).HasJsonValueConversion();
-                i.Property(o => o.Materials).HasJsonValueConversion();
-            });
-            builder.Entity<OrderProduct>(i =>
-            {
-                i.Property(o => o.Product).HasJsonValueConversion();
-            });
-
             base.OnModelCreating(builder);
         }
 
@@ -41,6 +28,9 @@ namespace WebStore.Data
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ProductModel> ProductModels { get; set; }
+        public DbSet<ProductModelFeature> ProductModelFeatures { get; set; }
+        public DbSet<ProductModelMaterial> ProductModelMaterials { get; set; }
+        public DbSet<ProductModelPhoto> ProductModelPhotos { get; set; }
         public DbSet<ProductArticle> ProductArticles { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Subcategory> Subcategories { get; set; }

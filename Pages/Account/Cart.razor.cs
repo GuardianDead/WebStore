@@ -44,7 +44,7 @@ namespace WebStore.Pages.Account
         {
             foreach (var cartProduct in currentUser.Cart.Products)
             {
-                var cartProductCount = await Db.Products.CountAsync(product => product.Article.Id == cartProduct.Article.Id);
+                var cartProductCount = await Db.Products.CountAsync(product => product.Article.Id == cartProduct.Article.Id && !product.IsSold);
                 if (cartProductCount == 0)
                     currentUser.Cart.Products.Remove(cartProduct);
             }
@@ -78,7 +78,7 @@ namespace WebStore.Pages.Account
 
         public async Task IncrementAsync(CartProduct cartProduct)
         {
-            var countProduct = await Db.Products.CountAsync(product => product.Article.Id == cartProduct.Article.Id);
+            var countProduct = await Db.Products.CountAsync(product => product.Article.Id == cartProduct.Article.Id && !product.IsSold);
             if (cartProduct.Count == countProduct)
                 return;
             if (cartProduct.Count == 999)

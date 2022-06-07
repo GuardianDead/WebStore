@@ -39,6 +39,7 @@ namespace WebStore.Data.Mocks.ProductModelMock
                 await db.Subcategories.SingleAsync(i => i.Name == "Шляпы",cancellationToken),
             };
 
+            #region Load Main Product Model Photos
             var productModelsMainPhotos = new List<byte[]>()
             {
                 await PhotoEditorService.MakeBackgroundTrancparentAsync(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\NIKE Air Zoom Pegasus.jfif",cancellationToken)),
@@ -50,6 +51,8 @@ namespace WebStore.Data.Mocks.ProductModelMock
                 await PhotoEditorService.MakeBackgroundTrancparentAsync(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Кепка мужская Denkor Восьмиклинка-Хулиганка.jfif",cancellationToken)),
                 await PhotoEditorService.MakeBackgroundTrancparentAsync(await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\productPhotos\Шляпа ARMANI.jfif",cancellationToken)),
             };
+            #endregion
+            #region Load Product Model Photos
             var productModelsPhotos = new List<List<byte[]>>()
             {
                 new List<byte[]>()
@@ -106,6 +109,7 @@ namespace WebStore.Data.Mocks.ProductModelMock
                     await File.ReadAllBytesAsync(Environment.CurrentDirectory + @"\wwwroot\ProductPhotos\Шляпа ARMANI1.jfif", cancellationToken),
                 },
             };
+            #endregion
             IEnumerable<ProductModel> productModels = subcategoriesNames.Select(subcategory => subcategory switch
             {
                 #region Товар1 Кроссовки Nike
@@ -117,16 +121,16 @@ namespace WebStore.Data.Mocks.ProductModelMock
                      brand: "Nike",
                      subcategory: subcategory,
                      mainPhoto: productModelsMainPhotos[0],
-                     features: new Dictionary<string, string>()
+                     features: new List<ProductModelFeature>
                      {
-                        { "Назначение","бег" },
-                        { "Застежка","шнуровка" },
+                         new ProductModelFeature("Назначение","Бег"),
+                         new ProductModelFeature("Застежка","Шнуровка"),
                      },
-                     materials: new List<string>()
+                     materials: new List<ProductModelMaterial>
                      {
-                        "Текстиль",
+                         new ProductModelMaterial("Текстиль")
                      },
-                     photos: productModelsPhotos[0],
+                     photos: productModelsPhotos[0].Select(photo => new ProductModelPhoto(photo)).ToList(),
                      dateTimeCreation: new DateTime(2021, 11, 5)),
                 #endregion
                 #region Товар2 Ботинки Adidas
@@ -138,17 +142,17 @@ namespace WebStore.Data.Mocks.ProductModelMock
                       brand: "Adidas",
                       subcategory: subcategory,
                       mainPhoto: productModelsMainPhotos[1],
-                      features: new Dictionary<string, string>()
+                      features: new List<ProductModelFeature>
                       {
-                         { "Материал подкладки","текстиль" },
-                         { "Материал подошвы","резина" },
+                          new ProductModelFeature("Материал подкладки", "Текстиль"),
+                          new ProductModelFeature("Материал подошвы", "Резина")
                       },
-                      materials: new List<string>()
+                      materials: new List<ProductModelMaterial>
                       {
-                         "Синтетика 60%",
-                         "Текстиль 40%"
+                         new ProductModelMaterial("Синтетика 60%"),
+                         new ProductModelMaterial("Текстиль 40%")
                       },
-                      photos: productModelsPhotos[1],
+                      photos: productModelsPhotos[1].Select(photo => new ProductModelPhoto(photo)).ToList(),
                       dateTimeCreation: new DateTime(2021, 11, 20)),
                 #endregion
                 #region Товар3 Джинсы Levi's
@@ -160,20 +164,20 @@ namespace WebStore.Data.Mocks.ProductModelMock
                       brand: "Levi's",
                       subcategory: subcategory,
                       mainPhoto: productModelsMainPhotos[2],
-                      features: new Dictionary<string, string>()
+                      features: new List<ProductModelFeature>
                       {
-                         { "Модель","прямые" },
-                         { "Посадка","низкая" },
-                         { "Застежка","молния" },
-                         { "Передние карманы","втачные" },
-                         { "Задние карманы","накладные" },
+                          new ProductModelFeature("Модель","Прямые"),
+                          new ProductModelFeature("Посадка","Низкая"),
+                          new ProductModelFeature("Застежка","Молния"),
+                          new ProductModelFeature("Передние карманы","Втачные"),
+                          new ProductModelFeature("Задние карманы","Накладные")
                       },
-                      materials: new List<string>()
+                      materials: new List<ProductModelMaterial>
                       {
-                         "Хлопок 99%",
-                         "Эластан 1%"
+                          new ProductModelMaterial("Хлопок 99%"),
+                          new ProductModelMaterial("Эластан 1%")
                       },
-                      photos: productModelsPhotos[2],
+                      photos: productModelsPhotos[2].Select(photo => new ProductModelPhoto(photo)).ToList(),
                       dateTimeCreation: new DateTime(2021, 10, 13)),
                 #endregion
                 #region Товар4 Брюки KORPO
@@ -185,19 +189,19 @@ namespace WebStore.Data.Mocks.ProductModelMock
                       brand: "KORPO",
                       subcategory: subcategory,
                       mainPhoto: productModelsMainPhotos[3],
-                      features: new Dictionary<string, string>()
+                      features: new List<ProductModelFeature>
                       {
-                         { "Стиль","Casual, Классический" },
-                         { "Расцветка","Однотонная" },
-                         { "Форма","Прямая" },
+                          new ProductModelFeature("Стиль","Casual, Классический"),
+                          new ProductModelFeature("Расцветка","Однотонная"),
+                          new ProductModelFeature("Форма","Прямая")
                       },
-                      materials: new List<string>()
+                      materials: new List<ProductModelMaterial>
                       {
-                         "Шерсть 60%",
-                         "Полиэстер 38%",
-                         "Эластан 2%",
+                          new ProductModelMaterial("Шерсть 60%"),
+                          new ProductModelMaterial("Полиэстер 38%"),
+                          new ProductModelMaterial("Эластан 2%")
                       },
-                      photos: productModelsPhotos[3],
+                      photos: productModelsPhotos[3].Select(photo => new ProductModelPhoto(photo)).ToList(),
                       dateTimeCreation: new DateTime(2021, 11, 3)),
                 #endregion
                 #region Товар5 Куртка SHARK FORCE
@@ -209,9 +213,9 @@ namespace WebStore.Data.Mocks.ProductModelMock
                       brand: "SHARK FORCE",
                       subcategory: subcategory,
                       mainPhoto: productModelsMainPhotos[4],
-                      features: new Dictionary<string, string>(),
-                      materials: new List<string>(),
-                      photos: productModelsPhotos[4],
+                      features: new List<ProductModelFeature>(),
+                      materials: new List<ProductModelMaterial>(),
+                      photos: productModelsPhotos[4].Select(photo => new ProductModelPhoto(photo)).ToList(),
                       dateTimeCreation: new DateTime(2021, 11, 8)),
                 #endregion
                 #region Товар6 Пальто Tom Farr
@@ -223,16 +227,16 @@ namespace WebStore.Data.Mocks.ProductModelMock
                       brand: "Tom Farr",
                       subcategory: subcategory,
                       mainPhoto: productModelsMainPhotos[5],
-                      features: new Dictionary<string, string>()
+                      features: new List<ProductModelFeature>
                       {
-                         { "Сезон","весна, осень" },
-                         { "Застежка","отсутствует" },
+                          new ProductModelFeature("Сезон","Весна, Осень"),
+                          new ProductModelFeature("Застежка","Отсутствует")
                       },
-                      materials: new List<string>()
+                      materials: new List<ProductModelMaterial>
                       {
-                         "Полиэстер 70%"
+                          new ProductModelMaterial("Полиэстер 70%")
                       },
-                      photos: productModelsPhotos[5],
+                      photos: productModelsPhotos[5].Select(photo => new ProductModelPhoto(photo)).ToList(),
                       dateTimeCreation: new DateTime(2021, 9, 26)),
                 #endregion
                 #region Товар7 Кепка Denkor
@@ -244,15 +248,15 @@ namespace WebStore.Data.Mocks.ProductModelMock
                       brand: "Denkor",
                       subcategory: subcategory,
                       mainPhoto: productModelsMainPhotos[6],
-                      features: new Dictionary<string, string>()
+                      features: new List<ProductModelFeature>
                       {
-                         { "Сезон","лето" },
+                          new ProductModelFeature("Сезон","Лето")
                       },
-                      materials: new List<string>()
+                      materials: new List<ProductModelMaterial>
                       {
-                         "Ткань"
+                          new ProductModelMaterial("Ткань")
                       },
-                      photos: productModelsPhotos[6],
+                      photos: productModelsPhotos[6].Select(photo => new ProductModelPhoto(photo)).ToList(),
                       dateTimeCreation: new DateTime(2021, 11, 11)),
                 #endregion
                 #region Товар8 Шляпа ARMANI
@@ -264,9 +268,9 @@ namespace WebStore.Data.Mocks.ProductModelMock
                       brand: "ARMANI",
                       subcategory: subcategory,
                       mainPhoto: productModelsMainPhotos[7],
-                      features: new Dictionary<string, string>(),
-                      materials: new List<string>(),
-                      photos: productModelsPhotos[7],
+                      features: new List<ProductModelFeature>(),
+                      materials: new List<ProductModelMaterial>(),
+                      photos: productModelsPhotos[7].Select(photo => new ProductModelPhoto(photo)).ToList(),
                       dateTimeCreation: new DateTime(2021, 11, 11)),
                 #endregion
                 _ => throw new NotImplementedException("Данная подкатегория не найдена")

@@ -32,6 +32,7 @@ namespace WebStore.Pages.Account
                     .ThenInclude(orders => orders.Address)
                 .Include(user => user.OrderHistory.Orders)
                     .ThenInclude(orders => orders.Products)
+                    .ThenInclude(orderProduct => orderProduct.Product.Article.Model)
                 .SingleAsync(user => user.Email == userEmail);
         }
 

@@ -1,5 +1,4 @@
-﻿using Innofactor.EfCoreJsonValueConverter;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,9 +18,8 @@ namespace WebStore.Data.Entities
         public DateTime ExpirationDate { get; set; }
 
         [Required]
-        [JsonField]
         [DisplayName("Товар")]
-        public Product Product { get; init; }
+        public Product Product { get; set; }
 
         public OrderProduct()
         {
@@ -32,9 +30,6 @@ namespace WebStore.Data.Entities
             Product = product;
         }
 
-        public override string ToString()
-        {
-            return $"{Product.Id} - {Product.Article.Model.Name}";
-        }
+        public override string ToString() => $"{Id} - {Product.Id}";
     }
 }

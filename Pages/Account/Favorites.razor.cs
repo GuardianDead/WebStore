@@ -41,7 +41,7 @@ namespace WebStore.Pages.Account
                 return;
             var addedFirstProductArticleOfModel = Db.ProductArticles
                 .Include(productArticle => productArticle.Model)
-                .First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Count(product => product.Article.Id == productArticle.Id) != 0);
+                .First(productArticle => productArticle.Model.Id == productModel.Id && Db.Products.Any(product => product.Article.Id == productArticle.Id && !product.IsSold));
             currentUser.Cart.Products.Add(new CartProduct(addedFirstProductArticleOfModel, 1));
             Db.SaveChanges();
 

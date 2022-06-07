@@ -104,10 +104,14 @@ namespace WebStore.Pages.Account
             {
                 var addedProducts = await Db.Products
                     .Include(product => product.Article.Model.Subcategory.Category)
-                    .Where(product => product.Article.Id == cartProduct.Article.Id)
+                    .Include(product => product.Article.Model.Features)
+                    .Include(product => product.Article.Model.Photos)
+                    .Include(product => product.Article.Model.Materials)
+                    .Where(product => product.Article.Id == cartProduct.Article.Id && !product.IsSold)
                     .Take(cartProduct.Count)
                     .ToListAsync();
-                Db.Products.RemoveRange(addedProducts);
+                addedProducts.ForEach(addedProduct => addedProduct.IsSold = true);
+                Db.Products.UpdateRange(addedProducts);
                 addedOrderProducts.AddRange(addedProducts.ConvertAll(product => new OrderProduct(product)));
             }
 
@@ -130,7 +134,6 @@ namespace WebStore.Pages.Account
 
             currentUser.OrderHistory.Orders.Add(order);
             currentUser.Cart.Products.RemoveAll(cartProduct => cartProduct.IsSelected);
-            Db.Products.RemoveRange(order.Products.ConvertAll(orderProduct => orderProduct.Product));
 
             if (await Db.SaveChangesAsync() != -1)
                 NavigationManager.NavigateTo($"{NavigationManager.BaseUri}account/orders", true);

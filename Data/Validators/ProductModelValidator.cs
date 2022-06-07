@@ -5,7 +5,7 @@ namespace WebStore.Validators
 {
     public class ProductModelValidator : AbstractValidator<ProductModel>
     {
-        public ProductModelValidator(IValidator<Subcategory> productSubcategoryValidator)
+        public ProductModelValidator(IValidator<Subcategory> productSubcategoryValidator, IValidator<ProductModelPhoto> productModelPhotoValidator, IValidator<ProductModelFeature> productModelFeatureValidator, IValidator<ProductModelMaterial> productModelMaterialValidator)
         {
             RuleFor(i => i.Name)
                 .NotNull().NotEmpty().WithMessage("Название модели не может быть пустым");
@@ -22,17 +22,15 @@ namespace WebStore.Validators
                 .SetValidator(productSubcategoryValidator);
             RuleFor(i => i.Materials)
                 .NotNull().WithMessage("Материалы модели товара не могут быть пустыми")
-                .ForEach(j => j.NotNull().NotEmpty().WithMessage("Материал модели товара не может быть пустым"));
+                .ForEach(j => j.SetValidator(productModelMaterialValidator));
             RuleFor(i => i.Features)
                 .NotNull().WithMessage("Характеристики модели товара не могут быть пустыми")
-                .ForEach(i =>
-                    i.Must(i => !string.IsNullOrWhiteSpace(i.Key)).WithMessage("Ключ характеристики модели товара не может быть пустым")
-                    .Must(i => !string.IsNullOrWhiteSpace(i.Value)).WithMessage("Значение характеристики модели товара не может быть пустым"));
+                .ForEach(j => j.SetValidator(productModelFeatureValidator));
             RuleFor(i => i.MainPhoto)
                 .NotNull().WithMessage("Главное фото модели товара не может быть пустым");
             RuleFor(i => i.Photos)
                 .NotNull().WithMessage("Фотографии модели товара не могут быть пустым")
-                .ForEach(i => i.Must(i => i != null).WithMessage("Картинка модели товара не может быть пустая"));
+                .ForEach(j => j.SetValidator(productModelPhotoValidator));
             RuleFor(i => i.СountryManufacturer)
                 .NotNull().NotEmpty().WithMessage("Id модели товара не может быть пустая");
             RuleFor(i => i.DateTimeCreation)

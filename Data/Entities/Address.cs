@@ -40,9 +40,6 @@ namespace WebStore.Data.Entities
             PostalCode = postalCode;
         }
 
-        public override string ToString()
-        {
-            return $"{Id} - {string.Join('-', Country, Region, City, Street, PostalCode)}";
-        }
+        public override string ToString() => $"{Id} - {string.Join('-', Country, Region, City, Street, PostalCode)}";
     }
 }

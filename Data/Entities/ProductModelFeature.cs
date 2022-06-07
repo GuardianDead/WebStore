@@ -1,12 +1,10 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebStore.Data.Entities
 {
-    public class Category
+    public class ProductModelFeature
     {
         [Key]
         [Required]
@@ -16,17 +14,25 @@ namespace WebStore.Data.Entities
         [Required]
         [DisplayName("Название")]
         public string Name { get; set; }
+        [Required]
+        [DisplayName("Значение")]
+        public string Value { get; set; }
 
+        [DisplayName("Модель")]
+        public string ProductModelId { get; set; }
+        [Required]
+        [DisplayName("Модель")]
         [Display(AutoGenerateField = false)]
-        [DisplayName("Подкатегории")]
-        public List<Subcategory> Subcategories { get; }
+        public ProductModel ProductModel { get; }
 
-        public Category()
+        public ProductModelFeature()
         {
         }
-        public Category(string name)
+
+        public ProductModelFeature(string name, string value)
         {
             Name = name;
+            Value = value;
         }
 
         public override string ToString() => Name;

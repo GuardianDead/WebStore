@@ -36,6 +36,9 @@ namespace WebStore.Pages.Products
         {
             await JSRuntime.InvokeVoidAsync("SetPageDotnetReference", DotNetObjectReference.Create(this));
             productModel = await Db.ProductModels
+                .Include(productModel => productModel.Photos)
+                .Include(productModel => productModel.Materials)
+                .Include(productModel => productModel.Features)
                 .Include(productModel => productModel.Subcategory.Category)
                 .SingleOrDefaultAsync(productModel => productModel.Id == ProductModelId);
             if (productModel is null)
@@ -55,7 +58,7 @@ namespace WebStore.Pages.Products
                     .GroupBy(productArticle => productArticle.Size)
                     .Select(group => group.Key)
                     .ToList();
-                SelectedImage = productModel.Photos.First();
+                SelectedImage = productModel.Photos.First().Value;
                 SelectedColor = allCollors.First();
                 SelectedSize = allSizes.First();
                 SelectedProductArticle = allProductArticles.SingleOrDefault(productArticle => productArticle.Color == SelectedColor && productArticle.Size == SelectedSize);
@@ -104,7 +107,7 @@ namespace WebStore.Pages.Products
         {
             if (SelectedProductArticle is null ||
                 user.Cart.Products.Any(product => product.Article.Id == SelectedProductArticle.Id) ||
-                Db.Products.Count(product => product.Article.Id == SelectedProductArticle.Id) < 1)
+                !Db.Products.Any(product => product.Article.Id == SelectedProductArticle.Id && !product.IsSold))
                 return;
             user.Cart.Products.Add(new CartProduct(SelectedProductArticle, 1));
             Db.SaveChanges();
@@ -113,7 +116,7 @@ namespace WebStore.Pages.Products
         {
             if (SelectedProductArticle is null ||
                 user.FavoriteList.Products.Any(product => product.Article.Id == SelectedProductArticle.Id) ||
-                Db.Products.Count(product => product.Article.Id == SelectedProductArticle.Id) < 1)
+                !Db.Products.Any(product => product.Article.Id == SelectedProductArticle.Id && !product.IsSold))
                 return;
             user.FavoriteList.Products.Add(new FavoriteProduct(SelectedProductArticle));
             Db.SaveChanges();

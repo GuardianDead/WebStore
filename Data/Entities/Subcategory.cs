@@ -31,9 +31,6 @@ namespace WebStore.Data.Entities
             Category = category;
         }
 
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => Name;
     }
 }

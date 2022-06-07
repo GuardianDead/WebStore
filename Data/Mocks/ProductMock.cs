@@ -28,6 +28,9 @@ namespace WebStore.Data.Mocks.ProductMock
 
             List<ProductArticle> productArticles = await db.ProductArticles
                 .Include(productArticle => productArticle.Model.Subcategory.Category)
+                .Include(productArticle => productArticle.Model.Features)
+                .Include(productArticle => productArticle.Model.Photos)
+                .Include(productArticle => productArticle.Model.Materials)
                 .ToListAsync();
             IEnumerable<Product> products = productArticles
                 .SelectMany(productArticle => Enumerable.Range(0, random.Next(11, 22))

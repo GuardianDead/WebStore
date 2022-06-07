@@ -37,9 +37,6 @@ namespace WebStore.Data.Entities
             Color = color;
         }
 
-        public override string ToString()
-        {
-            return Id;
-        }
+        public override string ToString() => $"{Id} - {Model.Name}";
     }
 }

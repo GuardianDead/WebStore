@@ -26,9 +26,6 @@ namespace WebStore.Data.Entities
             Orders = orders;
         }
 
-        public override string ToString()
-        {
-            return Id.ToString();
-        }
+        public override string ToString() => Id.ToString();
     }
 }

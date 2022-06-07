@@ -82,9 +82,6 @@ namespace WebStore.Data.Entities
             PhoneNumber = phoneNumber;
         }
 
-        public override string ToString()
-        {
-            return Id.ToString();
-        }
+        public override string ToString() => Id.ToString();
     }
 }
