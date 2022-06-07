@@ -52,28 +52,24 @@ namespace WebStore.Pages.Account
         public void UpdateTotalCurrentCostCart() => totalCost = currentUser.Cart.Products.Where(cartProduct => cartProduct.IsSelected)
             .Sum(cartProduct => cartProduct.Article.Model.Price * cartProduct.Count);
 
-        public void AddProductInFavorites(CartProduct cartProduct)
+        public async Task AddProductInFavoritesAsync(CartProduct cartProduct)
         {
-            var addedFavoriteProduct = currentUser.FavoriteList.Products.SingleOrDefault(favoriteProduct => favoriteProduct.Article.Id == cartProduct.Article.Id);
-            if (currentUser.FavoriteList.Products.Contains(addedFavoriteProduct))
-                return;
             currentUser.FavoriteList.Products.Add(new FavoriteProduct(cartProduct.Article));
             Db.SaveChanges();
+            await JSRuntime.InvokeVoidAsync("updateCounterStates", currentUser.Cart.Products.Count, currentUser.FavoriteList.Products.GroupBy(product => product.Article.Model.Id, product => product.Article.Model).Count());
         }
-        public void RemoveProductFromCart(CartProduct cartProduct)
+        public async Task RemoveProductFromCartAsync(CartProduct cartProduct)
         {
-            if (!currentUser.Cart.Products.Contains(cartProduct))
-                return;
             currentUser.Cart.Products.Remove(cartProduct);
             Db.SaveChanges();
+            await JSRuntime.InvokeVoidAsync("updateCounterStates", currentUser.Cart.Products.Count, currentUser.FavoriteList.Products.GroupBy(product => product.Article.Model.Id, product => product.Article.Model).Count());
         }
-        public void RemoveProductFromFavorites(CartProduct cartProduct)
+        public async Task RemoveProductFromFavoritesAsync(CartProduct cartProduct)
         {
             var removedFavoriteProduct = currentUser.FavoriteList.Products.SingleOrDefault(favoriteProduct => favoriteProduct.Article.Id == cartProduct.Article.Id);
-            if (!currentUser.FavoriteList.Products.Contains(removedFavoriteProduct))
-                return;
             currentUser.FavoriteList.Products.Remove(removedFavoriteProduct);
             Db.SaveChanges();
+            await JSRuntime.InvokeVoidAsync("updateCounterStates", currentUser.Cart.Products.Count, currentUser.FavoriteList.Products.GroupBy(product => product.Article.Model.Id, product => product.Article.Model).Count());
         }
 
         public async Task IncrementAsync(CartProduct cartProduct)

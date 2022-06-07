@@ -25,16 +25,16 @@
                 {
                     <a class="panel__favorites" href="/account/favorites" aria-label="Перейти в каталог избранных товаров" title="Иконка избранного">
                         <img src="/icons/header/Heart.svg" alt="Иконка избранного" title="Иконка избранного">
-                        @if (CountFavoriteProducts() != 0)
+                        @if (favoriteProductCount != 0)
                         {
-                            <span class="panel__favorites__count">@CountFavoriteProducts()</span>
+                            <span class="panel__favorites__count">@favoriteProductCount</span>
                         }
                     </a>
                     <a class="panel__cart" href="/account/cart" aria-label="Перейти в каталог товаров в корзине" title="Иконка корзины">
                         <img src="/icons/header/Cart.svg" alt="Иконка корзины" title="Иконка корзины">
-                        @if (CountCartProducts() != 0)
+                        @if (cartProductCount != 0)
                         {
-                            <span class="panel__cart__count">@CountCartProducts()</span>
+                            <span class="panel__cart__count">@cartProductCount</span>
                         }
                     </a>
                     <div class="panel__user-block" @onclick="async () => await ToggleUserPanelAsync()">

@@ -36,6 +36,9 @@ namespace WebStore.Pages.Shared.Layout
         public ClaimsPrincipal currentUserState;
         public User currentUser;
 
+        public int cartProductCount;
+        public int favoriteProductCount;
+
         protected override async Task OnInitializedAsync()
         {
             await JSRuntime.InvokeVoidAsync("SetHeaderDotnetReference", DotNetObjectReference.Create(this));
@@ -47,8 +50,11 @@ namespace WebStore.Pages.Shared.Layout
                 currentUser = await Db.Users
                     .Include(user => user.Cart.Products)
                     .Include(user => user.FavoriteList.Products)
+                    .ThenInclude(favoriteProduct => favoriteProduct.Article.Model)
                     .SingleAsync(user => user.Email == userEmail);
             }
+            cartProductCount = currentUser.Cart.Products.Count;
+            favoriteProductCount = currentUser.FavoriteList.Products.GroupBy(product => product.Article.Model.Id, product => product.Article.Model).Count();
             categories = await Db.Categories
                 .AsNoTracking()
                 .Include(category => category.Subcategories)
@@ -56,8 +62,13 @@ namespace WebStore.Pages.Shared.Layout
         }
 
         public void NavigateTo(string path) => NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}{path}", true);
-        public int CountFavoriteProducts() => currentUser.FavoriteList.Products.Count;
-        public int CountCartProducts() => currentUser.Cart.Products.Count;
+        [JSInvokable]
+        public void UpdateCounterStates(int cartProductCount, int favoriteProductCount)
+        {
+            this.cartProductCount = cartProductCount;
+            this.favoriteProductCount = favoriteProductCount;
+            StateHasChanged();
+        }
 
         [JSInvokable]
         public void СancelHeaderScrolling()

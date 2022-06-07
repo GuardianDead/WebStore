@@ -45,15 +45,15 @@
                                     <span class="block-price__discount-price">22 400 ₽</span>
                                     </div>*@
                                 <div class="product-card__icons-block">
-                                    <span class="icons-block__cart-icon" @onclick="() => RemoveProductFromCart(cartProduct)" aria-label="Удалить товар @cartProduct.Article.Model.Name из корзины"><img src="/icons/cart/Slash-cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины"></span>
+                                    <span class="icons-block__cart-icon" @onclick="() => RemoveProductFromCartAsync(cartProduct)" aria-label="Удалить товар @cartProduct.Article.Model.Name из корзины"><img src="/icons/cart/Slash-cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины"></span>
                                     <label class="cart-icon__select-checkbox select-checkbox"><input name="login-remember-me-checkbox" @bind="cartProduct.IsSelected" @onclick="() => ProductSelecterToggle(cartProduct)" type="checkbox" aria-label="Чек-бокс для выборки всех товаров в корзине" title="Выбрать @cartProduct.Article.Model.Name"><span></span></label>
                                     @if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Id == cartProduct.Article.Id))
                                     {
-                                        <span class="icons-block__favorites-icon" @onclick="() => RemoveProductFromFavorites(cartProduct)" aria-label="Удалить @cartProduct.Article.Model.Name из избранного"><img src="/icons/cart/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить @cartProduct.Article.Model.Name из избранного"></span>
+                                        <span class="icons-block__favorites-icon" @onclick="() => RemoveProductFromFavoritesAsync(cartProduct)" aria-label="Удалить @cartProduct.Article.Model.Name из избранного"><img src="/icons/cart/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить @cartProduct.Article.Model.Name из избранного"></span>
                                     }
                                     else
                                     {
-                                        <span class="icons-block__favorites-icon" @onclick="() => AddProductInFavorites(cartProduct)" aria-label="Добавить @cartProduct.Article.Model.Name в избранное"><img src="/icons/cart/Heart.svg" alt="Иконка избранного" title="Добавить @cartProduct.Article.Model.Name в избранное"></span>
+                                        <span class="icons-block__favorites-icon" @onclick="() => AddProductInFavoritesAsync(cartProduct)" aria-label="Добавить @cartProduct.Article.Model.Name в избранное"><img src="/icons/cart/Heart.svg" alt="Иконка избранного" title="Добавить @cartProduct.Article.Model.Name в избранное"></span>
                                     }
                                 </div>
                                 </div>

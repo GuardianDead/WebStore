@@ -108,6 +108,9 @@ function openSubcategorySideNavigation(classWidthSubcategorySideNavagation) {
 }
 
 //Header
+function updateCounterStates(cartProductCount, favoriteProductCount) {
+    GLOBAL.HeaderDotNetReference.invokeMethodAsync('UpdateCounterStates', cartProductCount, favoriteProductCount);
+}
 function showSubcategories() {
     if (!$('.subcategories').hasClass('show')) {
         $('.subcategories').slideDown(200);

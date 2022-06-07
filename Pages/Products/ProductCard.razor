@@ -84,21 +84,21 @@
                         }
                         else
                         {
-                            if (user.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Id == SelectedProductArticle.Id))
+                            if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == SelectedProductArticle.Model.Id))
                             {
-                                <button class="submit-block__remove-from-favorites-button" @onclick="RemoveProductFromFavorites" type="submit" aria-label="Кнопка для удаления артикула модели товара @SelectedProductArticle.Model.Name из избранного">Удалить из избранного</button>
+                                <button class="submit-block__remove-from-favorites-button" @onclick="RemoveProductFromFavoritesAsync" type="submit" aria-label="Кнопка для удаления артикула модели товара @SelectedProductArticle.Model.Name из избранного">Удалить из избранного</button>
                             }
                             else
                             {
-                                <button class="submit-block__add-to-favorites-button" @onclick="AddProductInFavorites" type="submit" aria-label="Кнопка для добавления артикула модели товара @SelectedProductArticle.Model.Name в избранное">Добавить в избранное</button>
+                                <button class="submit-block__add-to-favorites-button" @onclick="AddProductInFavoritesAsync" type="submit" aria-label="Кнопка для добавления артикула модели товара @SelectedProductArticle.Model.Name в избранное">Добавить в избранное</button>
                             }
-                            if (user.Cart.Products.Any(cartProduct => cartProduct.Article.Id == SelectedProductArticle.Id))
+                            if (currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Id == SelectedProductArticle.Id))
                             {
-                                <button class="submit-block__remove-from-cart-button" @onclick="RemoveProductFromCart" type="submit" aria-label="Кнопка для удаления артикула модели товара @SelectedProductArticle.Model.Name из крозины">Удалить из корзины</button>
+                                <button class="submit-block__remove-from-cart-button" @onclick="RemoveProductFromCartAsync" type="submit" aria-label="Кнопка для удаления артикула модели товара @SelectedProductArticle.Model.Name из крозины">Удалить из корзины</button>
                             }
                             else
                             {
-                                <button class="submit-block__add-to-cart-button" @onclick="AddProductInCart" type="submit" aria-label="Кнопка для добавления артикула модели товара @SelectedProductArticle.Model.Name в корзину">Добавить в корзину</button>
+                                <button class="submit-block__add-to-cart-button" @onclick="AddProductInCartAsync" type="submit" aria-label="Кнопка для добавления артикула модели товара @SelectedProductArticle.Model.Name в корзину">Добавить в корзину</button>
                             }
                         }
                     }

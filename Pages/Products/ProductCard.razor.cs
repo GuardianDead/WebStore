@@ -30,7 +30,7 @@ namespace WebStore.Pages.Products
         public ProductModel productModel;
         public List<ProductArticle> allProductArticles;
         public ClaimsPrincipal userState;
-        public User user;
+        public User currentUser;
 
         protected override async Task OnInitializedAsync()
         {
@@ -68,7 +68,7 @@ namespace WebStore.Pages.Products
             if (userState.Identity.IsAuthenticated)
             {
                 var userEmail = userState.Claims.Single(claim => claim.Type == ClaimTypes.Email).Value;
-                user = await Db.Users
+                currentUser = await Db.Users
                     .Include(user => user.FavoriteList.Products)
                         .ThenInclude(favoritesProducts => favoritesProducts.Article.Model)
                     .Include(user => user.Cart.Products)
@@ -80,12 +80,12 @@ namespace WebStore.Pages.Products
         public void ClickOnSize(int size)
         {
             SelectedSize = size;
-            ChangeSelectedProductArtucle();
+            ChangeSelectedProductArticle();
         }
         public void ClickOnColor(string color)
         {
             SelectedColor = color;
-            ChangeSelectedProductArtucle();
+            ChangeSelectedProductArticle();
         }
         public async Task MouseEnterMainImageAsync()
         {
@@ -100,42 +100,46 @@ namespace WebStore.Pages.Products
                 await JSRuntime.InvokeVoidAsync("closeZoomedMainImage");
         }
 
-        public void ChangeSelectedProductArtucle() => SelectedProductArticle = allProductArticles
+        public void ChangeSelectedProductArticle() => SelectedProductArticle = allProductArticles
             .Single(productArticle => productArticle.Color == SelectedColor && productArticle.Size == SelectedSize);
 
-        public void AddProductInCart()
+        public async Task AddProductInCartAsync()
         {
             if (SelectedProductArticle is null ||
-                user.Cart.Products.Any(product => product.Article.Id == SelectedProductArticle.Id) ||
+                currentUser.Cart.Products.Any(product => product.Article.Id == SelectedProductArticle.Id) ||
                 !Db.Products.Any(product => product.Article.Id == SelectedProductArticle.Id && !product.IsSold))
                 return;
-            user.Cart.Products.Add(new CartProduct(SelectedProductArticle, 1));
+            currentUser.Cart.Products.Add(new CartProduct(SelectedProductArticle, 1));
             Db.SaveChanges();
+            await JSRuntime.InvokeVoidAsync("updateCounterStates", currentUser.Cart.Products.Count, currentUser.FavoriteList.Products.GroupBy(product => product.Article.Model.Id, product => product.Article.Model).Count());
         }
-        public void AddProductInFavorites()
+        public async Task AddProductInFavoritesAsync()
         {
             if (SelectedProductArticle is null ||
-                user.FavoriteList.Products.Any(product => product.Article.Id == SelectedProductArticle.Id) ||
+                currentUser.FavoriteList.Products.Any(product => product.Article.Id == SelectedProductArticle.Id) ||
                 !Db.Products.Any(product => product.Article.Id == SelectedProductArticle.Id && !product.IsSold))
                 return;
-            user.FavoriteList.Products.Add(new FavoriteProduct(SelectedProductArticle));
+            currentUser.FavoriteList.Products.Add(new FavoriteProduct(SelectedProductArticle));
             Db.SaveChanges();
+            await JSRuntime.InvokeVoidAsync("updateCounterStates", currentUser.Cart.Products.Count, currentUser.FavoriteList.Products.GroupBy(product => product.Article.Model.Id, product => product.Article.Model).Count());
         }
-        public void RemoveProductFromCart()
+        public async Task RemoveProductFromCartAsync()
         {
             if (SelectedProductArticle is null ||
-                !user.Cart.Products.Any(product => product.Article.Id == SelectedProductArticle.Id))
+                !currentUser.Cart.Products.Any(product => product.Article.Id == SelectedProductArticle.Id))
                 return;
-            user.Cart.Products.RemoveAll(cartProduct => cartProduct.Article.Id == SelectedProductArticle.Id);
+            currentUser.Cart.Products.RemoveAll(cartProduct => cartProduct.Article.Id == SelectedProductArticle.Id);
             Db.SaveChanges();
+            await JSRuntime.InvokeVoidAsync("updateCounterStates", currentUser.Cart.Products.Count, currentUser.FavoriteList.Products.GroupBy(product => product.Article.Model.Id, product => product.Article.Model).Count());
         }
-        public void RemoveProductFromFavorites()
+        public async Task RemoveProductFromFavoritesAsync()
         {
             if (SelectedProductArticle is null ||
-                !user.FavoriteList.Products.Any(product => product.Article.Id == SelectedProductArticle.Id))
+                !currentUser.FavoriteList.Products.Any(product => product.Article.Model.Id == SelectedProductArticle.Model.Id))
                 return;
-            user.FavoriteList.Products.RemoveAll(favoriteProduct => favoriteProduct.Article.Id == SelectedProductArticle.Id);
+            currentUser.FavoriteList.Products.RemoveAll(favoriteProduct => favoriteProduct.Article.Model.Id == SelectedProductArticle.Model.Id);
             Db.SaveChanges();
+            await JSRuntime.InvokeVoidAsync("updateCounterStates", currentUser.Cart.Products.Count, currentUser.FavoriteList.Products.GroupBy(product => product.Article.Model.Id, product => product.Article.Model).Count());
         }
     }
 }

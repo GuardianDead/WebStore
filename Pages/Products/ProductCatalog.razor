@@ -121,19 +121,19 @@
                                                 {
                                                     if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                                     {
-                                                        <span class="image-block__favorite" @onclick="() => RemoveProductFromFavorites(productModel)" aria-label="Иконка для удаления товара @productModel.Name из избранного"><img src="/icons/product-catalog/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного @productModel.Name"></span>
+                                                        <span class="image-block__favorite" @onclick="() => RemoveProductFromFavoritesAsync(productModel)" aria-label="Иконка для удаления товара @productModel.Name из избранного"><img src="/icons/product-catalog/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного @productModel.Name"></span>
                                                     }
                                                     else
                                                     {
-                                                        <span class="image-block__favorite" @onclick="() => AddProductInFavorites(productModel)" aria-label="Иконка для добавления товара @productModel.Name в избранное"><img src="/icons/product-catalog/Heart.svg" alt="Иконка избранного" title="Добавить в избранное @productModel.Name"></span>
+                                                        <span class="image-block__favorite" @onclick="() => AddProductInFavoritesAsync(productModel)" aria-label="Иконка для добавления товара @productModel.Name в избранное"><img src="/icons/product-catalog/Heart.svg" alt="Иконка избранного" title="Добавить в избранное @productModel.Name"></span>
                                                     }
                                                     if (currentUser.Cart.Products.Any(cartProduct => cartProduct.Article.Model.Id == productModel.Id))
                                                     {
-                                                        <span class="image-block__cart" @onclick="() => RemoveProductFromCart(productModel)" aria-label="Иконка для удаления товара @productModel.Name из корзины"><img src="/icons/product-catalog/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину @productModel.Name"></span>
+                                                        <span class="image-block__cart" @onclick="() => RemoveProductFromCartAsync(productModel)" aria-label="Иконка для удаления товара @productModel.Name из корзины"><img src="/icons/product-catalog/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину @productModel.Name"></span>
                                                     }
                                                     else
                                                     {
-                                                        <span class="image-block__cart" @onclick="() => AddProductInCart(productModel)" aria-label="Иконка для добавления товара @productModel.Name в корзину"><img src="/icons/product-catalog/Cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины @productModel.Name"></span>
+                                                        <span class="image-block__cart" @onclick="() => AddProductInCartAsync(productModel)" aria-label="Иконка для добавления товара @productModel.Name в корзину"><img src="/icons/product-catalog/Cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины @productModel.Name"></span>
                                                     }
                                                 }
                                             </AuthorizeView>

@@ -54,19 +54,19 @@
                                     {
                                         if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                         {
-                                            <span class="image-block__favorites" @onclick="() => RemoveProductFromFavorites(productModel)"><img src="/icons/header/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></span>
+                                            <span class="image-block__favorites" @onclick="() => RemoveProductFromFavoritesAsync(productModel)"><img src="/icons/header/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></span>
                                         }
                                         else
                                         {
-                                            <span class="image-block__favorites" @onclick="() => AddProductInFavorites(productModel)"><img src="/icons/header/Heart.svg" alt="Иконка избранного" title="Добавить в избранное"></span>
+                                            <span class="image-block__favorites" @onclick="() => AddProductInFavoritesAsync(productModel)"><img src="/icons/header/Heart.svg" alt="Иконка избранного" title="Добавить в избранное"></span>
                                         }
                                         if (currentUser.Cart.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                         {
-                                            <span class="image-block__cart" @onclick="() => RemoveProductFromCart(productModel)"><img src="/icons/header/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></span>
+                                            <span class="image-block__cart" @onclick="() => RemoveProductFromCartAsync(productModel)"><img src="/icons/header/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></span>
                                         }
                                         else
                                         {
-                                            <span class="image-block__cart" @onclick="() => AddProductInCart(productModel)"><img src="/icons/header/Cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины"></span>
+                                            <span class="image-block__cart" @onclick="() => AddProductInCartAsync(productModel)"><img src="/icons/header/Cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины"></span>
                                         }
                                     }
                                     @*<!--<div class="image-block__discount-block hasDiscount"> <!-- hasDiscount -->
@@ -112,19 +112,19 @@
                                     {
                                         if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                         {
-                                            <span class="image-block__favorites" @onclick="() => RemoveProductFromFavorites(productModel)"><img src="/icons/header/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></span>
+                                            <span class="image-block__favorites" @onclick="() => RemoveProductFromFavoritesAsync(productModel)"><img src="/icons/header/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></span>
                                         }
                                         else
                                         {
-                                            <span class="image-block__favorites" @onclick="() => AddProductInFavorites(productModel)"><img src="/icons/header/Heart.svg" alt="Иконка избранного" title="Добавить в избранное"></span>
+                                            <span class="image-block__favorites" @onclick="() => AddProductInFavoritesAsync(productModel)"><img src="/icons/header/Heart.svg" alt="Иконка избранного" title="Добавить в избранное"></span>
                                         }
                                         if (currentUser.Cart.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                         {
-                                            <span class="image-block__cart" @onclick="() => RemoveProductFromCart(productModel)"><img src="/icons/header/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></span>
+                                            <span class="image-block__cart" @onclick="() => RemoveProductFromCartAsync(productModel)"><img src="/icons/header/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></span>
                                         }
                                         else
                                         {
-                                            <span class="image-block__cart" @onclick="() => AddProductInCart(productModel)"><img src="/icons/header/Cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины"></span>
+                                            <span class="image-block__cart" @onclick="() => AddProductInCartAsync(productModel)"><img src="/icons/header/Cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины"></span>
                                         }
                                     }
                                     @*<!--<div class="image-block__discount-block hasDiscount"> <!-- hasDiscount -->
@@ -178,19 +178,19 @@
                                     {
                                         if (currentUser.FavoriteList.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                         {
-                                            <span class="image-block__favorites" @onclick="() => RemoveProductFromFavorites(productModel)"><img src="/icons/header/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></span>
+                                            <span class="image-block__favorites" @onclick="() => RemoveProductFromFavoritesAsync(productModel)"><img src="/icons/header/Slash-heart.svg" alt="Перечеркнутая иконка избранного" title="Удалить из избранного"></span>
                                         }
                                         else
                                         {
-                                            <span class="image-block__favorites" @onclick="() => AddProductInFavorites(productModel)"><img src="/icons/header/Heart.svg" alt="Иконка избранного" title="Добавить в избранное"></span>
+                                            <span class="image-block__favorites" @onclick="() => AddProductInFavoritesAsync(productModel)"><img src="/icons/header/Heart.svg" alt="Иконка избранного" title="Добавить в избранное"></span>
                                         }
                                         if (currentUser.Cart.Products.Any(favoriteProduct => favoriteProduct.Article.Model.Id == productModel.Id))
                                         {
-                                            <span class="image-block__cart" @onclick="() => RemoveProductFromCart(productModel)"><img src="/icons/header/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></span>
+                                            <span class="image-block__cart" @onclick="() => RemoveProductFromCartAsync(productModel)"><img src="/icons/header/Slash-cart.svg" alt="Иконка корзины" title="Добавить в корзину"></span>
                                         }
                                         else
                                         {
-                                            <span class="image-block__cart" @onclick="() => AddProductInCart(productModel)"><img src="/icons/header/Cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины"></span>
+                                            <span class="image-block__cart" @onclick="() => AddProductInCartAsync(productModel)"><img src="/icons/header/Cart.svg" alt="Перечеркнутая иконка корзины" title="Удалить из корзины"></span>
                                         }
                                     }
                                     @*<!--<div class="image-block__discount-block hasDiscount"> <!-- hasDiscount -->
