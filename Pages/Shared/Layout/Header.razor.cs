@@ -52,9 +52,9 @@ namespace WebStore.Pages.Shared.Layout
                     .Include(user => user.FavoriteList.Products)
                     .ThenInclude(favoriteProduct => favoriteProduct.Article.Model)
                     .SingleAsync(user => user.Email == userEmail);
+                cartProductCount = currentUser.Cart.Products.Count;
+                favoriteProductCount = currentUser.FavoriteList.Products.GroupBy(product => product.Article.Model.Id, product => product.Article.Model).Count();
             }
-            cartProductCount = currentUser.Cart.Products.Count;
-            favoriteProductCount = currentUser.FavoriteList.Products.GroupBy(product => product.Article.Model.Id, product => product.Article.Model).Count();
             categories = await Db.Categories
                 .AsNoTracking()
                 .Include(category => category.Subcategories)
