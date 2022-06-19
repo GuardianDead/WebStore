@@ -13,13 +13,13 @@
                         {
                             <li class="category__link" @onmouseover="async () => await ShowSubcategoriesAsync(category)" @onclick="@(() => NavigateTo(@$"products/catalog/{category.Name}".Replace(" ", "-").ToLower()))" aria-label="Перейти в раздел товаров с категорией @category.Name">@category.Name</li>
                         }
-                     }
+                    }
                 </ul>
             </nav>
             <div class="panel">
                 <div class="panel__search">
                     <span id="searchLupa" class="panel__search__lupa @(SearchPanelIsActive ? "active" : string.Empty)" @onclick="async () => await ToggleSearchPanelAsync()"><img src="/icons/header/Lupa.svg" alt="Поисковая лупа" title="Поиск"></span>
-                    <input id="searchInput" class="panel__search__input @(SearchPanelIsActive ? "active" : string.Empty)" @bind="SearchProductModelsName" @onblur="HideSearchPanel" @onkeypress="SearchProductModelsByName" placeholder="Поиск товара" type="search" aria-label="Поисковик товара по имени">
+                    <input id="searchInput" class="panel__search__input @(SearchPanelIsActive ? "active" : string.Empty)" @onblur="HideSearchPanel" @onkeydown="SearchProductModelsByName" placeholder="Поиск товара" type="search" aria-label="Поисковик товара по имени">
                 </div>
                 @if (currentUserState.Identity.IsAuthenticated)
                 {

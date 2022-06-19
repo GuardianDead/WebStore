@@ -320,7 +320,6 @@
         }
     }
 }
-
 @media (max-width: 830px) {
     .header {
         &__container {
@@ -371,6 +370,7 @@
             }
         }
     }
+    
     .panel {
         grid-template-columns: min-content min-content min-content min-content;
         justify-self: right;
@@ -421,7 +421,6 @@
             position: relative;
 
             &__lupa {
-                position: absolute;
                 transform: translateX(-30px);
                 transition: transform 0.5s;
 

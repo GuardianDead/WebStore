@@ -28,7 +28,7 @@ namespace WebStore.Pages.Shared.Layout
         public bool SearchPanelIsActive { get; set; }
         public bool HeaderIsScroling { get; set; }
 
-        public string SearchProductModelsName { get; set; }
+        public string SearchProductModelsName { get; set; } = string.Empty;
 
         public string returnUrl;
         public List<Category> categories;
@@ -130,7 +130,8 @@ namespace WebStore.Pages.Shared.Layout
                     StateHasChanged();
                 }
             }
-            NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}products/catalog/search/{SearchProductModelsName}", true);
+            else
+                NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}products/catalog/search/{SearchProductModelsName}", true);
         }
         [JSInvokable]
         public void HideSearchPanel()
@@ -147,9 +148,11 @@ namespace WebStore.Pages.Shared.Layout
 
         public void SearchProductModelsByName(KeyboardEventArgs keyboardEventArgs)
         {
+            if (keyboardEventArgs.Key.Length == 1)
+                SearchProductModelsName += keyboardEventArgs.Key;
             if (keyboardEventArgs.Key == "Enter" && !string.IsNullOrWhiteSpace(SearchProductModelsName))
             {
-                var resultProductModelName = new Regex(@"\s\s+").Replace("     we   fwef   qwef       ", " ").Replace(" ", "-").ToLower();
+                var resultProductModelName = new Regex(@"\s\s+").Replace(" ", "-").ToLower();
                 NavigationManager.NavigateTo($@"{NavigationManager.BaseUri}products/catalog/search/{resultProductModelName}", true);
             }
         }
