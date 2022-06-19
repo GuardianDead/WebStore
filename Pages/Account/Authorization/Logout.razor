@@ -9,6 +9,8 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         ReturnUrl = string.IsNullOrWhiteSpace(ReturnUrl) ? NavigationManager.BaseUri : ReturnUrl;
+        if (NavigationManager.BaseUri.Contains(ReturnUrl))
+            ReturnUrl = "/";
         await TokenAuthenticationStateService.LogoutAuthenticationStateAsync();
         NavigationManager.NavigateTo(ReturnUrl, true);
     }

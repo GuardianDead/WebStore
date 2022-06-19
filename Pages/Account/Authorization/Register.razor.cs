@@ -51,6 +51,8 @@ namespace WebStore.Pages.Account.Authorization
         protected override async Task OnInitializedAsync()
         {
             RegisterViewModel.ReturnUrl = string.IsNullOrWhiteSpace(ReturnUrl) ? NavigationManager.BaseUri : ReturnUrl;
+            if (NavigationManager.BaseUri.Contains(RegisterViewModel.ReturnUrl))
+                RegisterViewModel.ReturnUrl = "/";
             currentUserState = (await AuthenticationStateTask).User;
 
             if (currentUserState.Identity.IsAuthenticated)
